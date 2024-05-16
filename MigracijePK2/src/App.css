@@ -5,6 +5,9 @@
   text-align: center;
 }
 
+#map { height: 180px; }
+
+
 .logo {
   height: 6em;
   padding: 1.5em;
