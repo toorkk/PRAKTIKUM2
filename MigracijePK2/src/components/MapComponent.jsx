@@ -1,25 +1,19 @@
-import { MapContainer, TileLayer, useMap, Marker, Popup } from 'react-leaflet'
-
-
+import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet'
+import OBCINA from '../../data/OBCINE.json'
 
 function MapComponent() {
 
   return (
     <>
 
-      <h1>MIGRACIJE</h1>
-      <MapContainer id='map' center={[46.4131077, 15.8648681]} zoom={13} scrollWheelZoom={false}>
+      <MapContainer id='map' center={[46.07118, 15.0]} zoom={8} scrollWheelZoom={true}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[46.4131077, 15.8648681]}>
-          <Popup>
-            VEM KJE ŽIVIŠ
-          </Popup>
-        </Marker>
-      </MapContainer>
+        <GeoJSON data={OBCINA} />
 
+      </MapContainer>
 
     </>
   )
