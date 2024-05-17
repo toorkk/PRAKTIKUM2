@@ -21,7 +21,7 @@ const Sidebar = () => {
             className="text-decoration-none"
             style={{ color: "inherit" }}
           >
-            Sidebar
+            MIGRACIJE.COM
           </a>
         </CDBSidebarHeader>
 
