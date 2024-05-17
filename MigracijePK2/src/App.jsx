@@ -11,14 +11,14 @@ function App() {
     <>
 
       <h1>MIGRACIJE</h1>
-      <MapContainer id='map' center={[51.505, -0.09]} zoom={13} scrollWheelZoom={false}>
+      <MapContainer id='map' center={[46.4131077, 15.8648681]} zoom={13} scrollWheelZoom={false}>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <Marker position={[51.505, -0.09]}>
+        <Marker position={[46.4131077, 15.8648681]}>
           <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
+            VEM KJE ŽIVIŠ
           </Popup>
         </Marker>
       </MapContainer>
