@@ -5,7 +5,10 @@
   text-align: center;
 }
 
-#map { height: 180px; }
+#map { 
+  height: 500px;
+  width: 250%;
+}
 
 
 .logo {
