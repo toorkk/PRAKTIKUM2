@@ -8,6 +8,15 @@ import {
   CDBSidebarMenuItem
 } from "cdbreact";
 import { NavLink } from "react-router-dom";
+import '@fortawesome/fontawesome-free/css/all.min.css';
+
+const CustomSidebarMenuItem = ({ icon = 'fa fa-map', text = 'Default Text' }) => {
+  return (
+    <CDBSidebarMenuItem>
+      <i className={icon}></i> {text}
+    </CDBSidebarMenuItem>
+  );
+};
 
 const Sidebar = () => {
   return (
@@ -27,24 +36,11 @@ const Sidebar = () => {
 
         <CDBSidebarContent>
           <CDBSidebarMenu>
-            <NavLink>
-              <CDBSidebarMenuItem>Dashboard</CDBSidebarMenuItem>
+            <NavLink to="/map">
+              <CustomSidebarMenuItem icon="fa fa-map" text="MAP" />
             </NavLink>
-            <NavLink>
-              <CDBSidebarMenuItem>Tables</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink>
-              <CDBSidebarMenuItem>Profile page</CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink>
-              <CDBSidebarMenuItem>
-                Analytics
-              </CDBSidebarMenuItem>
-            </NavLink>
-            <NavLink>
-              <CDBSidebarMenuItem>
-                404 page
-              </CDBSidebarMenuItem>
+            <NavLink to="/details">
+              <CustomSidebarMenuItem icon="fa fa-info-circle" text="PODROBNOSTI" />
             </NavLink>
           </CDBSidebarMenu>
         </CDBSidebarContent>
