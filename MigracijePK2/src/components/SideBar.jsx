@@ -25,30 +25,24 @@ const Sidebar = () => {
           </a>
         </CDBSidebarHeader>
 
-        <CDBSidebarContent className="sidebar-content">
+        <CDBSidebarContent>
           <CDBSidebarMenu>
-            <NavLink exact to="/" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="columns">Dashboard</CDBSidebarMenuItem>
+            <NavLink>
+              <CDBSidebarMenuItem>Dashboard</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/tables" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="table">Tables</CDBSidebarMenuItem>
+            <NavLink>
+              <CDBSidebarMenuItem>Tables</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/profile" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="user">Profile page</CDBSidebarMenuItem>
+            <NavLink>
+              <CDBSidebarMenuItem>Profile page</CDBSidebarMenuItem>
             </NavLink>
-            <NavLink exact to="/analytics" activeClassName="activeClicked">
-              <CDBSidebarMenuItem icon="chart-line">
+            <NavLink>
+              <CDBSidebarMenuItem>
                 Analytics
               </CDBSidebarMenuItem>
             </NavLink>
-
-            <NavLink
-              exact
-              to="/hero404"
-              target="_blank"
-              activeClassName="activeClicked"
-            >
-              <CDBSidebarMenuItem icon="exclamation-circle">
+            <NavLink>
+              <CDBSidebarMenuItem>
                 404 page
               </CDBSidebarMenuItem>
             </NavLink>
