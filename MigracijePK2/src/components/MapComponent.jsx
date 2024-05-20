@@ -1,27 +1,62 @@
 import { useState, useEffect } from 'react'
-import { MapContainer, TileLayer, GeoJSON, useMapEvent } from 'react-leaflet'
+import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet'
 import ObcineGeo from '../../data/OBCINE.json'
 import RegijeGeo from '../../data/SR.json'
 
+function highlightFeature(e) {
+  var layer = e.target;
+
+  layer.setStyle({
+      weight: 5,
+      color: '#666',
+      dashArray: '',
+      fillOpacity: 0.7
+  });
+
+  layer.bringToFront();
+}
 
 function MapComponent() {
 
   const [layer, setLayer] = useState('Regije');
+  
+  useEffect(() => {
+    console.log('Current layer:', layer);
+  }, [layer]);
 
   function MapInnard() {
-    const map = useMapEvent('zoomend', () => {
+    const map = useMapEvents(
+      {zoomend: () => {
       if(map.getZoom() > 9){
         setLayer('Obcine');
       }
       else{   
         setLayer('Regije');
       }
-    })
-  }
+    }})
+  };
 
-  useEffect(() => {
-    console.log('Current layer:', layer);
-  }, [layer]);
+  function onEach(feature, layer){
+
+      if(feature.properties.ENOTA == "SR"){
+        let popupContent =
+        "<pre>" +
+        "Statistična regija \n" +
+        "<b>" + feature.properties.SR_UIME + "</b> \n" +
+        "Površina: " + feature.properties.POV_KM2 + " km² \n" +
+        "</pre>";
+        layer.bindPopup(popupContent);
+      } 
+      else{
+        let popupContent =
+        "<pre>" +
+        "Občina \n" +
+        "<b>" + feature.properties.OB_UIME + "</b> \n" +
+        "Površina: " + feature.properties.POV_KM2 + " km² \n" +
+        "</pre>";
+        layer.bindPopup(popupContent);
+      }
+  };
 
   return (
     <>
@@ -30,15 +65,15 @@ function MapComponent() {
         
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          url="https://tile.jawg.io/27bb4850-08f0-424e-808a-c9e1a2065160/{z}/{x}/{y}{r}.png?access-token=DlhBoBAQ7W9tmNM3WyILidXnRRcK7tnABIcRmeHaWKp1lz9SHyloTWRA9gPcDKP3"
         />
         
         <MapInnard setLayer={setLayer} />
         {layer === 'Obcine' && (
-          <GeoJSON data={ObcineGeo} attribution="&copy; Štefan Baebler" />
+          <GeoJSON data={ObcineGeo} attribution="&copy; Štefan Baebler" style={{ weight: 2, color: "green" }} onEachFeature={onEach} />
         )}
         {layer === 'Regije' && (
-          <GeoJSON data={RegijeGeo} attribution="&copy; Štefan Baebler" />
+          <GeoJSON data={RegijeGeo} attribution="&copy; Štefan Baebler" style={{ weight: 2, color: "green"  }} onEachFeature={onEach}/>
         )}
 
       </MapContainer>
