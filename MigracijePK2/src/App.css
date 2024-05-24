@@ -1,19 +1,26 @@
-.App {
+.app-container {
   display: flex;
   height: 100vh; 
 }
 
-.Sidebar {
-  width: 250px; 
+.sidebar {
+  width: fit-content;;
 }
 
-.MapComponent {
+.map-container {
   flex: 1; 
-  height: 100%; 
 }
 
-#map { 
-  height: 100%;
-  width: 100vw;
+#map {
+  height: 100vh;
+  width: 220vh;
 }
 
+.mapdiv {
+  width: auto;
+}
+
+body {
+
+overflow: hidden;
+}
