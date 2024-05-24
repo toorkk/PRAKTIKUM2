@@ -1,21 +1,25 @@
-import './App.css';
-import MapComponent from './components/MapComponent';
-import { BrowserRouter as Router } from 'react-router-dom';
-import Sidebar from './components/SideBar.jsx';
-
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import MapComponent from "./components/MapComponent";
+import Podrobnosti from "./components/Podrobnosti";
+import Sidebar from "./components/SideBar";
+import "./App.css";
 
 function App() {
   return (
-    <>
-      <Router>
-        <div className="App">
-            <Sidebar />
-          <div className="MapComponent">
-            <MapComponent />
-          </div>
+    <Router>
+      <div className="app-container">
+        <div className="sidebar">
+          <Sidebar />
         </div>
-      </Router>
-    </>
+        <div className="content">
+          <Routes>
+            <Route path="/map" element={<MapComponent />} />
+            <Route path="/podrobnosti" element={<Podrobnosti />} />
+          </Routes>
+        </div>
+      </div>
+    </Router>
   );
 }
 
