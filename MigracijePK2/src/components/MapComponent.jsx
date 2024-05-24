@@ -3,18 +3,7 @@ import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet'
 import ObcineGeo from '../../data/OBCINE.json'
 import RegijeGeo from '../../data/SR.json'
 
-function highlightFeature(e) {
-  var layer = e.target;
-
-  layer.setStyle({
-      weight: 5,
-      color: '#666',
-      dashArray: '',
-      fillOpacity: 0.7
-  });
-
-  layer.bringToFront();
-}
+import ReactSlider from 'react-slider'
 
 function MapComponent() {
 
@@ -75,7 +64,6 @@ function MapComponent() {
         {layer === 'Regije' && (
           <GeoJSON data={RegijeGeo} attribution="&copy; Štefan Baebler" style={{ weight: 2, color: "green"  }} onEachFeature={onEach}/>
         )}
-
       </MapContainer>
 
     </>
