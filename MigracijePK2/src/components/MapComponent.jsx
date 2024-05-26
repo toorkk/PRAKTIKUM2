@@ -15,6 +15,7 @@ function highlightFeature(e) {
   });
   layer.bringToFront();
 }
+import ReactSlider from 'react-slider'
 
 function MapComponent() {
   const [layer, setLayer] = useState('Regije');
