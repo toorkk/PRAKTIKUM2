@@ -32,7 +32,8 @@ const Sidebar = () => {
 
         <CDBSidebarContent>
           <CDBSidebarMenu>
-            <CustomSidebarMenuItem to="/map" icon="fa fa-map" text="MAP" />
+          <CustomSidebarMenuItem to="/home" icon="fa fa-home" text="DOMOV" />
+            <CustomSidebarMenuItem to="/map" icon="fa fa-map" text="ZEMLJEVID" />
             <CustomSidebarMenuItem to="/podrobnosti" icon="fa fa-info-circle" text="PODROBNOSTI" />
           </CDBSidebarMenu>
         </CDBSidebarContent>
