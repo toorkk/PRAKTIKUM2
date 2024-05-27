@@ -20,6 +20,8 @@ import 'rc-slider/assets/index.css';
 
 function MapComponent() {
   const [layer, setLayer] = useState('Regije');
+
+  const [leto, setLeto] = useState('2023');
   
   useEffect(() => {
     console.log('Current layer:', layer);
@@ -28,7 +30,7 @@ function MapComponent() {
   function MapInnard() {
     const map = useMapEvents({
       zoomend: () => {
-        if (map.getZoom() > 9) {
+        if (map.getZoom() > 7) {
           setLayer('Obcine');
         } else {
           setLayer('Regije');
@@ -80,6 +82,32 @@ function MapComponent() {
     return closestMatch;
   }
 
+  function afterSliderChanged(value) {
+    setLeto(value);
+  }
+
+  function setGeoStyle(properties) {
+
+    const closestMatch = findClosestMatch(properties.properties.OB_UIME);
+    const value = closestMatch.data[leto];
+
+    function getColor(d) {
+      return d > 165  ? '#10451d' :
+             d > 135  ? '#155d27' :
+             d > 115  ? '#1a7431' :
+             d > 100  ? '#208b3a' :
+             d > 90   ? '#25a244' :
+             d > 75   ? '#2dc653' :
+             d > 60   ? '#4ad66d' :
+             d > 45   ? '#6ede8a' :
+             d > 30   ? '#92e6a7' :
+             d > 0   ? '#b7efc5' :
+                        '#8C8C8C';
+  }
+
+    return { weight: 2, color: "gray", dashArray: 3, fillColor: getColor(value), fillOpacity: 0.65 }
+  }
+
   return (
     <>
       <MapContainer id='map' center={[46.07118, 15.6]} zoom={8} scrollWheelZoom={true} placeholder={<h1>MAPA SE NALAGA, MOGOČE MORATE OMOGOČITI JAVASCRIPT</h1>}>
@@ -89,7 +117,7 @@ function MapComponent() {
         />
         <MapInnard />
         {layer === 'Obcine' && (
-          <GeoJSON data={ObcineGeo} attribution="&copy; Štefan Baebler" style={{ weight: 2, color: "green" }} onEachFeature={onEach} />
+          <GeoJSON data={ObcineGeo} attribution="&copy; Štefan Baebler" style={setGeoStyle} onEachFeature={onEach} />
         )}
         {layer === 'Regije' && (
           <GeoJSON data={RegijeGeo} attribution="&copy; Štefan Baebler" style={{ weight: 2, color: "green" }} onEachFeature={onEach} />
@@ -102,7 +130,9 @@ function MapComponent() {
       min={2000}
       max={2023}
       marks={{ 2000: 0, 2001: 1, 2002: 2, 2003: 3, 2004: 4, 2005: 5, 2006: 6, 2007: 7, 2008: 8, 2009: 9, 2010: 10, 2011: 11, 2012: 12, 2013: 13, 2014: 14, 2015: 15, 2016: 16, 2017: 17, 2018: 18, 2019: 19, 2020 : 20, 2021: 21, 2022: 22, 2023: 23 }}
-      trackStyle={{ backgroundColor: '#62FA13', height: 10 }}
+      trackStyle={{ backgroundColor: '#FFFFFF', height: 12, marginTop: '-4px' }}
+      handleStyle={{borderColor: "gray", backgroundColor: "#FFFFFF"}}
+      onChangeComplete={afterSliderChanged}
 
       />
       </div>
