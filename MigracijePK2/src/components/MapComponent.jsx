@@ -8,20 +8,14 @@ import stringSimilarity from 'string-similarity';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
-function highlightFeature(e) {
-  var layer = e.target;
-  layer.setStyle({
-    weight: 5,
-    color: '#666',
-    dashArray: '',
-    fillOpacity: 0.7
-  });
-  layer.bringToFront();
-}
 
 function MapComponent() {
   const [layer, setLayer] = useState('Regije');
   const [leto, setLeto] = useState('2023');
+
+  function afterSliderChanged(value) {
+    setLeto(value);
+  }
   
   useEffect(() => {
     console.log('Current layer:', layer);
@@ -30,7 +24,7 @@ function MapComponent() {
   function MapInnard() {
     const map = useMapEvents({
       zoomend: () => {
-        if (map.getZoom() > 7) {
+        if (map.getZoom() > 8) {
           setLayer('Obcine');
         } else {
           setLayer('Regije');
@@ -90,13 +84,17 @@ function MapComponent() {
     return PodatkiRegije.find(regija => regija.Regije === name);
   }
 
-  function afterSliderChanged(value) {
-    setLeto(value);
-  }
-
   function setGeoStyle(properties) {
-    const closestMatch = findClosestMatch(properties.properties.OB_UIME);
-    const value = closestMatch.data[leto];
+    let value;
+
+    if(properties.properties.ENOTA === "OB"){
+    let closestMatch = findClosestMatch(properties.properties.OB_UIME);
+    value = closestMatch.data[leto];
+    }
+    else if(properties.properties.ENOTA === "SR"){
+    value = findRegijaData(properties.properties.SR_UIME);
+    value = value[leto];
+    }
 
     function getColor(d) {
       return d > 165  ? '#10451d' :
@@ -111,8 +109,9 @@ function MapComponent() {
              d > 0    ? '#b7efc5' :
                         '#8C8C8C';
     }
-
+    
     return { weight: 2, color: "gray", dashArray: 3, fillColor: getColor(value), fillOpacity: 0.65 };
+    
   }
 
   return (
@@ -127,7 +126,7 @@ function MapComponent() {
           <GeoJSON data={ObcineGeo} attribution="&copy; Štefan Baebler" style={setGeoStyle} onEachFeature={onEach} />
         )}
         {layer === 'Regije' && (
-          <GeoJSON data={RegijeGeo} attribution="&copy; Štefan Baebler" style={{ weight: 2, color: "green" }} onEachFeature={onEach} />
+          <GeoJSON data={RegijeGeo} attribution="&copy; Štefan Baebler" style={setGeoStyle} onEachFeature={onEach} />
         )}
       </MapContainer>
 
@@ -137,9 +136,17 @@ function MapComponent() {
           min={2009}
           max={2023}
           marks={{ 2009: 2009, 2023: 2023 }}
-          trackStyle={{ backgroundColor: '#FFFFFF', height: 12, marginTop: '-4px' }}
+          dots
+          trackStyle={{ backgroundColor: '#FFFFFF', height: 12, marginTop: '-5px', borderColor: 'gray' }}
           handleStyle={{ borderColor: "gray", backgroundColor: "#FFFFFF" }}
           onChange={afterSliderChanged}
+          dotStyle={{
+            border: 'none',
+            borderRadius: 0,
+            height: 10,
+            width: 1,
+            backgroundColor: '#666',
+          }}
         />
       </div>
     </>
