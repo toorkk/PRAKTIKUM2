@@ -1,12 +1,13 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet';
+import stringSimilarity from 'string-similarity'; 
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
+
 import ObcineGeo from '../../data/OBCINE.json';
 import RegijeGeo from '../../data/SR.json';
 import PodatkiObcine from '../../data/Podatki.json'; 
 import PodatkiRegije from '../../data/Podatki_regija.json';
-import stringSimilarity from 'string-similarity'; 
-import Slider from 'rc-slider';
-import 'rc-slider/assets/index.css';
 
 
 function MapComponent() {
@@ -128,6 +129,7 @@ function MapComponent() {
         {layer === 'Regije' && (
           <GeoJSON data={RegijeGeo} attribution="&copy; Štefan Baebler" style={setGeoStyle} onEachFeature={onEach} />
         )}
+
       </MapContainer>
 
       <div className="slider">
@@ -135,7 +137,7 @@ function MapComponent() {
           defaultValue={2023}
           min={2009}
           max={2023}
-          marks={{ 2009: 2009, 2023: 2023 }}
+          marks={{ 2009: 2009, 2010: 10, 2011: 11, 2012: 12, 2013: 13, 2014: 14, 2015: 15, 2016: 16, 2017: 17, 2018: 18, 2019: 19, 2020 : 20, 2021: 21, 2022: 22, 2023: 2023 }}
           dots
           trackStyle={{ backgroundColor: '#FFFFFF', height: 12, marginTop: '-5px', borderColor: 'gray' }}
           handleStyle={{ borderColor: "gray", backgroundColor: "#FFFFFF" }}
