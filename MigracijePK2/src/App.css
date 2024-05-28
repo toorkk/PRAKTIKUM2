@@ -1,10 +1,28 @@
-.app-container {
+body {
+  margin: 0;
+  overflow: hidden;
+  height: 100vh;
   display: flex;
-  height: 100vh; 
+  flex-direction: column;
 }
 
-.sidebar {
-  width: fit-content;;
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw; 
+}
+
+.navbar {
+  width: 100%; 
+  flex-shrink: 0; 
+}
+
+.content {
+  flex-grow: 1; 
+  overflow-y: auto; 
+  display: flex;
 }
 
 .map-container {
@@ -12,21 +30,22 @@
 }
 
 #map {
-  height: 100vh;
-  width: 220vh;
+  height: 90%;
+  width: 100%;
   z-index: 1;
 }
 
 .slider {
-  width: 45%;
-  margin-top: -60px;
-  margin-left: 15%;
+  width: 50%;
+  margin-top: -3%;
+  margin-left: 25%;
   background: white;
 }
 
 .slider * {
   z-index: 2;
 }
+
 
 .mapdiv {
   width: auto;
@@ -39,9 +58,4 @@
 .track {
   color: black;
   visibility: visible;
-}
-
-body {
-
-overflow: hidden;
 }
