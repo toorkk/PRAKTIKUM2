@@ -1,10 +1,9 @@
-import { createElement } from "react";
 import "./Legend.css";
 
 function Legend() {
 
       return(
-        <div className={'info legend leaflet-bottom leaflet-right legend'}>
+        <div className={'info legend leaflet-bottom leaflet-right'}>
             <i style={{background: '#10451d'}}></i>165+<br/>
             <i style={{background: '#155d27'}}></i>165-135<br/>
             <i style={{background: '#1a7431'}}></i>135-115<br/>
