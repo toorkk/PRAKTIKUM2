@@ -9,6 +9,8 @@ import RegijeGeo from '../../data/SR.json';
 import PodatkiObcine from '../../data/Podatki.json'; 
 import PodatkiRegije from '../../data/Podatki_regija.json';
 
+import Legend from "./Legend";
+
 
 function MapComponent() {
   const [layer, setLayer] = useState('Regije');
@@ -130,9 +132,11 @@ function MapComponent() {
           <GeoJSON data={RegijeGeo} attribution="&copy; Štefan Baebler" style={setGeoStyle} onEachFeature={onEach} />
         )}
 
+        <Legend />
+
       </MapContainer>
 
-      <div className="slider">
+      <div className="slider leaflet-bottom">
         <Slider
           defaultValue={2023}
           min={2009}
