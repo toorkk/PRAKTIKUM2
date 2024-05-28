@@ -1,0 +1,36 @@
+/* src/Podrobnosti.css */
+.podrobnosti-container {
+    padding: 20px;
+  }
+  
+  .obcina-selector {
+    margin-bottom: 20px;
+  }
+  
+  .obcina-box {
+    display: flex;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  .left-box {
+    width: 50%;
+    padding-right: 20px;
+  }
+  
+  .left-box ul {
+    list-style-type: none;
+    padding: 0;
+  }
+  
+  .left-box li {
+    margin-bottom: 5px;
+  }
+  
+  .right-box {
+    width: 50%;
+  }
+  
