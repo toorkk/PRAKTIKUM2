@@ -4,12 +4,22 @@ import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import Legend from "./Legend";
+import MapInfo from './MapInfo';
 import GeoJsonController from './GeoJsonController';
 
 
 function MapComponent() {
   const [layer, setLayer] = useState('Regije');
   const [leto, setLeto] = useState('2023');
+
+  const [hoveredLayer, setHoveredLayer] = useState();
+
+  function handleHoveredLayerChange(newHoveredLayer) {
+    setHoveredLayer(newHoveredLayer);
+    console.log('reload1')
+  }
+
+  console.log('reload3')
 
   function afterSliderChanged(value) {
     setLeto(value);
@@ -40,11 +50,13 @@ function MapComponent() {
         />
         <MapInnard />
         {layer === 'Obcine' && (
-          <GeoJsonController type={'OB'} leto={leto}/>
+          <GeoJsonController type={'OB'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange}/>
         )}
         {layer === 'Regije' && (
-          <GeoJsonController type={'RG'} leto={leto}/>
+          <GeoJsonController type={'RG'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange}/>
         )}
+
+        <MapInfo hoveredLayer={hoveredLayer} leto={leto}/>
 
         <Legend />
 
