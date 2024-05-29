@@ -48,28 +48,27 @@ function MapComponent() {
 
         <Legend />
 
-        <div className="slider leaflet-bottom">
-          <Slider
-            defaultValue={2023}
-            min={2009}
-            max={2023}
-            marks={{ 2009: 2009, 2010: 10, 2011: 11, 2012: 12, 2013: 13, 2014: 14, 2015: 15, 2016: 16, 2017: 17, 2018: 18, 2019: 19, 2020 : 20, 2021: 21, 2022: 22, 2023: 2023 }}
-            dots
-            trackStyle={{ backgroundColor: '#FFFFFF', height: 12, marginTop: '-5px', borderColor: 'gray' }}
-            handleStyle={{ borderColor: "gray", backgroundColor: "#FFFFFF" }}
-            onChange={afterSliderChanged}
-            dotStyle={{
-              border: 'none',
-              borderRadius: 0,
-              height: 10,
-              width: 1,
-              backgroundColor: '#666',
-            }}
-          />
-        </div>
-
       </MapContainer>
 
+      <div className="slider">
+        <Slider
+          defaultValue={2023}
+          min={2009}
+          max={2023}
+          marks={{ 2009: 2009, 2023: 2023 }}
+          dots
+          trackStyle={{ backgroundColor: '#FFFFFF', height: 12, marginTop: '-5px', borderColor: 'gray' }}
+          handleStyle={{ borderColor: "gray", backgroundColor: "#FFFFFF" }}
+          onChange={afterSliderChanged}
+          dotStyle={{
+            border: 'none',
+            borderRadius: 0,
+            height: 10,
+            width: 1,
+            backgroundColor: '#666',
+          }}
+        />
+      </div>
     </>
   );
 }
