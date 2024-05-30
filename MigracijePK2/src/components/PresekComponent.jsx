@@ -58,7 +58,7 @@ function PresekComponent() {
 
   const getFillColor = (pay, migration) => {
     const combinedIndex = pay * payWeight + migration * migrationWeight;
-    const normalizedValue = (combinedIndex / 200) * 100; // Normalizing the combined index
+    const normalizedValue = (combinedIndex / 200) * 100;
 
     let fillColor;
     if (normalizedValue >= 80) fillColor = '#800026';
@@ -102,7 +102,7 @@ function PresekComponent() {
         center={[46.07118, 14.8]}
         zoom={7.5}
         scrollWheelZoom={true}
-        style={{ height: '80vh', width: '100%' }}
+        style={{ height: '75vh', width: '100%' }}
       >
         <TileLayer
           attribution="&copy; OpenStreetMap contributors"
