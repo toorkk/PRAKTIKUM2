@@ -8,17 +8,17 @@ import RegijeGeo from '../../data/SR.json';
 import PodatkiObcine from '../../data/Podatki.json'; 
 import PodatkiRegije from '../../data/Podatki_regija.json';
 
-export default function GeoJsonController({type, leto}) {
+function GeoJsonController({type, leto, handleHoveredLayerChange}) {
     const map = useMap();
-    console.log(type);
 
+    console.log('reload2')
     let data;
     if(type == 'RG') data = RegijeGeo;
     else if (type == 'OB') data = ObcineGeo;
   
     const highlightFeature = (e) => {
       const layer = e.target;
-  
+      
       layer.setStyle({
         weight: 3,
         color: '#F2F3F4',
@@ -26,6 +26,13 @@ export default function GeoJsonController({type, leto}) {
         });
 
         layer.bringToFront();
+        if(layer.feature.properties.ENOTA == 'OB'){
+          let closestMatch = findClosestMatch(layer.feature.properties.OB_UIME)
+          handleHoveredLayerChange(closestMatch);
+        }
+        else if(layer.feature.properties.ENOTA == 'SR'){
+          handleHoveredLayerChange({name: layer.feature.properties.SR_UIME, data: findRegijaData(layer.feature.properties.SR_UIME)});
+        }
     };
   
     const resetHighlight = (e) => {
@@ -133,3 +140,5 @@ export default function GeoJsonController({type, leto}) {
         <GeoJSON data={data} attribution="&copy; Štefan Baebler" style={setGeoStyle} onEachFeature={onEach} />
     );
   };
+
+  export default React.memo(GeoJsonController);
