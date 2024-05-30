@@ -37,7 +37,7 @@ const Podrobnosti = () => {
 
   const handleObcinaChange = (event) => {
     setSelectedObcina(event.target.value);
-    setSelectedYear(null); // Reset selected year when changing the municipality
+    setSelectedYear(null); 
   };
 
   const handleYearChange = (event) => {
@@ -85,11 +85,12 @@ const Podrobnosti = () => {
                   <FontAwesomeIcon icon={faInfoCircle} />
                 </div>
                 {selectedYear && (
-                  <div><b>{selectedData[selectedYear]}</b></div>
+                  <div><b style={{ fontSize: '25px' }}>{selectedData[selectedYear]}</b></div>
                 )}
                 <div className="info-text">Indeks delovne migracije</div>
                 
               </div>
+              
               <div className="info-box">
                 <div className="info-icon blue-icon">
                   <FontAwesomeIcon icon={faMale} />
