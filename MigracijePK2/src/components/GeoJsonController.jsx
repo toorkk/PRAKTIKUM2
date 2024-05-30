@@ -42,18 +42,14 @@ function GeoJsonController({type, leto, handleHoveredLayerChange}) {
           weight: 2,
           color: 'gray',
           dashArray: 3,
-          });    };
-  
-    const zoomToFeature = (e) => {
-      map.fitBounds(e.target.getBounds());
-    };
+          });    
+          };
 
     function onEach(feature, layer) {
 
         layer.on({
           mouseover: highlightFeature,
           mouseout: resetHighlight,
-          click: zoomToFeature
         });
     
         if (feature.properties.ENOTA === "SR") {
@@ -83,6 +79,7 @@ function GeoJsonController({type, leto, handleHoveredLayerChange}) {
             popupContent += "No data available";
           }
           popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre>`;
+          popupContent += '<a href="http://localhost:5173/podrobnosti/' + feature.properties.OB_UIME + '">PODROBNOSTI</a>';
           layer.bindPopup(popupContent);
         }
     }
@@ -141,4 +138,4 @@ function GeoJsonController({type, leto, handleHoveredLayerChange}) {
     );
   };
 
-  export default React.memo(GeoJsonController);
+  export default GeoJsonController;

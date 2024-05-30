@@ -24,7 +24,7 @@ function Navbar123() {
           <Nav className="me-auto custom-nav">
             <Nav.Link as={NavLink} to="/home">DOMOV</Nav.Link>
             <Nav.Link as={NavLink} to="/map">ZEMLJEVID</Nav.Link>
-            <Nav.Link as={NavLink} to="/podrobnosti">PODROBNOSTI</Nav.Link>
+            <Nav.Link as={NavLink} to="/podrobnosti/SLOVENIJA">PODROBNOSTI</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

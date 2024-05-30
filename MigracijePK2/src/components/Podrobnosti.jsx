@@ -14,6 +14,7 @@ import {
 } from 'chart.js';
 import data from '../../data/Podatki.json';
 import '../Podrobnosti.css';
+import { useParams } from 'react-router-dom';
 
 ChartJS.register(
   CategoryScale,
@@ -26,10 +27,14 @@ ChartJS.register(
 );
 
 const Podrobnosti = () => {
+  let { obcina } = useParams();
+
   const initialObcina = data.length > 1 ? data[1].Občine : '';
-  const [selectedObcina, setSelectedObcina] = useState(initialObcina);
+  const [selectedObcina, setSelectedObcina] = useState(obcina);
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedData, setSelectedData] = useState(null);
+
+  console.log("selectedObcina", selectedObcina)
 
   useEffect(() => {
     setSelectedData(data.find(item => item.Občine === selectedObcina));
@@ -63,7 +68,7 @@ const Podrobnosti = () => {
     <div className="podrobnosti-container">
       <div className="obcina-selector">
         <label htmlFor="obcina">Izberi občino: </label>
-        <select id="obcina" value={selectedObcina} onChange={handleObcinaChange}>
+        <select id="obcina" value={selectedObcina} onChange={handleObcinaChange} >
           {data.filter(item => item["Občine"] !== "Ime"  && item["Občine"] !== "SLOVENIJA").map((item) => (
             <option key={item.Občine} value={item.Občine}>{item.Občine}</option>
           ))}
