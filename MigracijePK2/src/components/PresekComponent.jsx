@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
