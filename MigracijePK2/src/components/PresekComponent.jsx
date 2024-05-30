@@ -1,8 +1,8 @@
+import React, { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
-import Chart from 'chart.js/auto';
-import { useState, useEffect, useRef } from 'react';
+import chroma from 'chroma-js';
 
 import ObcineGeo from '../../data/OBCINE.json';
 import PlacaGeo from '../../data/povpPlaca.json';
@@ -11,7 +11,6 @@ import Podatki from '../../data/Podatki.json';
 function PresekComponent() {
   const [modifiedGeoJSON, setModifiedGeoJSON] = useState(null);
   const [selectedYear, setSelectedYear] = useState(2023);
-  const chartRef = useRef(null);
 
   useEffect(() => {
     const integrateData = () => {
@@ -59,41 +58,32 @@ function PresekComponent() {
   const handleYearChange = (year) => {
     setSelectedYear(year);
   };
-  const handlePopupOpen = (feature) => {
-    const ctx = document.getElementById('myChart').getContext('2d');
-    const data = {
-      labels: Object.keys(feature.properties.payData),
-      datasets: [
-        {
-          label: 'Indeks plače',
-          data: Object.values(feature.properties.payData),
-          borderColor: 'rgb(255, 99, 132)',
-          backgroundColor: 'rgba(255, 99, 132, 0.5)',
-        },
-        {
-          label: 'Migracijski indeks',
-          data: Object.values(feature.properties.migrationData),
-          borderColor: 'rgb(54, 162, 235)',
-          backgroundColor: 'rgba(54, 162, 235, 0.5)',
-        },
-      ],
-    };
+  const getBlendedColor = (pay, migration) => {
+    const payColorScale = chroma.scale(['#ffffff', '#003700']).colors(17);
+    const migrationColorScale = chroma.scale(['#ffffff', '#ff0000']).colors(17);
 
-    if (chartRef.current) {
-      chartRef.current.destroy();
-    }
+    const payIndex = Math.min(
+      Math.floor((pay / 2000) * payColorScale.length),
+      payColorScale.length - 1
+    );
+    const migrationIndex = Math.min(
+      Math.floor((migration / 200) * migrationColorScale.length),
+      migrationColorScale.length - 1
+    );
 
-    chartRef.current = new Chart(ctx, {
-      type: 'line',
-      data: data,
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true,
-          },
-        },
-      },
-    });
+    const payColor = chroma(payColorScale[payIndex]).rgba();
+    const migrationColor = chroma(migrationColorScale[migrationIndex]).rgba();
+
+    const blendedColor = chroma
+      .mix(
+        payColor,
+        migrationColor,
+        payWeight / (payWeight + migrationWeight),
+        'rgb'
+      )
+      .hex();
+
+    return blendedColor;
   };
 
   return (
@@ -111,19 +101,80 @@ function PresekComponent() {
         {modifiedGeoJSON && (
           <GeoJSON
             data={modifiedGeoJSON}
-            style={{ color: 'blue', weight: 1, opacity: 0.5 }}
+            style={(feature) => {
+              const pay = feature.properties.payData[selectedYear] || 0;
+              const migration =
+                feature.properties.migrationData[selectedYear] || 0;
+              const fillColor = getBlendedColor(pay, migration);
+
+              return {
+                color: 'white',
+                weight: 1,
+                opacity: 0.7,
+                fillColor,
+                fillOpacity: 0.7,
+              };
+            }}
             onEachFeature={(feature, layer) => {
               let popupContent = `<strong>Občina:</strong> ${feature.properties.OB_UIME}<br/>`;
-              popupContent +=
-                '<canvas id="myChart" width="400" height="400"></canvas>';
-              layer.bindPopup(popupContent);
-
-              layer.on('popupopen', () => {
-                handlePopupOpen(feature);
+              Object.keys(feature.properties.payData).forEach((year) => {
+                popupContent += `<strong>${year}:</strong><br/> Indeks plače: ${
+                  feature.properties.payData[year] || 'No data'
+                }<br/> Migracijski indeks: ${
+                  feature.properties.migrationData[year] || 'No data'
+                }<br/>`;
               });
+              layer.bindPopup(popupContent);
             }}
           />
         )}
+        <div
+          className="legend"
+          style={{
+            position: 'absolute',
+            bottom: '10px',
+            left: '10px',
+            backgroundColor: 'white',
+            padding: '10px',
+            borderRadius: '5px',
+          }}
+        >
+          <strong>Legenda</strong>
+          <br />
+          <div>
+            <span
+              style={{
+                backgroundColor: '#003700',
+                display: 'inline-block',
+                width: '20px',
+                height: '20px',
+              }}
+            ></span>{' '}
+            Indeks plače
+          </div>
+          <div>
+            <span
+              style={{
+                backgroundColor: '#ff0000',
+                display: 'inline-block',
+                width: '20px',
+                height: '20px',
+              }}
+            ></span>{' '}
+            Migracijski indeks
+          </div>
+          <div>
+            <span
+              style={{
+                backgroundColor: '#800080',
+                display: 'inline-block',
+                width: '20px',
+                height: '20px',
+              }}
+            ></span>{' '}
+            Kombiniran indeks
+          </div>
+        </div>
       </MapContainer>
       <div style={{ padding: '10px' }}>
         <Slider

@@ -18,6 +18,7 @@ function App() {
           <Route path="/map" element={<MapComponent />} />
           <Route path="/podrobnosti/:obcina" element={<Podrobnosti />} />
           <Route path="/presek" element={<PresekComponent />} />
+          <Route path="/presek" element={<PresekComponent />} />
         </Routes>
       </div>
     </Router>
