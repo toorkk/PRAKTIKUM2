@@ -5,8 +5,8 @@ import stringSimilarity from 'string-similarity';
 
 import ObcineGeo from '../../data/OBCINE.json';
 import RegijeGeo from '../../data/SR.json';
-import PodatkiObcine from '../../data/Podatki.json'; 
-import PodatkiRegije from '../../data/Podatki_regija.json';
+import PodatkiObcine from '../../data/Podatki_vredi.json'; 
+import PodatkiRegije from '../../data/Regije_vredi.json';
 
 function GeoJsonController({type, leto, handleHoveredLayerChange}) {
     const map = useMap();

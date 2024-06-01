@@ -12,7 +12,7 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import data from '../../data/Podatki.json';
+import data from '../../data/Podatki_vredi.json';
 import '../Podrobnosti.css';
 import { useParams } from 'react-router-dom';
 
@@ -29,12 +29,9 @@ ChartJS.register(
 const Podrobnosti = () => {
   let { obcina } = useParams();
 
-  const initialObcina = data.length > 1 ? data[1].Občine : '';
-  const [selectedObcina, setSelectedObcina] = useState(obcina);
+  const [selectedObcina, setSelectedObcina] = useState(obcina || (data.length > 1 ? data[1].Občine : ''));
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedData, setSelectedData] = useState(null);
-
-  console.log("selectedObcina", selectedObcina)
 
   useEffect(() => {
     setSelectedData(data.find(item => item.Občine === selectedObcina));
@@ -42,34 +39,73 @@ const Podrobnosti = () => {
 
   const handleObcinaChange = (event) => {
     setSelectedObcina(event.target.value);
-    setSelectedYear(null); 
+    setSelectedYear(null);
   };
 
   const handleYearChange = (event) => {
     setSelectedYear(parseInt(event.target.value));
   };
 
-  const years = selectedData ? Object.keys(selectedData).filter(key => key !== "Občine" && parseInt(key) >= 2009) : [];
+  const years = selectedData ? Object.keys(selectedData).filter(key => key !== "Občine" && !key.includes('.')) : [];
+  const moskiLeta = selectedData ? years.map(year => year + '.1') : [];
+  const zenskeLeta = selectedData ? years.map(year => year + '.2') : [];
+  const zunaj = selectedData ? years.map(year => year + '.3') : [];
+  const notri = selectedData ? years.map(year => year + '.6') : [];
 
-  const chartData = {
+  const grafIndeks = {
     labels: years,
     datasets: [
       {
         label: 'Indeks delovne migracije',
         data: years.map(year => selectedData[year]),
         fill: false,
-        backgroundColor: 'rgba(75,192,192,0.4)',
-        borderColor: 'rgba(75,192,192,1)',
+        backgroundColor: 'rgb(60, 179, 113)',
+        borderColor: 'rgb(60, 179, 113)',
       },
+      {
+        label: 'Indeks delovne migracije (moški)',
+        data: moskiLeta.map(year => selectedData[year]),
+        fill: false,
+        backgroundColor: 'rgb(0, 0, 255)',
+        borderColor: 'rgb(0, 0, 255)',
+      },
+      {
+        label: 'Indeks delovne migracije (ženske)',
+        data: zenskeLeta.map(year => selectedData[year]),
+        fill: false,
+        backgroundColor: 'rgb(238, 130, 238)',
+        borderColor: 'rgb(238, 130, 238)',
+      }
     ],
   };
+
+  const grafNotriVuni = {
+    labels: years,
+    datasets: [
+      {
+        label: 'Delavci, znotraj občine',
+        data: notri.map(year => selectedData[year]),
+        fill: false,
+        backgroundColor: 'rgb(234, 236, 14)',
+        borderColor: 'rgb(234, 236, 14)',
+      },
+      {
+        label: 'Delavci zunaj občine',
+        data: zunaj.map(year => selectedData[year]),
+        fill: false,
+        backgroundColor: 'rgb(254, 171, 14)',
+        borderColor: 'rgb(254, 171, 14)',
+      }
+    ],
+  };
+
 
   return (
     <div className="podrobnosti-container">
       <div className="obcina-selector">
         <label htmlFor="obcina">Izberi občino: </label>
         <select id="obcina" value={selectedObcina} onChange={handleObcinaChange} >
-          {data.filter(item => item["Občine"] !== "Ime"  && item["Občine"] !== "SLOVENIJA").map((item) => (
+          {data.filter(item => item["Občine"] !== "Ime" && item["Občine"] !== "SLOVENIJA").map((item) => (
             <option key={item.Občine} value={item.Občine}>{item.Občine}</option>
           ))}
         </select>
@@ -79,11 +115,11 @@ const Podrobnosti = () => {
           <div className="left-box">
             <h2>{selectedObcina}</h2>
             <select value={selectedYear} onChange={handleYearChange} style={{ marginBottom: '10px' }}>
-                  <option value="">Izberi Leto</option>
-                  {years.map((year) => (
-                    <option key={year} value={year}>{year}</option>
-                  ))}
-                </select>
+              <option value="">Izberi Leto</option>
+              {years.map((year) => (
+                <option key={year} value={year}>{year}</option>
+              ))}
+            </select>
             <div className="info-boxes">
               <div className="info-box">
                 <div className="info-icon green-icon">
@@ -93,25 +129,50 @@ const Podrobnosti = () => {
                   <div><b style={{ fontSize: '25px' }}>{selectedData[selectedYear]}</b></div>
                 )}
                 <div className="info-text">Indeks delovne migracije</div>
-                
               </div>
-              
               <div className="info-box">
                 <div className="info-icon blue-icon">
                   <FontAwesomeIcon icon={faMale} />
                 </div>
-                <div className="info-text">Indeks delovne migracije(moški)</div>
+                {selectedYear && (
+                  <div><b style={{ fontSize: '25px' }}>{selectedData[selectedYear + '.1']}</b></div>
+                )}
+                <div className="info-text">Indeks delovne migracije (moški)</div>
               </div>
               <div className="info-box">
                 <div className="info-icon pink-icon">
                   <FontAwesomeIcon icon={faFemale} />
                 </div>
-                <div className="info-text">Indeks delovne migracije(ženske)</div>
+                {selectedYear && (
+                  <div><b style={{ fontSize: '25px' }}>{selectedData[selectedYear + '.2']}</b></div>
+                )}
+                <div className="info-text">Indeks delovne migracije (ženske)</div>
               </div>
+              <Line data={grafIndeks} />
             </div>
           </div>
           <div className="right-box">
-            <Line data={chartData} />
+          <Line style={{ marginTop: "40px" }} data={grafNotriVuni} />
+            <div className="additional-info-boxes">
+              <div className="info-box">
+                <div className="info-icon yellow-icon">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                </div>
+                {selectedYear && (
+                  <div><b style={{ fontSize: '25px' }}>{selectedData[selectedYear + '.6']}%</b></div>
+                )}
+                <div className="info-text">Delavci, ki delajo v občini prebivališča</div>
+              </div>
+              <div className="info-box">
+                <div className="info-icon orange-icon">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                </div>
+                {selectedYear && (
+                  <div><b style={{ fontSize: '25px' }}>{selectedData[selectedYear + '.3']}%</b></div>
+                )}
+                <div className="info-text">Delavci, ki delajo zunaj občine prebivališča</div>
+              </div>
+            </div>
           </div>
         </div>
       )}

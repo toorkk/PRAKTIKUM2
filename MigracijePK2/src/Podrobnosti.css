@@ -1,4 +1,3 @@
-/* src/Podrobnosti.css */
 .podrobnosti-container {
   padding: 20px;
   font-family: Arial, sans-serif;
@@ -82,7 +81,8 @@
 
 .info-boxes {
   display: flex;
-  justify-content: space-between;
+  flex-wrap: wrap;
+  justify-content: center;
   margin-bottom: 20px;
 }
 
@@ -95,6 +95,9 @@
   border: 1px solid #ccc;
   border-radius: 5px;
   padding: 10px;
+  margin-bottom: 40px; /* Add margin for better spacing */
+  margin-right: 1%;
+  margin-left: 1%;
 }
 
 .info-icon {
@@ -117,4 +120,19 @@
 
 .pink-icon {
   color: pink;
+}
+
+.yellow-icon {
+  color: yellow;
+}
+
+.orange-icon {
+  color: orange;
+}
+
+.additional-info-boxes {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; 
+  width: 100%;
 }
