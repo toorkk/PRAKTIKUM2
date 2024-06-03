@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import { MapContainer, TileLayer, GeoJSON } from 'react-leaflet';
 import Slider from 'rc-slider';
+import { Line } from 'react-chartjs-2';
 import 'rc-slider/assets/index.css';
+import 'chart.js/auto';
 
 import ObcineGeo from '../../data/OBCINE.json';
 import PlacaGeo from '../../data/povpPlaca.json';
@@ -12,6 +14,8 @@ function PresekComponent() {
   const [selectedYear, setSelectedYear] = useState(2023);
   const [payWeight, setPayWeight] = useState(0.5);
   const [migrationWeight, setMigrationWeight] = useState(0.5);
+  const [chartData, setChartData] = useState({ labels: [], datasets: [] });
+  const [selectedRegion, setSelectedRegion] = useState(null);
 
   useEffect(() => {
     const integrateData = () => {
@@ -56,6 +60,40 @@ function PresekComponent() {
     setModifiedGeoJSON(updatedGeoJSON);
   }, []);
 
+  const updateChartData = (regionData) => {
+    if (!regionData) return;
+
+    const labels = [];
+    const payData = [];
+    const migrationData = [];
+
+    Object.keys(regionData.payData).forEach((year) => {
+      labels.push(year);
+      payData.push(regionData.payData[year]);
+      migrationData.push(regionData.migrationData[year] || 0);
+    });
+
+    setChartData({
+      labels,
+      datasets: [
+        {
+          label: 'Indeks plače',
+          data: payData,
+          borderColor: 'rgba(75, 192, 192, 1)',
+          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          fill: true,
+        },
+        {
+          label: 'Indeks delovne migracije',
+          data: migrationData,
+          borderColor: 'rgba(255, 99, 132, 1)',
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          fill: true,
+        },
+      ],
+    });
+  };
+
   const getFillColor = (pay, migration) => {
     const combinedIndex = pay * payWeight + migration * migrationWeight;
     const normalizedValue = (combinedIndex / 200) * 100;
@@ -68,6 +106,34 @@ function PresekComponent() {
     else fillColor = '#FFEDA0';
 
     return fillColor;
+  };
+
+  const onEachFeature = (feature, layer) => {
+    let popupContent = `<strong>Občina:</strong> ${feature.properties.OB_UIME}<br/>`;
+    Object.keys(feature.properties.payData).forEach((year) => {
+      popupContent += `<strong>${year}:</strong><br/> Indeks plače: ${
+        feature.properties.payData[year] || 'No data'
+      }<br/> Migracijski indeks: ${
+        feature.properties.migrationData[year] || 'No data'
+      }<br/>`;
+    });
+    layer.bindPopup(popupContent);
+
+    layer.on({
+      click: () => {
+        setSelectedRegion(feature.properties);
+        updateChartData(feature.properties);
+      },
+    });
+  };
+
+  const handleRegionChange = (event) => {
+    const regionName = event.target.value;
+    const region = modifiedGeoJSON.features.find(
+      (feature) => feature.properties.OB_UIME === regionName
+    );
+    setSelectedRegion(region.properties);
+    updateChartData(region.properties);
   };
 
   return (
@@ -98,6 +164,26 @@ function PresekComponent() {
           }}
         />
       </div>
+      <div>
+        <h4>Izberi regijo:</h4>
+        <select
+          onChange={handleRegionChange}
+          value={selectedRegion ? selectedRegion.OB_UIME : ''}
+        >
+          <option value="" disabled>
+            Select a region
+          </option>
+          {modifiedGeoJSON &&
+            modifiedGeoJSON.features.map((feature) => (
+              <option
+                key={feature.properties.OB_ID}
+                value={feature.properties.OB_UIME}
+              >
+                {feature.properties.OB_UIME}
+              </option>
+            ))}
+        </select>
+      </div>
       <MapContainer
         center={[46.07118, 14.8]}
         zoom={7.5}
@@ -123,17 +209,7 @@ function PresekComponent() {
                 fillOpacity: 0.7,
               };
             }}
-            onEachFeature={(feature, layer) => {
-              let popupContent = `<strong>Občina:</strong> ${feature.properties.OB_UIME}<br/>`;
-              Object.keys(feature.properties.payData).forEach((year) => {
-                popupContent += `<strong>${year}:</strong><br/> Indeks plače: ${
-                  feature.properties.payData[year] || 'No data'
-                }<br/> Migracijski indeks: ${
-                  feature.properties.migrationData[year] || 'No data'
-                }<br/>`;
-              });
-              layer.bindPopup(popupContent);
-            }}
+            onEachFeature={onEachFeature}
           />
         )}
         <div className="info legend">
@@ -185,6 +261,12 @@ function PresekComponent() {
           />
         </div>
       </div>
+      {selectedRegion && (
+        <div>
+          <h4>{selectedRegion.OB_UIME} - Indeks delovne migracije in plače</h4>
+          <Line data={chartData} />
+        </div>
+      )}
     </div>
   );
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -17,8 +17,6 @@ import {
   Legend,
 } from 'chart.js';
 import data from '../../data/Podatki_vredi.json';
-import payData from '../../data/povpPlaca.json';
-import ObcineGeo from '../../data/OBCINE.json';
 import '../Podrobnosti.css';
 import { useParams } from 'react-router-dom';
 
@@ -40,34 +38,10 @@ const Podrobnosti = () => {
   );
   const [selectedYear, setSelectedYear] = useState(null);
   const [selectedData, setSelectedData] = useState(null);
-  const [selectedPayData, setSelectedPayData] = useState(null);
-  const [grafIndeks, setGrafIndeks] = useState({ labels: [], datasets: [] });
-  const [grafNotriVuni, setGrafNotriVuni] = useState({
-    labels: [],
-    datasets: [],
-  });
-  const [newChartData, setNewChartData] = useState({
-    labels: [],
-    datasets: [],
-  });
 
   useEffect(() => {
-    const dataItem = data.find((item) => item.Občine === selectedObcina);
-    const salaryMap = payData.data.reduce((acc, item) => {
-      const obcinaID = item.key[0];
-      const year = item.key[1];
-      if (!acc[obcinaID]) acc[obcinaID] = {};
-      acc[obcinaID][year] = item.values[0];
-      return acc;
-    }, {});
-    setSelectedData(dataItem);
-    setSelectedPayData(salaryMap);
-    if (dataItem) {
-      updateNewChartData(dataItem, salaryMap);
-      updateGrafIndeks(dataItem, selectedYear);
-      updateGrafNotriVuni(dataItem, selectedYear);
-    }
-  }, [selectedObcina, selectedYear]);
+    setSelectedData(data.find((item) => item.Občine === selectedObcina));
+  }, [selectedObcina]);
 
   const handleObcinaChange = (event) => {
     setSelectedObcina(event.target.value);
@@ -76,104 +50,6 @@ const Podrobnosti = () => {
 
   const handleYearChange = (event) => {
     setSelectedYear(parseInt(event.target.value));
-  };
-
-  const updateGrafIndeks = (data, year) => {
-    if (!data) return;
-    const years = Object.keys(data).filter(
-      (key) => key !== 'Občine' && !key.includes('.')
-    );
-    const moskiLeta = years.map((year) => year + '.1');
-    const zenskeLeta = years.map((year) => year + '.2');
-
-    setGrafIndeks({
-      labels: years,
-      datasets: [
-        {
-          label: 'Indeks delovne migracije',
-          data: years.map((year) => data[year]),
-          fill: false,
-          backgroundColor: 'rgb(60, 179, 113)',
-          borderColor: 'rgb(60, 179, 113)',
-        },
-        {
-          label: 'Indeks delovne migracije (moški)',
-          data: moskiLeta.map((year) => data[year]),
-          fill: false,
-          backgroundColor: 'rgb(0, 0, 255)',
-          borderColor: 'rgb(0, 0, 255)',
-        },
-        {
-          label: 'Indeks delovne migracije (ženske)',
-          data: zenskeLeta.map((year) => data[year]),
-          fill: false,
-          backgroundColor: 'rgb(238, 130, 238)',
-          borderColor: 'rgb(238, 130, 238)',
-        },
-      ],
-    });
-  };
-
-  const updateGrafNotriVuni = (data, year) => {
-    if (!data) return;
-    const years = Object.keys(data).filter(
-      (key) => key !== 'Občine' && !key.includes('.')
-    );
-    const zunaj = years.map((year) => year + '.3');
-    const notri = years.map((year) => year + '.6');
-
-    setGrafNotriVuni({
-      labels: years,
-      datasets: [
-        {
-          label: 'Delavci, znotraj občine',
-          data: notri.map((year) => data[year]),
-          fill: false,
-          backgroundColor: 'rgb(234, 236, 14)',
-          borderColor: 'rgb(234, 236, 14)',
-        },
-        {
-          label: 'Delavci zunaj občine',
-          data: zunaj.map((year) => data[year]),
-          fill: false,
-          backgroundColor: 'rgb(254, 171, 14)',
-          borderColor: 'rgb(254, 171, 14)',
-        },
-      ],
-    });
-  };
-
-  const updateNewChartData = (data, salaryMap) => {
-    if (!data) return;
-    const years = Object.keys(data).filter(
-      (key) => key !== 'Občine' && !key.includes('.')
-    );
-    const labels = years;
-    const migrationData = years.map((year) => data[year + '.1']);
-    const payDataForObcina = salaryMap[selectedObcina] || {};
-
-    console.log('Selected Pay Data:', selectedPayData);
-    console.log('Pay Data for Obcina:', payDataForObcina);
-
-    setNewChartData({
-      labels,
-      datasets: [
-        {
-          label: 'Indeks delovne migracije',
-          data: migrationData,
-          borderColor: 'rgb(0, 0, 255)',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
-          fill: false,
-        },
-        {
-          label: 'Indeks plače',
-          data: years.map((year) => payDataForObcina[year] || 0),
-          borderColor: 'rgba(255, 99, 132, 1)',
-          backgroundColor: 'rgba(255, 99, 132, 0.2)',
-          fill: false,
-        },
-      ],
-    });
   };
 
   const years = selectedData
@@ -185,6 +61,53 @@ const Podrobnosti = () => {
   const zenskeLeta = selectedData ? years.map((year) => year + '.2') : [];
   const zunaj = selectedData ? years.map((year) => year + '.3') : [];
   const notri = selectedData ? years.map((year) => year + '.6') : [];
+
+  const grafIndeks = {
+    labels: years,
+    datasets: [
+      {
+        label: 'Indeks delovne migracije',
+        data: years.map((year) => selectedData[year]),
+        fill: false,
+        backgroundColor: 'rgb(60, 179, 113)',
+        borderColor: 'rgb(60, 179, 113)',
+      },
+      {
+        label: 'Indeks delovne migracije (moški)',
+        data: moskiLeta.map((year) => selectedData[year]),
+        fill: false,
+        backgroundColor: 'rgb(0, 0, 255)',
+        borderColor: 'rgb(0, 0, 255)',
+      },
+      {
+        label: 'Indeks delovne migracije (ženske)',
+        data: zenskeLeta.map((year) => selectedData[year]),
+        fill: false,
+        backgroundColor: 'rgb(238, 130, 238)',
+        borderColor: 'rgb(238, 130, 238)',
+      },
+    ],
+  };
+
+  const grafNotriVuni = {
+    labels: years,
+    datasets: [
+      {
+        label: 'Delavci, znotraj občine',
+        data: notri.map((year) => selectedData[year]),
+        fill: false,
+        backgroundColor: 'rgb(234, 236, 14)',
+        borderColor: 'rgb(234, 236, 14)',
+      },
+      {
+        label: 'Delavci zunaj občine',
+        data: zunaj.map((year) => selectedData[year]),
+        fill: false,
+        backgroundColor: 'rgb(254, 171, 14)',
+        borderColor: 'rgb(254, 171, 14)',
+      },
+    ],
+  };
 
   return (
     <div className="podrobnosti-container">
@@ -302,41 +225,6 @@ const Podrobnosti = () => {
                 <div className="info-text">
                   Delavci, ki delajo zunaj občine prebivališča
                 </div>
-              </div>
-            </div>
-          </div>
-          <div className="left-box">
-            <h4>{selectedObcina} - Indeks delovne migracije in plače</h4>
-            <Line data={newChartData} />
-            <div className="additional-info-boxes">
-              <div className="info-box">
-                <div className="info-icon blue-icon">
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                </div>
-                {selectedYear && (
-                  <div>
-                    <b style={{ fontSize: '25px' }}>
-                      {selectedData[selectedYear]}
-                    </b>
-                  </div>
-                )}
-                <div className="info-text">Indeks delovne migracije</div>
-              </div>
-              <div className="info-box">
-                <div className="info-icon pink-icon">
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                </div>
-                <div>
-                  {selectedYear && selectedPayData && (
-                    <div>
-                      <b style={{ fontSize: '25px' }}>
-                        {selectedPayData[selectedObcina]?.[selectedYear] ||
-                          'N/A'}{' '}
-                      </b>
-                    </div>
-                  )}
-                </div>
-                <div className="info-text">Indeks plače</div>
               </div>
             </div>
           </div>
