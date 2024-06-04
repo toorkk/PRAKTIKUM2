@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet';
+import { MapContainer, TileLayer, GeoJSON, useMapEvents, LayersControl } from 'react-leaflet';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
@@ -41,17 +41,24 @@ function MapComponent() {
   return (
     <>
       <MapContainer id='map' center={[46.07118, 14.8]} zoom={8.5} scrollWheelZoom={true} placeholder={<h1>MAPA SE NALAGA, MOGOČE MORATE OMOGOČITI JAVASCRIPT</h1>} zoomSnap={0.5} zoomDelta={0.5}>
+
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://tile.jawg.io/27bb4850-08f0-424e-808a-c9e1a2065160/{z}/{x}/{y}{r}.png?access-token=DlhBoBAQ7W9tmNM3WyILidXnRRcK7tnABIcRmeHaWKp1lz9SHyloTWRA9gPcDKP3"
         />
-        <MapInnard />
-        {layer === 'Obcine' && (
-          <GeoJsonController type={'OB'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange}/>
-        )}
-        {layer === 'Regije' && (
+
+        <LayersControl position="topleft">
+          <LayersControl.Overlay name="Regije">
+
           <GeoJsonController type={'RG'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange}/>
-        )}
+
+          </LayersControl.Overlay>
+          <LayersControl.Overlay checked name="Občine">
+
+            <GeoJsonController type={'OB'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange}/>
+
+          </LayersControl.Overlay>
+        </LayersControl>
 
         <MapInfo hoveredLayer={hoveredLayer} leto={leto}/>
 
