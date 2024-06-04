@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { MapContainer, TileLayer, GeoJSON, useMapEvents } from 'react-leaflet';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -14,12 +14,9 @@ function MapComponent() {
 
   const [hoveredLayer, setHoveredLayer] = useState();
 
-  function handleHoveredLayerChange(newHoveredLayer) {
+  const handleHoveredLayerChange = useCallback((newHoveredLayer) => {
     setHoveredLayer(newHoveredLayer);
-    console.log('reload1')
-  }
-
-  console.log('reload3')
+  },[]);
 
   function afterSliderChanged(value) {
     setLeto(value);

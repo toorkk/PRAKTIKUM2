@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { GeoJSON, useMap } from 'react-leaflet';
+import React from 'react';
+import { GeoJSON } from 'react-leaflet';
 
 import stringSimilarity from 'string-similarity';
 
@@ -8,10 +8,8 @@ import RegijeGeo from '../../data/SR.json';
 import PodatkiObcine from '../../data/Podatki_vredi.json'; 
 import PodatkiRegije from '../../data/Regije_vredi.json';
 
-function GeoJsonController({ type, leto, handleHoveredLayerChange }) {
-  const map = useMap();
+const GeoJsonController = React.memo(({ type, leto, handleHoveredLayerChange }) => {
 
-  console.log('reload2');
   let data;
   if (type == 'RG') data = RegijeGeo;
   else if (type == 'OB') data = ObcineGeo;
@@ -164,6 +162,6 @@ function GeoJsonController({ type, leto, handleHoveredLayerChange }) {
       onEachFeature={onEach}
     />
   );
-}
+});
 
 export default GeoJsonController;
