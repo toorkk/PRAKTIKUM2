@@ -1,5 +1,5 @@
-import { useRef } from 'react';
-import { GeoJSON, useMap } from 'react-leaflet';
+import React from 'react';
+import { GeoJSON } from 'react-leaflet';
 
 import stringSimilarity from 'string-similarity';
 
@@ -8,10 +8,8 @@ import RegijeGeo from '../../data/SR.json';
 import PodatkiObcine from '../../data/Podatki_vredi.json'; 
 import PodatkiRegije from '../../data/Regije_vredi.json';
 
-function GeoJsonController({ type, leto, handleHoveredLayerChange }) {
-  const map = useMap();
+const GeoJsonController = React.memo(({ type, leto, handleHoveredLayerChange }) => {
 
-  console.log('reload2');
   let data;
   if (type == 'RG') data = RegijeGeo;
   else if (type == 'OB') data = ObcineGeo;
@@ -121,27 +119,29 @@ function GeoJsonController({ type, leto, handleHoveredLayerChange }) {
       value = value[leto];
     }
 
+    let colors = ["#006400","#1C7204","#388108","#538F0D","#6F9D11","#8BAC15","#A7BA19","#C2C81E","#DED722","#FAE526"]
+
     function getColor(d) {
       return d > 165
-        ? '#10451d'
+        ? colors[0]
         : d > 135
-        ? '#155d27'
+        ? colors[1]
         : d > 115
-        ? '#1a7431'
+        ? colors[2]
         : d > 100
-        ? '#208b3a'
+        ? colors[3]
         : d > 90
-        ? '#25a244'
+        ? colors[4]
         : d > 75
-        ? '#2dc653'
+        ? colors[5]
         : d > 60
-        ? '#4ad66d'
+        ? colors[6]
         : d > 45
-        ? '#6ede8a'
+        ? colors[7]
         : d > 30
-        ? '#92e6a7'
+        ? colors[8]
         : d > 0
-        ? '#b7efc5'
+        ? colors[9]
         : '#8C8C8C';
     }
 
@@ -162,6 +162,6 @@ function GeoJsonController({ type, leto, handleHoveredLayerChange }) {
       onEachFeature={onEach}
     />
   );
-}
+});
 
 export default GeoJsonController;
