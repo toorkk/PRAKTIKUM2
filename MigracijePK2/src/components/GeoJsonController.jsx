@@ -121,27 +121,29 @@ function GeoJsonController({ type, leto, handleHoveredLayerChange }) {
       value = value[leto];
     }
 
+    let colors = ["#FFA8BDff", "#E79ABFff", "#CE8CC1ff", "#B67EC3ff", "#9E70C5ff", "#8562C7ff", "#6D54C9ff", "#5546CBff", "#3C38CDff", "#242ACFff"]
+
     function getColor(d) {
       return d > 165
-        ? '#10451d'
+        ? colors[0]
         : d > 135
-        ? '#155d27'
+        ? colors[1]
         : d > 115
-        ? '#1a7431'
+        ? colors[2]
         : d > 100
-        ? '#208b3a'
+        ? colors[3]
         : d > 90
-        ? '#25a244'
+        ? colors[4]
         : d > 75
-        ? '#2dc653'
+        ? colors[5]
         : d > 60
-        ? '#4ad66d'
+        ? colors[6]
         : d > 45
-        ? '#6ede8a'
+        ? colors[7]
         : d > 30
-        ? '#92e6a7'
+        ? colors[8]
         : d > 0
-        ? '#b7efc5'
+        ? colors[9]
         : '#8C8C8C';
     }
 
