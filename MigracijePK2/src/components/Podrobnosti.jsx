@@ -33,12 +33,12 @@ ChartJS.register(
 );
 
 const Podrobnosti = () => {
-  let { obcina } = useParams();
+  let { obcina, leto } = useParams();
 
   const [selectedObcina, setSelectedObcina] = useState(
     obcina || (data.length > 1 ? data[1].Občine : '')
   );
-  const [selectedYear, setSelectedYear] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(leto);
   const [selectedData, setSelectedData] = useState(null);
   const [selectedPayData, setSelectedPayData] = useState(null);
   const [grafIndeks, setGrafIndeks] = useState({ labels: [], datasets: [] });
@@ -188,7 +188,7 @@ const Podrobnosti = () => {
 
   return (
     <div className="podrobnosti-container">
-      <div className="obcina-selector">
+      <div className="obcina-selector" style={{width: '50%', display: 'inline-block'}}>
         <label htmlFor="obcina">Izberi občino: </label>
         <select
           id="obcina"
@@ -206,6 +206,9 @@ const Podrobnosti = () => {
               </option>
             ))}
         </select>
+      </div>
+      <div style={{width: '49%', display: 'inline-block', textAlign: 'end'}}>
+        <button><a href="../.." style={{color: 'white'}}>NAZAJ NA MAPO </a></button>
       </div>
       {selectedData && (
         <div className="obcina-box">

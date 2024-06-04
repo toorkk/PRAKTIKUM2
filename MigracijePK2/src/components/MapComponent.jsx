@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { MapContainer, TileLayer, GeoJSON, useMapEvents, LayersControl } from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents, LayersControl, Tooltip } from 'react-leaflet';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
@@ -61,7 +61,8 @@ function MapComponent() {
           </LayersControl.Overlay>
         </LayersControl>
 
-        <MapInfo hoveredLayer={hoveredLayer} leto={leto}/>
+        <MapInfo hoveredLayer={hoveredLayer} leto={leto}>
+        </MapInfo>
 
         <Legend />
 

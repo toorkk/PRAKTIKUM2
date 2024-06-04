@@ -80,7 +80,7 @@ const GeoJsonController = React.memo(({ type, leto, handleHoveredLayerChange }) 
       popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre>`;
       popupContent +=
         '<a href="http://localhost:5173/podrobnosti/' +
-        feature.properties.OB_UIME +
+        feature.properties.OB_UIME + '/2023' +
         '">PODROBNOSTI</a>';
       layer.bindPopup(popupContent);
     }
