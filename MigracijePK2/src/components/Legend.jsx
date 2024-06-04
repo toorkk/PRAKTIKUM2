@@ -1,8 +1,7 @@
 import "./Legend.css";
 
 function Legend() {
-      let colors = ["#FFA8BDff", "#E79ABFff", "#CE8CC1ff", "#B67EC3ff", "#9E70C5ff", "#8562C7ff", "#6D54C9ff", "#5546CBff", "#3C38CDff", "#242ACFff"]
-
+      let colors = ["#006400","#1C7204","#388108","#538F0D","#6F9D11","#8BAC15","#A7BA19","#C2C81E","#DED722","#FAE526"]
 
       return(
         <div className={'info legend leaflet-bottom leaflet-right'}>
