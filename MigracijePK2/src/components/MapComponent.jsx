@@ -6,6 +6,7 @@ import 'rc-slider/assets/index.css';
 import Legend from "./Legend";
 import MapInfo from './MapInfo';
 import GeoJsonController from './GeoJsonController';
+import SidebarComponent from "./SidebarComponent";
 
 
 function MapComponent() {
@@ -59,6 +60,8 @@ function MapComponent() {
         <MapInfo hoveredLayer={hoveredLayer} leto={leto}/>
 
         <Legend />
+
+        <SidebarComponent />
 
       </MapContainer>
 
