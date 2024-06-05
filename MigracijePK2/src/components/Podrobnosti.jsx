@@ -17,8 +17,10 @@ import {
   Legend,
 } from 'chart.js';
 import data from '../../data/Podatki_vredi.json';
-import payData from '../../data/povpPlaca.json';
-import ObcineGeo from '../../data/OBCINE.json';
+
+import Podatki from '../../data/Podatki.json';
+import AllData from '../../data/AllData2023.json';
+
 import '../Podrobnosti.css';
 import { useParams } from 'react-router-dom';
 
@@ -38,7 +40,7 @@ const Podrobnosti = () => {
   const [selectedObcina, setSelectedObcina] = useState(
     obcina || (data.length > 1 ? data[1].Občine : '')
   );
-  const [selectedYear, setSelectedYear] = useState(leto);
+  const [selectedYear, setSelectedYear] = useState(leto || '');
   const [selectedData, setSelectedData] = useState(null);
   const [selectedPayData, setSelectedPayData] = useState(null);
   const [grafIndeks, setGrafIndeks] = useState({ labels: [], datasets: [] });
@@ -53,11 +55,11 @@ const Podrobnosti = () => {
 
   useEffect(() => {
     const dataItem = data.find((item) => item.Občine === selectedObcina);
-    const salaryMap = payData.data.reduce((acc, item) => {
-      const obcinaID = item.key[0];
-      const year = item.key[1];
+    const salaryMap = AllData.reduce((acc, item) => {
+      const obcinaID = item.Občine;
+      const year = item.LETO;
       if (!acc[obcinaID]) acc[obcinaID] = {};
-      acc[obcinaID][year] = item.values[0];
+      acc[obcinaID][year] = item.ind_ernet;
       return acc;
     }, {});
     setSelectedData(dataItem);
@@ -71,11 +73,11 @@ const Podrobnosti = () => {
 
   const handleObcinaChange = (event) => {
     setSelectedObcina(event.target.value);
-    setSelectedYear(null);
+    setSelectedYear('');
   };
 
   const handleYearChange = (event) => {
-    setSelectedYear(parseInt(event.target.value));
+    setSelectedYear(event.target.value);
   };
 
   const updateGrafIndeks = (data, year) => {
@@ -188,7 +190,10 @@ const Podrobnosti = () => {
 
   return (
     <div className="podrobnosti-container">
-      <div className="obcina-selector" style={{width: '50%', display: 'inline-block'}}>
+      <div
+        className="obcina-selector"
+        style={{ width: '50%', display: 'inline-block' }}
+      >
         <label htmlFor="obcina">Izberi občino: </label>
         <select
           id="obcina"
@@ -207,8 +212,12 @@ const Podrobnosti = () => {
             ))}
         </select>
       </div>
-      <div style={{width: '49%', display: 'inline-block', textAlign: 'end'}}>
-        <button><a href="../.." style={{color: 'white'}}>NAZAJ NA MAPO </a></button>
+      <div style={{ width: '49%', display: 'inline-block', textAlign: 'end' }}>
+        <button>
+          <a href="../.." style={{ color: 'white' }}>
+            NAZAJ NA MAPO{' '}
+          </a>
+        </button>
       </div>
       {selectedData && (
         <div className="obcina-box">
