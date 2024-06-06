@@ -9,6 +9,7 @@ import MergedData from '../../data/Merged18_23.json';
 
 import PodatkiObcine from '../../data/Podatki_vredi.json';
 import PodatkiRegije from '../../data/Regije_vredi.json';
+import './GeoJsonControllerStyle.css';
 
 const GeoJsonController = React.memo(
   ({ type, leto, handleHoveredLayerChange }) => {
@@ -54,7 +55,7 @@ const GeoJsonController = React.memo(
         const regijaName = feature.properties.SR_UIME;
         const regijaData = findRegijaData(regijaName);
 
-        let popupContent = `<pre>Statistična regija\n<b>${regijaName}</b>\n`;
+        let popupContent = `<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #333; width: 100%;"><pre>Statistična regija\n<b style="font-weight: bold; color: #2c3e50;">${regijaName}</b>\n`;
         if (regijaData) {
           for (let year = 2018; year <= 2023; year++) {
             popupContent += `${year}: ${regijaData[year] || 'N/A'}\n`;
@@ -62,13 +63,13 @@ const GeoJsonController = React.memo(
         } else {
           popupContent += 'No data available';
         }
-        popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre>`;
+        popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre></div>`;
         layer.bindPopup(popupContent);
       } else {
         const obcinaName = feature.properties.OB_UIME;
         const closestMatch = findClosestMatch(obcinaName);
 
-        let popupContent = `<pre>Občina\n<b>${closestMatch.name}</b>\n`;
+        let popupContent = `<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1; color: #333; width: 100%;"><pre><h3>Občina</h3>\n<b style="font-weight: bold; color: #2c3e50;"><h5>${closestMatch.name}</h5></b>\n`;
         if (closestMatch.data) {
           for (let year = 2018; year <= 2023; year++) {
             popupContent += `${year}: ${closestMatch.data[year] || 'N/A'}\n`;
@@ -81,19 +82,46 @@ const GeoJsonController = React.memo(
           '<a href="http://localhost:5173/podrobnosti/' +
           feature.properties.OB_UIME +
           '/2023' +
-          '">PODROBNOSTI</a>';
+          '" style="color: #3498db; text-decoration: none;">PODROBNOSTI</a>';
 
         const chartId = `chart-${feature.properties.OB_UIME}`;
         const dropdownId = `dropdown-${feature.properties.OB_UIME}`;
-        popupContent += `<div><label for="${dropdownId}">Select Chart:</label>
-                         <select id="${dropdownId}">
-                           <option value="main">Main Chart</option>
-                           <option value="chart1">Chart 1</option>
-                           <option value="chart2">Chart 2</option>
-                           <option value="chart3">Chart 3</option>
-                         </select></div>`;
-        popupContent += `<div style="width: 100%; height: 400px;"><canvas id="${chartId}" style="width: 500px; height: 50%;"></canvas></div>`;
+        popupContent += `<div class="graph-icon" style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 10px;">
+        <hr style="width: 100%; border: 0; border-top: 2px solid #000000; margin: 0; position: absolute; top: 50%; transform: translateY(-50%); z-index: 0;">
+        <span id="toggle-icon-${chartId}" class="fas fa-chart-line" style="position: relative; z-index: 1; cursor: pointer; font-size: 22px; color: #ffffff; border-radius: 10px; padding: 5px; background-color: grey;"></span>
+      </div>`;
+        popupContent += `<div class="dropdown-container" style="margin-top: 5px;">
+                           <label for="${dropdownId}"></label>
+                           <select id="${dropdownId}" class="custom-dropdown" style="padding: 5px; font-size: 12px;">
+                             <option value="main" class="main-option">Korelacija plače z mig. indeksom</option>
+                             <option value="chart1"class="chart1-option">Korelacija povprečne starosti z mig. indeksom</option>
+                             <option value="chart2"class="chart2-option">Korelacija indeksa povprečne starosti migracije</option>
+                             <option value="chart3"class="chart3-option">Korelacija Koeficienta starostne odvisnosti</option>
+                           </select>
+                         </div>`;
+        popupContent += `<div class="chart-container" id="container-${chartId}" style="width: 100%; height: 0; overflow: hidden; transition: height 0.3s ease-out;"><canvas id="${chartId}"></canvas></div></div>`;
 
+        popupContent += `<div style="display: flex; justify-content: space-between; margin-top: 10px;">
+                           <div id="info-box-1" class="fa fa-info-circle" style="background-color: #FFD700; padding: 10px; margin: 5px; cursor: pointer; flex: 1; text-align: center; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                             <FontAwesomeIcon icon={faInfoCircle} style="margin-right: 5px;" />
+                           </div>
+                           <div id="info-box-2" class="fa fa-info-circle" style="background-color: #ADFF2F; padding: 10px; margin: 5px; cursor: pointer; flex: 1; text-align: center; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                             <FontAwesomeIcon icon={faInfoCircle} style="margin-right: 5px;" />
+                           </div>
+                           <div id="info-box-3" class="fa fa-info-circle" style="background-color: #00BFFF; padding: 10px; margin: 5px; cursor: pointer; flex: 1; text-align: center; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                             <FontAwesomeIcon icon={faInfoCircle} style="margin-right: 5px;" />
+                           </div>
+                           <div id="info-box-4" class="fa fa-info-circle" style="background-color: #FF6347; padding: 10px; margin: 5px; cursor: pointer; flex: 1; text-align: center; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
+                             <FontAwesomeIcon icon={faInfoCircle} style="margin-right: 5px;" />
+                           </div>
+                         </div>`;
+
+        popupContent += `<div id="info-detail-1" style="display: none; margin-top: 10px;"><h3>Korelacija plače z mig. indeksom</h3>Graf korelacije indeksa plače z migracijskim indeksom prikazuje povezavo med povprečno višino plače v določeni občini in stopnjo migracije delovne sile v to občino ali iz nje.</div>`;
+        popupContent += `<div id="info-detail-2" style="display: none; margin-top: 10px;"><h3>Korelacija povprečne starosti z mig. indeksom</h3>Graf korelacije povprečne starosti z migracijskim indeksom prikazuje povezavo med povprečno starostjo prebivalcev določene občine in stopnjo migracije delovne sile v to občino ali iz nje.</div>`;
+        popupContent += `<div id="info-detail-3" style="display: none; margin-top: 10px;"><h3>Korelacija indeksa povprečne starosti migracije</h3>Graf korelacije med indeksom povprečne migracijske starosti in indeksom delovne migracije prikazuje povezavo med povprečno starostjo ljudi, ki se selijo v določeno občino ali iz nje, in stopnjo delovne migracije v tej občini.</div>`;
+        popupContent += `<div id="info-detail-4" style="display: none; margin-top: 10px;"><h3>Korelacija Koeficienta starostne odvisnosti</h3>Koeficient starostne odvisnosti starih je razmerje med številom starejših (65 let ali več) in številom delovno sposobnih prebivalcev, torej prebivalcev, starih 15 do 64 let, pomnoženo s 100.</div>`;
+
+        popupContent += `</div>`;
         layer.bindPopup(popupContent);
 
         let chartInstance;
@@ -124,13 +152,13 @@ const GeoJsonController = React.memo(
                 x: {
                   title: {
                     display: true,
-                    text: 'Year',
+                    text: 'Leto',
                   },
                 },
                 y: {
                   title: {
                     display: true,
-                    text: 'Index',
+                    text: 'Indeks',
                   },
                 },
               },
@@ -141,6 +169,8 @@ const GeoJsonController = React.memo(
         layer.on('popupopen', () => {
           const canvas = document.getElementById(chartId);
           const dropdown = document.getElementById(dropdownId);
+          const toggleIcon = document.getElementById(`toggle-icon-${chartId}`);
+          const container = document.getElementById(`container-${chartId}`);
 
           if (dropdown) {
             dropdown.addEventListener('change', (event) => {
@@ -148,11 +178,52 @@ const GeoJsonController = React.memo(
             });
           }
 
+          if (toggleIcon) {
+            toggleIcon.addEventListener('click', () => {
+              if (
+                container.style.height === '0px' ||
+                container.style.height === ''
+              ) {
+                container.style.height = '400px';
+                renderSelectedChart(canvas, dropdown.value);
+              } else {
+                container.style.height = '0px';
+              }
+            });
+          }
+
+          document
+            .getElementById('info-box-1')
+            .addEventListener('click', () => {
+              const detail = document.getElementById('info-detail-1');
+              detail.style.display =
+                detail.style.display === 'none' ? 'block' : 'none';
+            });
+          document
+            .getElementById('info-box-2')
+            .addEventListener('click', () => {
+              const detail = document.getElementById('info-detail-2');
+              detail.style.display =
+                detail.style.display === 'none' ? 'block' : 'none';
+            });
+          document
+            .getElementById('info-box-3')
+            .addEventListener('click', () => {
+              const detail = document.getElementById('info-detail-3');
+              detail.style.display =
+                detail.style.display === 'none' ? 'block' : 'none';
+            });
+          document
+            .getElementById('info-box-4')
+            .addEventListener('click', () => {
+              const detail = document.getElementById('info-detail-4');
+              detail.style.display =
+                detail.style.display === 'none' ? 'block' : 'none';
+            });
           renderSelectedChart(canvas, 'main');
         });
       }
     };
-
     const getChartData = (obcinaName) => {
       const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
 
@@ -213,7 +284,7 @@ const GeoJsonController = React.memo(
             fill: false,
           },
           {
-            label: 'Age Percentage',
+            label: 'Povprečna starost',
             data: agePData,
             borderColor: 'rgb(255, 165, 0)',
             backgroundColor: 'rgba(255, 165, 0, 0.2)',
@@ -248,7 +319,7 @@ const GeoJsonController = React.memo(
             fill: false,
           },
           {
-            label: 'Net Migration Age',
+            label: 'Indeks povprečne starosti migracije',
             data: nmigAData,
             borderColor: 'rgb(255, 165, 0)',
             backgroundColor: 'rgba(255, 165, 0, 0.2)',
@@ -283,7 +354,7 @@ const GeoJsonController = React.memo(
             fill: false,
           },
           {
-            label: 'Age Dependency Ratio',
+            label: 'Starostna odvisnost',
             data: ageDpndData,
             borderColor: 'rgb(255, 165, 0)',
             backgroundColor: 'rgba(255, 165, 0, 0.2)',

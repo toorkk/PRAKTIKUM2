@@ -1,0 +1,35 @@
+.custom-dropdown option.main-option {
+  background-color: #ffd700;
+  color: black;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.custom-dropdown option.chart1-option {
+  background-color: #adff2f;
+  color: black;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.custom-dropdown option.chart2-option {
+  background-color: #00bfff;
+  color: black;
+  font-size: 13px;
+  font-weight: bold;
+}
+
+.custom-dropdown option.chart3-option {
+  background-color: #ff6347;
+  color: black;
+  font-size: 13px;
+  font-weight: bold;
+}
+.leaflet-popup-content-wrapper {
+  background: rgb(241, 252, 252);
+  background: linear-gradient(
+    0deg,
+    rgba(241, 252, 252, 1) 0%,
+    rgba(190, 213, 188, 1) 100%
+  );
+}
