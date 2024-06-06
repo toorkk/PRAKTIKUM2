@@ -70,17 +70,25 @@ const GeoJsonController = React.memo(
       } else {
         const obcinaName = feature.properties.OB_UIME;
         const closestMatch = findClosestMatch(obcinaName);
-
-        let popupContent = `<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1; color: #333; width: 100%;"><pre><h3>Občina</h3>\n<b style="font-weight: bold; color: #2c3e50;"><h5>${closestMatch.name}</h5></b>\n`;
-        if (closestMatch.data) {
+        const getYearlyData = (data) => {
+          if (!data) return 'No data available';
+          let yearlyData = '';
           for (let year = 2018; year <= 2023; year++) {
-            popupContent += `${year}: ${closestMatch.data[year] || 'N/A'}\n`;
+            yearlyData += `${year}: ${data[year] || 'N/A'}\n`;
           }
-        } else {
-          popupContent += 'No data available';
-        }
+          return yearlyData;
+        };
+        let popupContent = `<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1; color: #333; width: 100%;">
+          <h3>Občina</h3>
+          <b style="font-weight: bold; color: #808080;"><h6>${
+            closestMatch.name
+          }</h6></b>
+          <button id="show-more-btn-${obcinaName}" class="btn custom-btn" style="text-decoration: none; margin-top: 10px;">Prikaži več</button>
+          <div id="more-info-${obcinaName}" style="display: none; margin-top: 10px;">
+            <pre>${getYearlyData(closestMatch.data)}</pre>
+          </div>
+        </div>`;
 
-        popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre>`;
         popupContent +=
           '<a href="http://localhost:5173/podrobnosti/' +
           feature.properties.OB_UIME +
@@ -191,7 +199,21 @@ const GeoJsonController = React.memo(
           const dropdown = document.getElementById(dropdownId);
           const toggleIcon = document.getElementById(`toggle-icon-${chartId}`);
           const container = document.getElementById(`container-${chartId}`);
-
+          const showMoreBtn = document.getElementById(
+            `show-more-btn-${obcinaName}`
+          );
+          const moreInfoDiv = document.getElementById(
+            `more-info-${obcinaName}`
+          );
+          showMoreBtn.addEventListener('click', () => {
+            if (moreInfoDiv.style.display === 'none') {
+              moreInfoDiv.style.display = 'block';
+              showMoreBtn.textContent = 'Skrij';
+            } else {
+              moreInfoDiv.style.display = 'none';
+              showMoreBtn.textContent = 'Prikaži več';
+            }
+          });
           if (dropdown) {
             dropdown.addEventListener('change', (event) => {
               renderSelectedChart(canvas, event.target.value);
@@ -211,6 +233,27 @@ const GeoJsonController = React.memo(
               }
             });
           }
+          layer.on('popupopen', () => {
+            const canvas = document.getElementById(`chart-${obcinaName}`);
+            renderSelectedChart(canvas, closestMatch.name);
+
+            const showMoreBtn = document.getElementById(
+              `show-more-btn-${obcinaName}`
+            );
+            const moreInfoDiv = document.getElementById(
+              `more-info-${obcinaName}`
+            );
+
+            showMoreBtn.addEventListener('click', () => {
+              if (moreInfoDiv.style.display === 'none') {
+                moreInfoDiv.style.display = 'block';
+                showMoreBtn.textContent = 'Show less';
+              } else {
+                moreInfoDiv.style.display = 'none';
+                showMoreBtn.textContent = 'Show more';
+              }
+            });
+          });
 
           const infoBoxes = document.querySelectorAll('.fa-info-circle');
           infoBoxes.forEach((box) => {
