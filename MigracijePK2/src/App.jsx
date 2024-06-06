@@ -16,7 +16,7 @@ function App() {
         <Routes>
           <Route path="/home" element={<Home />} />
           <Route path="/" element={<MapComponent />} />
-          <Route path="/podrobnosti/:obcina" element={<Podrobnosti />} />
+          <Route path="/podrobnosti/:obcina/:leto" element={<Podrobnosti />} />
         </Routes>
       </div>
     </Router>
