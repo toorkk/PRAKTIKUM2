@@ -17,6 +17,8 @@ const GeoJsonController = React.memo(
     if (type === 'RG') data = RegijeGeo;
     else if (type === 'OB') data = ObcineGeo;
 
+    let currentOpenInfoBox = null;
+
     const highlightFeature = (e) => {
       const layer = e.target;
       layer.setStyle({
@@ -77,13 +79,32 @@ const GeoJsonController = React.memo(
         } else {
           popupContent += 'No data available';
         }
+
         popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre>`;
         popupContent +=
           '<a href="http://localhost:5173/podrobnosti/' +
           feature.properties.OB_UIME +
           '/2023' +
-          '" style="color: #3498db; text-decoration: none;">PODROBNOSTI</a>';
-
+          '" class="btn btn-outline-success custom-btn" style="text-decoration: none; color: "white";">' +
+          'PODROBNOSTI' +
+          '</a>';
+        popupContent += `<style>
+        .custom-btn {
+          display: inline-block;
+          border: 1px solid #28a745;
+          border-radius: 4px;
+          padding: 5px 10px;
+          text-align: center;
+          background-color: transparent;
+          transition: background-color 0.3s, color 0.3s;
+          color: #28a745;
+          font-weight: bold;
+        }
+        .custom-btn:hover {
+          background-color: #28a745;
+          color: #ffffff;
+        }
+        </style>`;
         const chartId = `chart-${feature.properties.OB_UIME}`;
         const dropdownId = `dropdown-${feature.properties.OB_UIME}`;
         popupContent += `<div class="graph-icon" style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 10px;">
@@ -141,7 +162,6 @@ const GeoJsonController = React.memo(
           } else if (selectedValue === 'chart3') {
             chartData = getNewChartDataThree(closestMatch.name);
           }
-
           chartInstance = new ChartJS(canvas, {
             type: 'line',
             data: chartData,
@@ -184,7 +204,7 @@ const GeoJsonController = React.memo(
                 container.style.height === '0px' ||
                 container.style.height === ''
               ) {
-                container.style.height = '400px';
+                container.style.height = '300px';
                 renderSelectedChart(canvas, dropdown.value);
               } else {
                 container.style.height = '0px';
@@ -192,38 +212,30 @@ const GeoJsonController = React.memo(
             });
           }
 
-          document
-            .getElementById('info-box-1')
-            .addEventListener('click', () => {
-              const detail = document.getElementById('info-detail-1');
+          const infoBoxes = document.querySelectorAll('.fa-info-circle');
+          infoBoxes.forEach((box) => {
+            box.addEventListener('click', () => {
+              if (currentOpenInfoBox && currentOpenInfoBox !== box) {
+                const currentDetail = document.getElementById(
+                  `info-detail-${currentOpenInfoBox.id.split('-')[2]}`
+                );
+                currentDetail.style.display = 'none';
+              }
+
+              const detail = document.getElementById(
+                `info-detail-${box.id.split('-')[2]}`
+              );
               detail.style.display =
                 detail.style.display === 'none' ? 'block' : 'none';
+              currentOpenInfoBox = box;
             });
-          document
-            .getElementById('info-box-2')
-            .addEventListener('click', () => {
-              const detail = document.getElementById('info-detail-2');
-              detail.style.display =
-                detail.style.display === 'none' ? 'block' : 'none';
-            });
-          document
-            .getElementById('info-box-3')
-            .addEventListener('click', () => {
-              const detail = document.getElementById('info-detail-3');
-              detail.style.display =
-                detail.style.display === 'none' ? 'block' : 'none';
-            });
-          document
-            .getElementById('info-box-4')
-            .addEventListener('click', () => {
-              const detail = document.getElementById('info-detail-4');
-              detail.style.display =
-                detail.style.display === 'none' ? 'block' : 'none';
-            });
+          });
+
           renderSelectedChart(canvas, 'main');
         });
       }
     };
+
     const getChartData = (obcinaName) => {
       const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
 
