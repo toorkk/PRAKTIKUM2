@@ -12,6 +12,7 @@
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-brands-svg-icons": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "@syncfusion/ej2-react-buttons": "^25.2.4",
@@ -21,6 +22,7 @@
     "chroma-js": "^2.4.2",
     "firebase": "^10.12.0",
     "leaflet": "^1.9.4",
+    "leaflet-sidebar-v2": "^3.2.3",
     "rc-slider": "^10.6.2",
     "react": "^18.3.1",
     "react-chartjs-2": "^5.2.0",
@@ -33,6 +35,7 @@
     "string-similarity": "^4.0.4"
   },
   "devDependencies": {
+    "@types/leaflet": "^1.9.12",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@vitejs/plugin-react": "^4.2.1",
