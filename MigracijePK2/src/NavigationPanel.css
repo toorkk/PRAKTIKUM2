@@ -100,3 +100,10 @@ ul {
 .toggle-icon.top.active, .toggle-icon.active {
   background-color: gray; 
 }
+
+.answer-content {
+  padding-left: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  color: #555;
+}
