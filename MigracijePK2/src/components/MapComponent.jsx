@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { MapContainer, TileLayer, useMapEvents, LayersControl, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, useMapEvents, LayersControl, Tooltip, ZoomControl } from 'react-leaflet';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
@@ -26,18 +26,6 @@ function MapComponent() {
     console.log('Current layer:', layer);
   }, [layer]);
 
-  function MapInnard() {
-    const map = useMapEvents({
-      zoomend: () => {
-        if (map.getZoom() > 8) {
-          setLayer('Obcine');
-        } else {
-          setLayer('Regije');
-        }
-      }
-    });
-  }
-
 
 
   return (
@@ -49,7 +37,7 @@ function MapComponent() {
           url="https://tile.jawg.io/27bb4850-08f0-424e-808a-c9e1a2065160/{z}/{x}/{y}{r}.png?access-token=DlhBoBAQ7W9tmNM3WyILidXnRRcK7tnABIcRmeHaWKp1lz9SHyloTWRA9gPcDKP3"
         />
         
-        <LayersControl position="topleft">
+        <LayersControl position="bottomright" >
           <LayersControl.Overlay name="Regije">
 
           <GeoJsonController type={'RG'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange}/>
@@ -62,12 +50,13 @@ function MapComponent() {
           </LayersControl.Overlay>
         </LayersControl>
 
+        <ZoomControl position="bottomright" />
+
         <MapInfo hoveredLayer={hoveredLayer} leto={leto}>
         </MapInfo>
 
         <Legend />
 
-        <MapInnard /> {/* Add this line to invoke MapInnard */}
       </MapContainer>
 
       <div className="slider">
