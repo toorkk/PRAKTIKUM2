@@ -4,10 +4,6 @@ import { Tooltip } from "react-leaflet";
 
 function MapInfo({hoveredLayer, leto}) {
 
-  useEffect(() => {
-    console.log('hoveredLayer: ',hoveredLayer);
-  });
-
       return(
         <div id="info" className={'info legend leaflet-top leaflet-right'}>
           <h5>Indeks delovne migracije</h5>

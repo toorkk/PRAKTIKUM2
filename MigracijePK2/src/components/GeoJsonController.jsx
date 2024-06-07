@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { GeoJSON } from 'react-leaflet';
 import stringSimilarity from 'string-similarity';
 import ChartJS from 'chart.js/auto';
@@ -12,13 +12,8 @@ import PodatkiRegije from '../../data/Regije_vredi.json';
 import './GeoJsonControllerStyle.css';
 import { useEffect } from 'react';
 
-const GeoJsonController = React.memo(
-  ({ type, leto, handleHoveredLayerChange, selectedObcina }) => {
-    
-    useEffect(() => {
-      console.log("selected obcina: " + selectedObcina)
-      
-    }, [selectedObcina]);
+const GeoJsonController = forwardRef(
+  ({ type, leto, handleHoveredLayerChange}, ref) => {
     
     let data;
     if (type === 'RG') data = RegijeGeo;
@@ -511,10 +506,11 @@ const GeoJsonController = React.memo(
         attribution="&copy; Štefan Baebler"
         style={setGeoStyle}
         onEachFeature={onEach}
+        ref={ref}
       />
     );
   }
 );
 GeoJsonController.displayName = 'GeoJsonController';
 
-export default GeoJsonController;
+export default React.memo(GeoJsonController);

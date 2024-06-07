@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { MapContainer, TileLayer, useMapEvents, LayersControl, Tooltip, ZoomControl } from 'react-leaflet';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
@@ -9,31 +9,31 @@ import GeoJsonController from './GeoJsonController';
 import NavigationPanel from './NavigationPanel'; 
 
 function MapComponent() {
-  const [layer, setLayer] = useState('Regije');
   const [leto, setLeto] = useState('2023');
   const [hoveredLayer, setHoveredLayer] = useState();
-  const [selectedObcina, setSelectedObcina] = useState(null);
+
+  var obcineGeoRef = useRef();
+  var regijeGeoRef = useRef();
 
   const handleHoveredLayerChange = useCallback((newHoveredLayer) => {
     setHoveredLayer(newHoveredLayer);
   }, []);
 
-  const handleSelectObcina = useCallback((obcina) => {
-    setSelectedObcina(obcina);
+  const handleSelectObcina = useCallback((obcinaId) => {
+    const obcineLayers = obcineGeoRef.current.getLayers();
+    const foundLayer = obcineLayers.find(layer => layer.feature.properties.OB_ID == obcinaId);
+    foundLayer.openPopup();
+
+    console.log('foundLayer: ', foundLayer.feature.properties);
   }, []);
 
   function afterSliderChanged(value) {
     setLeto(value);
   }
 
-  useEffect(() => {
-    console.log('Current layer:', layer);
-  }, [layer]);
-
-
   return (
     <>
-      <MapContainer id='map' center={[46.07118, 14.8]} zoom={8.5} scrollWheelZoom={true} placeholder={<h1>MAPA SE NALAGA, MOGOČE MORATE OMOGOČITI JAVASCRIPT</h1>} zoomSnap={0.5} zoomDelta={0.5}>
+      <MapContainer id='map' center={[46.07118, 14.8]} zoom={8.5} scrollWheelZoom={true} placeholder={<h1>MAPA SE NALAGA, MOGOČE MORATE OMOGOČITI JAVASCRIPT</h1>} zoomSnap={0.5} zoomDelta={0.5} zoomControl={false}>
 
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
@@ -42,10 +42,10 @@ function MapComponent() {
         
         <LayersControl position="bottomright" >
           <LayersControl.Overlay name="Regije">
-            <GeoJsonController type={'RG'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange} selectedObcina={selectedObcina} />
+            <GeoJsonController type={'RG'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange} ref={regijeGeoRef} />
           </LayersControl.Overlay>
           <LayersControl.Overlay checked name="Občine">
-            <GeoJsonController type={'OB'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange} selectedObcina={selectedObcina} />
+            <GeoJsonController type={'OB'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange} ref={obcineGeoRef} />
           </LayersControl.Overlay>
         </LayersControl>
 
