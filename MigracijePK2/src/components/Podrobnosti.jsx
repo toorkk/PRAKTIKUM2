@@ -213,11 +213,7 @@ const Podrobnosti = () => {
         </select>
       </div>
       <div style={{ width: '49%', display: 'inline-block', textAlign: 'end' }}>
-        <button>
-          <a href="../.." style={{ color: 'white' }}>
-            NAZAJ NA MAPO{' '}
-          </a>
-        </button>
+      <button onClick={() => {window.location.href='../../'}}>NAZAJ NA MAPO</button>
       </div>
       {selectedData && (
         <div className="obcina-box">

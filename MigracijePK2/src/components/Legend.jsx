@@ -4,7 +4,7 @@ function Legend() {
       let colors = ["#006400","#1C7204","#388108","#538F0D","#6F9D11","#8BAC15","#A7BA19","#C2C81E","#DED722","#FAE526"]
 
       return(
-        <div className={'info legend leaflet-bottom leaflet-right'}>
+        <div className={'info legend marginBottom leaflet-top leaflet-right'}>
             <i style={{background: colors[0]}}></i>165+<br/>
             <i style={{background: colors[1]}}></i>165-135<br/>
             <i style={{background: colors[2]}}></i>135-115<br/>

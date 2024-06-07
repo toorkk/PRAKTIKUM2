@@ -33,3 +33,28 @@
     rgba(190, 213, 188, 1) 100%
   );
 }
+.chart-container {
+  background-color: whitesmoke;
+  margin-top: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.custom-btn {
+  display: inline-block;
+  border: none;
+  border-radius: 4px;
+  padding: 5px 10px;
+  margin: 10px;
+  text-align: center;
+  background-color: transparent;
+  transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+  color: gray;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.custom-btn:hover {
+  background-color: #28a745;
+  color: #ffffff;
+  box-shadow: 0 8px 10px rgba(0, 0, 0, 0.15);
+}

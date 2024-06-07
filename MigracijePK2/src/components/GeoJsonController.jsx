@@ -24,6 +24,8 @@ const GeoJsonController = React.memo(
     if (type === 'RG') data = RegijeGeo;
     else if (type === 'OB') data = ObcineGeo;
 
+    let currentOpenInfoBox = null;
+
     const highlightFeature = (e) => {
       const layer = e.target;
       layer.setStyle({
@@ -75,22 +77,49 @@ const GeoJsonController = React.memo(
       } else if (feature.properties.ENOTA === "OB") {
         const obcinaName = feature.properties.OB_UIME;
         const closestMatch = findClosestMatch(obcinaName);
-
-        let popupContent = `<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1; color: #333; width: 100%;"><pre><h3>Občina</h3>\n<b style="font-weight: bold; color: #2c3e50;"><h5>${closestMatch.name}</h5></b>\n`;
-        if (closestMatch.data) {
+        const getYearlyData = (data) => {
+          if (!data) return 'No data available';
+          let yearlyData = '';
           for (let year = 2018; year <= 2023; year++) {
-            popupContent += `${year}: ${closestMatch.data[year] || 'N/A'}\n`;
+            yearlyData += `${year}: ${data[year] || 'N/A'}\n`;
           }
-        } else {
-          popupContent += 'No data available';
-        }
-        popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre>`;
+          return yearlyData;
+        };
+        let popupContent = `<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1; color: #333; width: 100%;">
+          <h3>Občina</h3>
+          <b style="font-weight: bold; color: #808080;"><h6>${
+            closestMatch.name
+          }</h6></b>
+          <button id="show-more-btn-${obcinaName}" class="btn custom-btn" style="text-decoration: none; margin-top: 10px;">Prikaži več</button>
+          <div id="more-info-${obcinaName}" style="display: none; margin-top: 10px;">
+            <pre>${getYearlyData(closestMatch.data)}</pre>
+          </div>
+        </div>`;
+
         popupContent +=
           '<a href="http://localhost:5173/podrobnosti/' +
           feature.properties.OB_UIME +
           '/2023' +
-          '" style="color: #3498db; text-decoration: none;">PODROBNOSTI</a>';
-
+          '" class="btn btn-outline-success custom-btn" style="text-decoration: none; color: "white";">' +
+          'PODROBNOSTI' +
+          '</a>';
+        popupContent += `<style>
+        .custom-btn {
+          display: inline-block;
+          border: 1px solid #28a745;
+          border-radius: 4px;
+          padding: 5px 10px;
+          text-align: center;
+          background-color: transparent;
+          transition: background-color 0.3s, color 0.3s;
+          color: #28a745;
+          font-weight: bold;
+        }
+        .custom-btn:hover {
+          background-color: #28a745;
+          color: #ffffff;
+        }
+        </style>`;
         const chartId = `chart-${feature.properties.OB_UIME}`;
         const dropdownId = `dropdown-${feature.properties.OB_UIME}`;
         popupContent += `<div class="graph-icon" style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 10px;">
@@ -148,7 +177,6 @@ const GeoJsonController = React.memo(
           } else if (selectedValue === 'chart3') {
             chartData = getNewChartDataThree(closestMatch.name);
           }
-
           chartInstance = new ChartJS(canvas, {
             type: 'line',
             data: chartData,
@@ -178,7 +206,21 @@ const GeoJsonController = React.memo(
           const dropdown = document.getElementById(dropdownId);
           const toggleIcon = document.getElementById(`toggle-icon-${chartId}`);
           const container = document.getElementById(`container-${chartId}`);
-
+          const showMoreBtn = document.getElementById(
+            `show-more-btn-${obcinaName}`
+          );
+          const moreInfoDiv = document.getElementById(
+            `more-info-${obcinaName}`
+          );
+          showMoreBtn.addEventListener('click', () => {
+            if (moreInfoDiv.style.display === 'none') {
+              moreInfoDiv.style.display = 'block';
+              showMoreBtn.textContent = 'Skrij';
+            } else {
+              moreInfoDiv.style.display = 'none';
+              showMoreBtn.textContent = 'Prikaži več';
+            }
+          });
           if (dropdown) {
             dropdown.addEventListener('change', (event) => {
               renderSelectedChart(canvas, event.target.value);
@@ -191,50 +233,58 @@ const GeoJsonController = React.memo(
                 container.style.height === '0px' ||
                 container.style.height === ''
               ) {
-                container.style.height = '400px';
+                container.style.height = '300px';
                 renderSelectedChart(canvas, dropdown.value);
               } else {
                 container.style.height = '0px';
               }
             });
           }
+          layer.on('popupopen', () => {
+            const canvas = document.getElementById(`chart-${obcinaName}`);
+            renderSelectedChart(canvas, closestMatch.name);
 
-          document
-            .getElementById('info-box-1')
-            .addEventListener('click', () => {
-              const detail = document.getElementById('info-detail-1');
+            const showMoreBtn = document.getElementById(
+              `show-more-btn-${obcinaName}`
+            );
+            const moreInfoDiv = document.getElementById(
+              `more-info-${obcinaName}`
+            );
+
+            showMoreBtn.addEventListener('click', () => {
+              if (moreInfoDiv.style.display === 'none') {
+                moreInfoDiv.style.display = 'block';
+                showMoreBtn.textContent = 'Show less';
+              } else {
+                moreInfoDiv.style.display = 'none';
+                showMoreBtn.textContent = 'Show more';
+              }
+            });
+          });
+
+          const infoBoxes = document.querySelectorAll('.fa-info-circle');
+          infoBoxes.forEach((box) => {
+            box.addEventListener('click', () => {
+              if (currentOpenInfoBox && currentOpenInfoBox !== box) {
+                const currentDetail = document.getElementById(
+                  `info-detail-${currentOpenInfoBox.id.split('-')[2]}`
+                );
+                currentDetail.style.display = 'none';
+              }
+
+              const detail = document.getElementById(
+                `info-detail-${box.id.split('-')[2]}`
+              );
               detail.style.display =
                 detail.style.display === 'none' ? 'block' : 'none';
+              currentOpenInfoBox = box;
             });
-          document
-            .getElementById('info-box-2')
-            .addEventListener('click', () => {
-              const detail = document.getElementById('info-detail-2');
-              detail.style.display =
-                detail.style.display === 'none' ? 'block' : 'none';
-            });
-          document
-            .getElementById('info-box-3')
-            .addEventListener('click', () => {
-              const detail = document.getElementById('info-detail-3');
-              detail.style.display =
-                detail.style.display === 'none' ? 'block' : 'none';
-            });
-          document
-            .getElementById('info-box-4')
-            .addEventListener('click', () => {
-              const detail = document.getElementById('info-detail-4');
-              detail.style.display =
-                detail.style.display === 'none' ? 'block' : 'none';
-            });
+          });
+
           renderSelectedChart(canvas, 'main');
         });
       }
     };
-
-
-
-
 
     const getChartData = (obcinaName) => {
       const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
