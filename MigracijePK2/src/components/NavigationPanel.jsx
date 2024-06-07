@@ -20,6 +20,10 @@ function NavigationPanel({ onSelectItem }) {
             [region]: !expandedRegions[region]
         });
     };
+
+    const handleObcinaClick = (obcina) => {
+        onSelectItem(obcina);
+    };
   
     const regions = jsonData.slice(1)
                             .map(region => region.Regije)
@@ -53,7 +57,7 @@ function NavigationPanel({ onSelectItem }) {
                                 {expandedRegions[data.region] && (
                                     <ul className="sub-list">
                                         {data.obcine.map((obcina, idx) => (
-                                            <li key={idx}>{obcina}</li>
+                                            <li key={idx} onClick={() => handleObcinaClick(obcina)}>{obcina}</li>
                                         ))}
                                     </ul>
                                 )}

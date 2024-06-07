@@ -10,9 +10,16 @@ import MergedData from '../../data/Merged18_23.json';
 import PodatkiObcine from '../../data/Podatki_vredi.json';
 import PodatkiRegije from '../../data/Regije_vredi.json';
 import './GeoJsonControllerStyle.css';
+import { useEffect } from 'react';
 
 const GeoJsonController = React.memo(
-  ({ type, leto, handleHoveredLayerChange }) => {
+  ({ type, leto, handleHoveredLayerChange, selectedObcina }) => {
+    
+    useEffect(() => {
+      console.log("selected obcina: " + selectedObcina)
+      
+    }, [selectedObcina]);
+    
     let data;
     if (type === 'RG') data = RegijeGeo;
     else if (type === 'OB') data = ObcineGeo;
@@ -65,7 +72,7 @@ const GeoJsonController = React.memo(
         }
         popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre></div>`;
         layer.bindPopup(popupContent);
-      } else {
+      } else if (feature.properties.ENOTA === "OB") {
         const obcinaName = feature.properties.OB_UIME;
         const closestMatch = findClosestMatch(obcinaName);
 
@@ -224,6 +231,11 @@ const GeoJsonController = React.memo(
         });
       }
     };
+
+
+
+
+
     const getChartData = (obcinaName) => {
       const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
 
@@ -414,24 +426,24 @@ const GeoJsonController = React.memo(
         return d > 165
           ? colors[0]
           : d > 135
-          ? colors[1]
-          : d > 115
-          ? colors[2]
-          : d > 100
-          ? colors[3]
-          : d > 90
-          ? colors[4]
-          : d > 75
-          ? colors[5]
-          : d > 60
-          ? colors[6]
-          : d > 45
-          ? colors[7]
-          : d > 30
-          ? colors[8]
-          : d > 0
-          ? colors[9]
-          : '#8C8C8C';
+            ? colors[1]
+            : d > 115
+              ? colors[2]
+              : d > 100
+                ? colors[3]
+                : d > 90
+                  ? colors[4]
+                  : d > 75
+                    ? colors[5]
+                    : d > 60
+                      ? colors[6]
+                      : d > 45
+                        ? colors[7]
+                        : d > 30
+                          ? colors[8]
+                          : d > 0
+                            ? colors[9]
+                            : '#8C8C8C';
       }
 
       return {

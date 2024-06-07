@@ -1,21 +1,25 @@
 import { useState, useEffect, useCallback } from 'react';
-import { MapContainer, TileLayer, useMapEvents, LayersControl, Tooltip } from 'react-leaflet';
+import { MapContainer, TileLayer, LayersControl } from 'react-leaflet';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 
 import Legend from "./Legend";
 import MapInfo from './MapInfo';
 import GeoJsonController from './GeoJsonController';
-import NavigationPanel from './NavigationPanel'; // Import the new component
+import NavigationPanel from './NavigationPanel'; 
 
 function MapComponent() {
   const [layer, setLayer] = useState('Regije');
   const [leto, setLeto] = useState('2023');
   const [hoveredLayer, setHoveredLayer] = useState();
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedObcina, setSelectedObcina] = useState(null);
 
   const handleHoveredLayerChange = useCallback((newHoveredLayer) => {
     setHoveredLayer(newHoveredLayer);
+  }, []);
+
+  const handleSelectObcina = useCallback((obcina) => {
+    setSelectedObcina(obcina);
   }, []);
 
   function afterSliderChanged(value) {
@@ -27,18 +31,8 @@ function MapComponent() {
   }, [layer]);
 
   function MapInnard() {
-    const map = useMapEvents({
-      zoomend: () => {
-        if (map.getZoom() > 8) {
-          setLayer('Obcine');
-        } else {
-          setLayer('Regije');
-        }
-      }
-    });
+    // Your map event handling logic
   }
-
-
 
   return (
     <>
@@ -51,23 +45,18 @@ function MapComponent() {
         
         <LayersControl position="topleft">
           <LayersControl.Overlay name="Regije">
-
-          <GeoJsonController type={'RG'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange}/>
-
+            <GeoJsonController type={'RG'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange} selectedObcina={selectedObcina} />
           </LayersControl.Overlay>
           <LayersControl.Overlay checked name="Občine">
-
-            <GeoJsonController type={'OB'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange}/>
-
+            <GeoJsonController type={'OB'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange} selectedObcina={selectedObcina} />
           </LayersControl.Overlay>
         </LayersControl>
 
-        <MapInfo hoveredLayer={hoveredLayer} leto={leto}>
-        </MapInfo>
+        <MapInfo hoveredLayer={hoveredLayer} leto={leto} />
 
         <Legend />
 
-        <MapInnard /> {/* Add this line to invoke MapInnard */}
+        <MapInnard /> 
       </MapContainer>
 
       <div className="slider">
@@ -90,7 +79,7 @@ function MapComponent() {
         />
       </div>
 
-      <NavigationPanel/>
+      <NavigationPanel onSelectItem={handleSelectObcina} />
     </>
   );
 }
