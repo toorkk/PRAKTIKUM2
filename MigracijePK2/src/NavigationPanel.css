@@ -14,13 +14,17 @@
 #navigation-panel .toggle-icon {
   position: absolute;
   left: 0px; 
-  top: 0px; 
   cursor: pointer;
   text-align: center;
   display: block;
+  width: 50px;
 }
 
-.extended-panel {
+#navigation-panel .toggle-icon.top {
+  top: 0px; 
+}
+
+.extended-panel, .extended-info-panel {
   position: absolute;
   top: 0px; 
   left: 49px; 
@@ -32,10 +36,10 @@
   overflow: hidden;
   visibility: hidden; 
   box-sizing: border-box; 
-  border-left: 1px solid black;
+  border-left: 1px solid gray;
 }
 
-.extended-panel.active {
+.extended-panel.active, .extended-info-panel.active {
   width: 300px; 
   visibility: visible; 
 }
@@ -76,12 +80,12 @@ ul {
   padding: 10px 0;
 }
 
-.toggle-icon.top:hover {
+.toggle-icon.top:hover, .toggle-icon:hover {
   background-color: #f0f0f0; 
   transition: background-color 0.3s ease; 
 }
 
-.toggle-icon.top {
+.toggle-icon.top, .toggle-icon {
   padding: 18px; 
 }
 
@@ -93,6 +97,6 @@ ul {
   margin-bottom: 10px;
 }
 
-.toggle-icon.top.active {
+.toggle-icon.top.active, .toggle-icon.active {
   background-color: gray; 
 }
