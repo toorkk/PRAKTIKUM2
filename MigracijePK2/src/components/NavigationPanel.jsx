@@ -31,7 +31,10 @@ function NavigationPanel({ onSelectItem }) {
 
     const matchedData = regions.map(region => {
         const matchedObcine = obcineData.filter(item => item["Ime statistične regije"] === region);
-        return { region, obcine: matchedObcine.map(item => item["Ime občine"]) };
+        return { region, obcine: matchedObcine.map(item => ({
+            "ime": item["Ime občine"],
+            "id": item["Šifra občine"]
+        })) };
     });
   
     return (
@@ -57,7 +60,7 @@ function NavigationPanel({ onSelectItem }) {
                                 {expandedRegions[data.region] && (
                                     <ul className="sub-list">
                                         {data.obcine.map((obcina, idx) => (
-                                            <li key={idx} onClick={() => handleObcinaClick(obcina)}>{obcina}</li>
+                                            <li key={idx} onClick={() => handleObcinaClick(obcina["id"])}>{obcina["ime"]}</li>
                                         ))}
                                     </ul>
                                 )}
