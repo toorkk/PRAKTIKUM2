@@ -15,6 +15,7 @@
 
 #info {
   width: 300px;
+  overflow: hidden;
 }
 
 #info h5, h4 {
