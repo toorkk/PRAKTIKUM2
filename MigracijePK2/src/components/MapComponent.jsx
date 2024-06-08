@@ -65,13 +65,13 @@ function MapComponent() {
           max={2023}
           marks={{ 2009: 2009, 2023: 2023 }}
           dots
-          trackStyle={{ backgroundColor: '#FFFFFF', height: 12, marginTop: '-5px', borderColor: 'gray' }}
+          trackStyle={{ backgroundColor: 'gray', height: 12, width: 110, marginTop: '-5px', borderColor: 'gray' }}
           handleStyle={{ borderColor: "gray", backgroundColor: "#FFFFFF" }}
           onChange={afterSliderChanged}
           dotStyle={{
             border: 'none',
             borderRadius: 0,
-            height: 10,
+            height: 8,
             width: 1,
             backgroundColor: '#666',
           }}

@@ -16,13 +16,14 @@ function MapInfo({hoveredLayer, leto}) {
             <th><h5 className="littleTransparent">{parseInt(leto) +1}</h5></th>
             </tr>
             <tr>
-            {leto != "2009" ? <th><h5 className="littleTransparent">{hoveredLayer.data[leto -1]}</h5></th> : <th><h5 className="littleTransparent">-------</h5></th>}
-            <th><h5>{hoveredLayer.data[leto]}</h5></th>
-            {leto != "2023" ? <th><h5 className="littleTransparent">{hoveredLayer.data[parseInt(leto) +1]}</h5></th> : <th><h5 className="littleTransparent">-------</h5></th>}
+            {leto != "2009" ? <th><h5 className="littleTransparent"><b>{hoveredLayer.data[leto -1]}</b></h5></th> : <th><h5 className="littleTransparent">-------</h5></th>}
+            <th><h5><b>{hoveredLayer.data[leto]}</b></h5></th>
+            {leto != "2023" ? <th><h5 className="littleTransparent"><b>{hoveredLayer.data[parseInt(leto) +1]}</b></h5></th> : <th><h5 className="littleTransparent">-------</h5></th>}
           </tr></tbody>
           </table>
           </> 
-          : <><br/><h5><b>pomaknite miško preko občine/regije</b></h5><br/></>}
+          : <><br/><h5><b>pomaknite miško preko občine/regije</b></h5><br/><br/></>}
+          <br/><br/>
       </div>
       
       )

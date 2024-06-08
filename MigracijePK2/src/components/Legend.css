@@ -18,8 +18,17 @@
 }
 
 #info h5, h4 {
-  margin: auto;
+  margin: 1px;
   text-align: center;
+}
+
+.animation {
+  animation-name: move
+}
+
+@keyframes move {
+  from {margin-left: 1px;}
+  to {margin-left: 10px;}
 }
 
 .legend i {
@@ -31,7 +40,7 @@
 }
 
 .marginBottom {
-  margin-top: 145px;
+  margin-top: 190px;
 }
 
 .littleTransparent {
