@@ -1,8 +1,5 @@
-.app-container {
-  background-color: #333;
-}
 .podrobnosti-container {
-  padding: 20px;
+  padding: 30px;
   background-color: #f4f4f4;
   font-family: 'Roboto', sans-serif;
   color: #333;
@@ -10,7 +7,6 @@
   margin: 0 auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
 }
-
 .obcina-selector {
   margin-bottom: 20px;
   display: flex;
@@ -18,9 +14,8 @@
   align-items: center;
   flex-wrap: wrap;
 }
-
 select {
-  padding: 10px;
+  padding: 5px;
   font-size: 16px;
   border: 1px solid #ced4da;
   border-radius: 4px;
@@ -31,7 +26,7 @@ select {
 
 button {
   background-color: #007bff;
-  color: white;
+  color: rgb(0, 0, 0);
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
@@ -42,7 +37,8 @@ button {
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: whitesmoke;
+  transition: 0.3s;
 }
 
 .obcina-box {
@@ -50,13 +46,18 @@ button:hover {
   flex-wrap: wrap;
   gap: 20px;
 }
-
+.obcina_name {
+  text-align: center;
+}
+.select_button {
+  text-align: center;
+}
 .left-box,
 .right-box {
+  padding: 5px;
   flex: 1;
   min-width: 45%;
   background-color: #ffffff;
-  padding: 20px;
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   margin-bottom: 20px;
@@ -71,7 +72,6 @@ h4 {
 .info-boxes {
   display: flex;
   justify-content: space-between;
-  gap: 20px;
   flex-wrap: nowrap;
 }
 

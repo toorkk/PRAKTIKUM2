@@ -277,7 +277,9 @@ const Podrobnosti = () => {
         className="obcina-selector"
         style={{ width: '50%', display: 'inline-block' }}
       >
-        <label htmlFor="obcina">Izberi občino: </label>
+        <label htmlFor="obcina">
+          <em>Izberi občino: </em>
+        </label>
         <select
           id="obcina"
           value={selectedObcina}
@@ -295,7 +297,13 @@ const Podrobnosti = () => {
             ))}
         </select>
       </div>
-      <div style={{ width: '49%', display: 'inline-block', textAlign: 'end' }}>
+      <div
+        style={{
+          width: '49%',
+          display: 'inline-block',
+          textAlign: 'end',
+        }}
+      >
         <button
           onClick={() => {
             window.location.href = '../../';
@@ -307,19 +315,23 @@ const Podrobnosti = () => {
       {selectedData && (
         <div className="obcina-box">
           <div className="left-box">
-            <h2>{selectedObcina}</h2>
-            <select
-              value={selectedYear}
-              onChange={handleYearChange}
-              style={{ marginBottom: '10px' }}
-            >
-              <option value="">Izberi Leto</option>
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+            <div className="obcina_name">
+              <h2>{selectedObcina}</h2>
+            </div>
+            <div className="select_button">
+              <select
+                value={selectedYear}
+                onChange={handleYearChange}
+                style={{ marginBottom: '10px' }}
+              >
+                <option value="">Izberi Leto</option>
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="info-boxes">
               <div className="info-box">
                 <div className="info-icon green-icon">

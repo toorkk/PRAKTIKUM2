@@ -2,15 +2,14 @@ import React, { forwardRef } from 'react';
 import { GeoJSON } from 'react-leaflet';
 import stringSimilarity from 'string-similarity';
 import ChartJS from 'chart.js/auto';
-
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import ObcineGeo from '../../data/OBCINE.json';
 import RegijeGeo from '../../data/SR.json';
 import MergedData from '../../data/Merged18_23.json';
-
 import PodatkiObcine from '../../data/Podatki_vredi.json';
 import PodatkiRegije from '../../data/Regije_vredi.json';
 import './GeoJsonControllerStyle.css';
-import { useEffect } from 'react';
 
 const GeoJsonController = forwardRef(
   ({ type, leto, handleHoveredLayerChange }, ref) => {
@@ -84,6 +83,12 @@ const GeoJsonController = forwardRef(
           <b style="font-weight: bold; color: #808080;"><h6>${
             closestMatch.name
           }</h6></b>
+          <div id="additional-chart-${obcinaName}" style="margin-top: 10px;">
+            <canvas id="additional-chart-canvas-${obcinaName}" width="300" height="200"></canvas>
+          </div>
+          <div id="additional-chart-notri-vuni-${obcinaName}" style="margin-top: 10px;">
+            <canvas id="additional-chart-notri-vuni-canvas-${obcinaName}" width="300" height="200"></canvas>
+          </div>
           <button id="show-more-btn-${obcinaName}" class="btn custom-btn" style="text-decoration: none; margin-top: 10px;">Prikaži več</button>
           <div id="more-info-${obcinaName}" style="display: none; margin-top: 10px;">
             <pre>${getYearlyData(closestMatch.data)}</pre>
@@ -101,9 +106,10 @@ const GeoJsonController = forwardRef(
         .custom-btn {
           display: inline-block;
           border: 1px solid #28a745;
-          border-radius: 4px;
+          border-radius: 5px;
           padding: 5px 10px;
           text-align: center;
+          width: 100%;
           background-color: transparent;
           transition: background-color 0.3s, color 0.3s;
           color: #28a745;
@@ -118,7 +124,8 @@ const GeoJsonController = forwardRef(
         const dropdownId = `dropdown-${feature.properties.OB_UIME}`;
         popupContent += `<div class="graph-icon" style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 10px;">
         <hr style="width: 100%; border: 0; border-top: 2px solid #000000; margin: 0; position: absolute; top: 50%; transform: translateY(-50%); z-index: 0;">
-        <span id="toggle-icon-${chartId}" class="fas fa-chart-line" style="position: relative; z-index: 1; cursor: pointer; font-size: 22px; color: #ffffff; border-radius: 10px; padding: 5px; background-color: grey;"></span>
+<span id="toggle-icon-${chartId}" class="fas fa-chart-line" style="position: relative; z-index: 1; cursor: pointer; font-size: 20px; color: #ffffff; border-radius: 5px; padding: 5px; background-color: grey;">▼
+</span>
       </div>`;
         popupContent += `<div class="dropdown-container" style="margin-top: 5px;">
                            <label for="${dropdownId}"></label>
@@ -133,16 +140,16 @@ const GeoJsonController = forwardRef(
 
         popupContent += `<div style="display: flex; justify-content: space-between; margin-top: 10px;">
                            <div id="info-box-1" class="fa fa-info-circle" style="background-color: #FFD700; padding: 10px; margin: 5px; cursor: pointer; flex: 1; text-align: center; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                             <FontAwesomeIcon icon={faInfoCircle} style="margin-right: 5px;" />
+                             <FontAwesomeIcon icon={faQuestionCircle} style="margin-right: 5px;" />
                            </div>
                            <div id="info-box-2" class="fa fa-info-circle" style="background-color: #ADFF2F; padding: 10px; margin: 5px; cursor: pointer; flex: 1; text-align: center; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                             <FontAwesomeIcon icon={faInfoCircle} style="margin-right: 5px;" />
+                             <FontAwesomeIcon icon={faQuestionCircle} style="margin-right: 5px;" />
                            </div>
                            <div id="info-box-3" class="fa fa-info-circle" style="background-color: #00BFFF; padding: 10px; margin: 5px; cursor: pointer; flex: 1; text-align: center; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                             <FontAwesomeIcon icon={faInfoCircle} style="margin-right: 5px;" />
+                             <FontAwesomeIcon icon={faQuestionCircle} style="margin-right: 5px;" />
                            </div>
                            <div id="info-box-4" class="fa fa-info-circle" style="background-color: #FF6347; padding: 10px; margin: 5px; cursor: pointer; flex: 1; text-align: center; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
-                             <FontAwesomeIcon icon={faInfoCircle} style="margin-right: 5px;" />
+                             <FontAwesomeIcon icon={faQuestionCircle} style="margin-right: 5px;" />
                            </div>
                          </div>`;
 
@@ -155,6 +162,7 @@ const GeoJsonController = forwardRef(
         layer.bindPopup(popupContent);
 
         let chartInstance;
+        let additionalChartInstance;
 
         const renderSelectedChart = (canvas, selectedValue) => {
           if (chartInstance) {
@@ -195,7 +203,80 @@ const GeoJsonController = forwardRef(
           });
         };
 
+        const renderAdditionalChart = (canvas, data) => {
+          if (additionalChartInstance) {
+            additionalChartInstance.destroy();
+          }
+          additionalChartInstance = new ChartJS(canvas, {
+            type: 'bar',
+            data: data,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Leto',
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: 'Indeks',
+                  },
+                },
+              },
+            },
+          });
+        };
+        let additionalChartNotriVuniInstance;
+
+        const renderAdditionalChartNotriVuni = (canvas, data) => {
+          if (additionalChartNotriVuniInstance) {
+            additionalChartNotriVuniInstance.destroy();
+          }
+          additionalChartNotriVuniInstance = new ChartJS(canvas, {
+            type: 'bar',
+            data: data,
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              scales: {
+                x: {
+                  title: {
+                    display: true,
+                    text: 'Leto',
+                  },
+                },
+                y: {
+                  title: {
+                    display: true,
+                    text: 'Indeks',
+                  },
+                },
+              },
+            },
+          });
+        };
         layer.on('popupopen', () => {
+          const additionalCanvas = document.getElementById(
+            `additional-chart-canvas-${obcinaName}`
+          );
+          const additionalChartData = getAdditionalChartData(closestMatch.name);
+          renderAdditionalChart(additionalCanvas, additionalChartData);
+
+          const additionalCanvasNotriVuni = document.getElementById(
+            `additional-chart-notri-vuni-canvas-${obcinaName}`
+          );
+          const additionalChartNotriVuniData = getAdditionalChartNotriVuniData(
+            closestMatch.name
+          );
+          renderAdditionalChartNotriVuni(
+            additionalCanvasNotriVuni,
+            additionalChartNotriVuniData
+          );
+
           const canvas = document.getElementById(chartId);
           const dropdown = document.getElementById(dropdownId);
           const toggleIcon = document.getElementById(`toggle-icon-${chartId}`);
@@ -314,7 +395,37 @@ const GeoJsonController = forwardRef(
         ],
       };
     };
+    const getAdditionalChartNotriVuniData = (obcinaName) => {
+      const obcinaData = PodatkiObcine.find(
+        (item) => item.Občine === obcinaName
+      );
 
+      if (!obcinaData) return null;
+
+      const years = [2018, 2019, 2020, 2021, 2022, 2023];
+      const zunaj = years.map((year) => year + '.3');
+      const notri = years.map((year) => year + '.6');
+
+      return {
+        labels: years,
+        datasets: [
+          {
+            label: 'Delavci, znotraj občine',
+            data: notri.map((year) => obcinaData[year]),
+            fill: false,
+            backgroundColor: 'rgb(234, 236, 14)',
+            borderColor: 'rgb(234, 236, 14)',
+          },
+          {
+            label: 'Delavci zunaj občine',
+            data: zunaj.map((year) => obcinaData[year]),
+            fill: false,
+            backgroundColor: 'rgb(254, 171, 14)',
+            borderColor: 'rgb(254, 171, 14)',
+          },
+        ],
+      };
+    };
     const getNewChartDataOne = (obcinaName) => {
       const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
 
@@ -414,6 +525,51 @@ const GeoJsonController = forwardRef(
             data: ageDpndData,
             borderColor: 'rgb(255, 165, 0)',
             backgroundColor: 'rgba(255, 165, 0, 0.2)',
+            fill: false,
+          },
+        ],
+      };
+    };
+
+    const getAdditionalChartData = (obcinaName) => {
+      const obcinaData = PodatkiObcine.find(
+        (item) => item.Občine === obcinaName
+      );
+
+      if (!obcinaData) return null;
+
+      const years = [2018, 2019, 2020, 2021, 2022, 2023];
+
+      const indLmgrData = years.map((year) => parseFloat(obcinaData[year]));
+      const indLmgrMData = years.map((year) =>
+        parseFloat(obcinaData[year + '.1'])
+      );
+      const indLmgrFData = years.map((year) =>
+        parseFloat(obcinaData[year + '.2'])
+      );
+
+      return {
+        labels: years,
+        datasets: [
+          {
+            label: 'Indeks delovne migracije',
+            data: indLmgrData,
+            borderColor: 'rgb(0, 0, 255)',
+            backgroundColor: 'rgba(0, 0, 255, 0.2)',
+            fill: false,
+          },
+          {
+            label: 'Indeks delovne migracije (moški)',
+            data: indLmgrMData,
+            borderColor: 'rgba(54, 162, 235, 1)',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            fill: false,
+          },
+          {
+            label: 'Indeks delovne migracije (ženske)',
+            data: indLmgrFData,
+            borderColor: 'rgba(255, 99, 132, 1)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
             fill: false,
           },
         ],
