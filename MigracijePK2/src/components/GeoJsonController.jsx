@@ -2,8 +2,6 @@ import React, { forwardRef } from 'react';
 import { GeoJSON } from 'react-leaflet';
 import stringSimilarity from 'string-similarity';
 import ChartJS from 'chart.js/auto';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 import ObcineGeo from '../../data/OBCINE.json';
 import RegijeGeo from '../../data/SR.json';
 import MergedData from '../../data/Merged18_23.json';
@@ -18,7 +16,30 @@ const GeoJsonController = forwardRef(
     else if (type === 'OB') data = ObcineGeo;
 
     let currentOpenInfoBox = null;
+    const getRegionChartData = (regijaName) => {
+      const regijaData = findRegijaData(regijaName);
 
+      if (!regijaData) return null;
+
+      const years = [2018, 2019, 2020, 2021, 2022, 2023];
+
+      const indLmgrData = years.map((year) =>
+        parseFloat(regijaData[year] || 0)
+      );
+
+      return {
+        labels: years,
+        datasets: [
+          {
+            label: 'Indeks delovne migracije',
+            data: indLmgrData,
+            borderColor: 'rgb(0, 0, 255)',
+            backgroundColor: 'rgba(0, 0, 255, 0.2)',
+            fill: false,
+          },
+        ],
+      };
+    };
     const highlightFeature = (e) => {
       const layer = e.target;
       layer.setStyle({
@@ -46,7 +67,35 @@ const GeoJsonController = forwardRef(
         dashArray: 3,
       });
     };
+    let regionChartInstance;
 
+    const renderRegionChart = (canvas, data) => {
+      if (regionChartInstance) {
+        regionChartInstance.destroy();
+      }
+      regionChartInstance = new ChartJS(canvas, {
+        type: 'line',
+        data: data,
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: {
+              title: {
+                display: true,
+                text: 'Leto',
+              },
+            },
+            y: {
+              title: {
+                display: true,
+                text: 'Indeks',
+              },
+            },
+          },
+        },
+      });
+    };
     const onEach = (feature, layer) => {
       layer.on({
         mouseover: highlightFeature,
@@ -55,18 +104,24 @@ const GeoJsonController = forwardRef(
 
       if (feature.properties.ENOTA === 'SR') {
         const regijaName = feature.properties.SR_UIME;
-        const regijaData = findRegijaData(regijaName);
 
         let popupContent = `<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #333; width: 100%;"><pre>Statistična regija\n<b style="font-weight: bold; color: #2c3e50;">${regijaName}</b>\n`;
-        if (regijaData) {
-          for (let year = 2018; year <= 2023; year++) {
-            popupContent += `${year}: ${regijaData[year] || 'N/A'}\n`;
-          }
-        } else {
-          popupContent += 'No data available';
-        }
         popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre></div>`;
+        popupContent += `<div id="region-chart-${regijaName}" style="margin-top: 10px;">
+        <canvas id="region-chart-canvas-${regijaName}" width="400" height="300"></canvas>
+      </div>`;
         layer.bindPopup(popupContent);
+        layer.on('popupopen', () => {
+          setTimeout(() => {
+            const canvas = document.getElementById(
+              `region-chart-canvas-${regijaName}`
+            );
+            if (canvas) {
+              const regionChartData = getRegionChartData(regijaName);
+              renderRegionChart(canvas, regionChartData);
+            }
+          }, 0);
+        });
       } else if (feature.properties.ENOTA === 'OB') {
         const obcinaName = feature.properties.OB_UIME;
         const closestMatch = findClosestMatch(obcinaName);
@@ -259,6 +314,7 @@ const GeoJsonController = forwardRef(
             },
           });
         };
+
         layer.on('popupopen', () => {
           const additionalCanvas = document.getElementById(
             `additional-chart-canvas-${obcinaName}`
@@ -315,6 +371,7 @@ const GeoJsonController = forwardRef(
               }
             });
           }
+
           layer.on('popupopen', () => {
             const canvas = document.getElementById(`chart-${obcinaName}`);
             renderSelectedChart(canvas, closestMatch.name);
