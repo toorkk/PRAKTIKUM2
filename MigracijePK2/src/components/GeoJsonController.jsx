@@ -151,7 +151,7 @@ const GeoJsonController = forwardRef(
         </div>`;
 
         popupContent +=
-          '<a href="http://localhost:5173/podrobnosti/' +
+          '<a href="http://migracije.eu/podrobnosti/' +
           feature.properties.OB_UIME +
           '/2023' +
           '" class="btn btn-outline-success custom-btn" style="text-decoration: none; color: "white";">' +
