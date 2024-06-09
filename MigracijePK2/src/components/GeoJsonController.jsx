@@ -13,8 +13,7 @@ import './GeoJsonControllerStyle.css';
 import { useEffect } from 'react';
 
 const GeoJsonController = forwardRef(
-  ({ type, leto, handleHoveredLayerChange}, ref) => {
-    
+  ({ type, leto, handleHoveredLayerChange }, ref) => {
     let data;
     if (type === 'RG') data = RegijeGeo;
     else if (type === 'OB') data = ObcineGeo;
@@ -69,7 +68,7 @@ const GeoJsonController = forwardRef(
         }
         popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre></div>`;
         layer.bindPopup(popupContent);
-      } else if (feature.properties.ENOTA === "OB") {
+      } else if (feature.properties.ENOTA === 'OB') {
         const obcinaName = feature.properties.OB_UIME;
         const closestMatch = findClosestMatch(obcinaName);
         const getYearlyData = (data) => {
@@ -471,24 +470,24 @@ const GeoJsonController = forwardRef(
         return d > 165
           ? colors[0]
           : d > 135
-            ? colors[1]
-            : d > 115
-              ? colors[2]
-              : d > 100
-                ? colors[3]
-                : d > 90
-                  ? colors[4]
-                  : d > 75
-                    ? colors[5]
-                    : d > 60
-                      ? colors[6]
-                      : d > 45
-                        ? colors[7]
-                        : d > 30
-                          ? colors[8]
-                          : d > 0
-                            ? colors[9]
-                            : '#8C8C8C';
+          ? colors[1]
+          : d > 115
+          ? colors[2]
+          : d > 100
+          ? colors[3]
+          : d > 90
+          ? colors[4]
+          : d > 75
+          ? colors[5]
+          : d > 60
+          ? colors[6]
+          : d > 45
+          ? colors[7]
+          : d > 30
+          ? colors[8]
+          : d > 0
+          ? colors[9]
+          : '#8C8C8C';
       }
 
       return {
