@@ -21,7 +21,7 @@ const GeoJsonController = forwardRef(
 
       if (!regijaData) return null;
 
-      const years = [2018, 2019, 2020, 2021, 2022, 2023];
+      const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
 
       const indLmgrData = years.map((year) =>
         parseFloat(regijaData[year] || 0)
@@ -128,7 +128,7 @@ const GeoJsonController = forwardRef(
         const getYearlyData = (data) => {
           if (!data) return 'No data available';
           let yearlyData = '';
-          for (let year = 2018; year <= 2023; year++) {
+          for (let year = 2009; year <= 2023; year++) {
             yearlyData += `${year}: ${data[year] || 'N/A'}\n`;
           }
           return yearlyData;
@@ -447,7 +447,7 @@ const GeoJsonController = forwardRef(
 
       if (!obcinaData) return null;
 
-      const years = [2018, 2019, 2020, 2021, 2022, 2023];
+      const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
       const zunaj = years.map((year) => year + '.3');
       const notri = years.map((year) => year + '.6');
 
@@ -583,7 +583,7 @@ const GeoJsonController = forwardRef(
 
       if (!obcinaData) return null;
 
-      const years = [2018, 2019, 2020, 2021, 2022, 2023];
+      const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
 
       const indLmgrData = years.map((year) => parseFloat(obcinaData[year]));
       const indLmgrMData = years.map((year) =>
