@@ -93,7 +93,7 @@ h4 {
 }
 
 .info-icon {
-  margin-right: 15px;
+  margin-right: 0px;
   font-size: 24px;
 }
 
@@ -160,3 +160,4 @@ b {
     max-width: 100%;
   }
 }
+
