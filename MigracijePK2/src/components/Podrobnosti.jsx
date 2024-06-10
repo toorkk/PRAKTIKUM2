@@ -321,7 +321,7 @@ const Podrobnosti = () => {
           textAlign: 'end',
         }}
       >
-        <button
+        <button style={{backgroundColor: "white"}}
           onClick={() => {
             window.location.href = '../../';
           }}
