@@ -110,7 +110,13 @@ const GeoJsonController = forwardRef(
         popupContent += `<div id="region-chart-${regijaName}" style="margin-top: 10px;">
         <canvas id="region-chart-canvas-${regijaName}" width="400" height="300"></canvas>
       </div>`;
-        layer.bindPopup(popupContent);
+
+        var popup = L.popup({
+          closeOnClick: false
+        })
+        .setContent(popupContent);
+        
+        layer.bindPopup(popup);
         layer.on('popupopen', () => {
           setTimeout(() => {
             const canvas = document.getElementById(
@@ -144,7 +150,6 @@ const GeoJsonController = forwardRef(
           <div id="additional-chart-notri-vuni-${obcinaName}" style="margin-top: 10px;">
             <canvas id="additional-chart-notri-vuni-canvas-${obcinaName}" width="300" height="200"></canvas>
           </div>
-          <button id="show-more-btn-${obcinaName}" class="btn custom-btn" style="text-decoration: none; margin-top: 10px;">Prikaži več</button>
           <div id="more-info-${obcinaName}" style="display: none; margin-top: 10px;">
             <pre>${getYearlyData(closestMatch.data)}</pre>
           </div>
@@ -157,24 +162,7 @@ const GeoJsonController = forwardRef(
           '" class="btn btn-outline-success custom-btn" style="text-decoration: none; color: "white";">' +
           'PODROBNOSTI' +
           '</a>';
-        popupContent += `<style>
-        .custom-btn {
-          display: inline-block;
-          border: 1px solid #28a745;
-          border-radius: 5px;
-          padding: 5px 10px;
-          text-align: center;
-          width: 100%;
-          background-color: transparent;
-          transition: background-color 0.3s, color 0.3s;
-          color: #28a745;
-          font-weight: bold;
-        }
-        .custom-btn:hover {
-          background-color: #28a745;
-          color: #ffffff;
-        }
-        </style>`;
+
         const chartId = `chart-${feature.properties.OB_UIME}`;
         const dropdownId = `dropdown-${feature.properties.OB_UIME}`;
         popupContent += `<div class="graph-icon" style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 10px;">
@@ -214,7 +202,13 @@ const GeoJsonController = forwardRef(
         popupContent += `<div id="info-detail-4" style="display: none; margin-top: 10px;"><h3>Korelacija Koeficienta starostne odvisnosti</h3>Koeficient starostne odvisnosti starih je razmerje med številom starejših (65 let ali več) in številom delovno sposobnih prebivalcev, torej prebivalcev, starih 15 do 64 let, pomnoženo s 100.</div>`;
 
         popupContent += `</div>`;
-        layer.bindPopup(popupContent);
+        
+        var popup = L.popup({
+          closeOnClick: false
+        })
+        .setContent(popupContent);
+        
+        layer.bindPopup(popup);
 
         let chartInstance;
         let additionalChartInstance;
@@ -343,15 +337,6 @@ const GeoJsonController = forwardRef(
           const moreInfoDiv = document.getElementById(
             `more-info-${obcinaName}`
           );
-          showMoreBtn.addEventListener('click', () => {
-            if (moreInfoDiv.style.display === 'none') {
-              moreInfoDiv.style.display = 'block';
-              showMoreBtn.textContent = 'Skrij';
-            } else {
-              moreInfoDiv.style.display = 'none';
-              showMoreBtn.textContent = 'Prikaži več';
-            }
-          });
           if (dropdown) {
             dropdown.addEventListener('change', (event) => {
               renderSelectedChart(canvas, event.target.value);
