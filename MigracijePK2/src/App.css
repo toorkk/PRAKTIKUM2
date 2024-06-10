@@ -1,6 +1,5 @@
 body {
   margin: 0;
-  height: 100vh;
   display: flex;
   flex-direction: column;
 }
@@ -9,8 +8,7 @@ body {
 .app-container {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  width: 100vw; 
+  height: 100%;
 }
 
 .navbar {
