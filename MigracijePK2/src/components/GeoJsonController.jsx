@@ -110,13 +110,7 @@ const GeoJsonController = forwardRef(
         popupContent += `<div id="region-chart-${regijaName}" style="margin-top: 10px;">
         <canvas id="region-chart-canvas-${regijaName}" width="400" height="300"></canvas>
       </div>`;
-
-        var popup = L.popup({
-          closeOnClick: false
-        })
-        .setContent(popupContent);
-        
-        layer.bindPopup(popup);
+        layer.bindPopup(popupContent);
         layer.on('popupopen', () => {
           setTimeout(() => {
             const canvas = document.getElementById(
@@ -170,16 +164,22 @@ const GeoJsonController = forwardRef(
 <span id="toggle-icon-${chartId}" class="fas fa-chart-line" style="position: relative; z-index: 1; cursor: pointer; font-size: 20px; color: #ffffff; border-radius: 5px; padding: 5px; background-color: grey;">▼
 </span>
       </div>`;
-        popupContent += `<div class="dropdown-container" style="margin-top: 5px;">
-                           <label for="${dropdownId}"></label>
-                           <select id="${dropdownId}" class="custom-dropdown" style="padding: 5px; font-size: 12px;">
-                             <option value="main" class="main-option">Korelacija plače z mig. indeksom</option>
-                             <option value="chart1"class="chart1-option">Korelacija povprečne starosti z mig. indeksom</option>
-                             <option value="chart2"class="chart2-option">Korelacija indeksa povprečne starosti migracije</option>
-                             <option value="chart3"class="chart3-option">Korelacija Koeficienta starostne odvisnosti</option>
-                           </select>
-                         </div>`;
-        popupContent += `<div class="chart-container" id="container-${chartId}" style="width: 100%; height: 0; overflow: hidden; transition: height 0.3s ease-out;"><canvas id="${chartId}"></canvas></div></div>`;
+
+        popupContent += `<div class="chart-container" id="container-${chartId}" style="width: 100%; height: 0; overflow: hidden; transition: height 0.3s ease-out;"><div class="dropdown-container" style="margin-top: 5px;">
+        <label for="${dropdownId}"></label>
+        <select id="${dropdownId}" class="custom-dropdown" style="padding: 5px; font-size: 12px;">
+          <option value="main" class="main-option">Korelacija plače z mig. indeksom</option>
+          <option value="chart1"class="chart1-option">Korelacija povprečne starosti z mig. indeksom</option>
+          <option value="chart2"class="chart2-option">Korelacija indeksa povprečne starosti migracije</option>
+          <option value="chart3"class="chart3-option">Korelacija Koeficienta starostne odvisnosti</option>
+        </select>
+      </div><canvas id="${chartId}"></canvas>                           <label for="${dropdownId}"></label>
+        <select id="${dropdownId}" class="custom-dropdown" style="padding: 5px; font-size: 12px;">
+          <option value="main" class="main-option">Korelacija plače z mig. indeksom</option>
+          <option value="chart1"class="chart1-option">Korelacija povprečne starosti z mig. indeksom</option>
+          <option value="chart2"class="chart2-option">Korelacija indeksa povprečne starosti migracije</option>
+          <option value="chart3"class="chart3-option">Korelacija Koeficienta starostne odvisnosti</option>
+        </select></div></div>`;
 
         popupContent += `<div style="display: flex; justify-content: space-between; margin-top: 10px;">
                            <div id="info-box-1" class="fa fa-info-circle" style="background-color: #FFD700; padding: 10px; margin: 5px; cursor: pointer; flex: 1; text-align: center; border-radius: 10px; display: flex; align-items: center; justify-content: center;">
@@ -349,7 +349,7 @@ const GeoJsonController = forwardRef(
                 container.style.height === '0px' ||
                 container.style.height === ''
               ) {
-                container.style.height = '300px';
+                container.style.height = '350px';
                 renderSelectedChart(canvas, dropdown.value);
               } else {
                 container.style.height = '0px';
