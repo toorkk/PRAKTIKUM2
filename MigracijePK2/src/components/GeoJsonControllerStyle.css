@@ -28,6 +28,23 @@
 }
 .leaflet-popup-content-wrapper {
   background: rgb(241, 252, 252);
+  overflow: hidden;
+  overflow-y: auto;
+  height: 550px;
+}
+.leaflet-container a.leaflet-popup-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border: none;
+  text-align: center;
+  width: 24px;
+  height: 24px;
+  margin-right: 15px;
+  font: 16px / 24px Tahoma, Verdana, sans-serif;
+  color: #757575;
+  text-decoration: none;
+  background: transparent;
 }
 .chart-container {
   background-color: whitesmoke;
