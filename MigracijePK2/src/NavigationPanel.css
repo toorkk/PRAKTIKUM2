@@ -80,6 +80,17 @@ ul {
   padding: 10px 0;
 }
 
+.list-item:hover {
+
+  background-color: #E9EAEC;
+}
+
+.obcine-list:hover {
+
+  background-color: #C7C9CE;
+
+}
+
 .toggle-icon.top:hover, .toggle-icon:hover {
   background-color: #f0f0f0; 
   transition: background-color 0.3s ease; 

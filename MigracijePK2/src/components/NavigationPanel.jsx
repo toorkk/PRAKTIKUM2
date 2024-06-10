@@ -52,7 +52,7 @@ function NavigationPanel({ onSelectItem }) {
         { question: 'Kako si ogledam podrobnosti?', answer: 'Na stran s podrobnostmi lahko navigirate s klikom na gumb podrobnosti, ki se nahaja v oblaku vsake občine na zemljevidu.' },
         { question: 'Kaj prikazujejo barve?', answer: 'Barve na zemljevidu Slovenije prikazujejo indeks delovnih migracij za vsako občino/regijo posebej, temnejša zelena barva indicira, da je indeks migracij v tej občini visok kar pomeni, da visok delež prebivalcev dela znotraj svoje občine/regije. Svetlješe kot so barve, več ljudi dela izven svoje občine/regije.' },
         { question: 'Kateri podatki so uporabljeni?', answer: <>Vsi podatki prikazani/uporabljeni v naši aplikaciji so pridobljeni s spletnega mesta: <a href="https://podatki.gov.si/" target="_blank" rel="noopener noreferrer">https://podatki.gov.si/</a></> },
-        { question: 'Opis spremenljivk!', answer: 'Opis spremenljivk je ...' }
+        { question: 'Opis spremenljivk!', answer: <><b>Indeks delovne migracije:</b> (IDM) je razmerje med številom delovno aktivnih prebivalcev (brez kmetov) v določeni teritorialni enoti delovnega mesta in številom delovno aktivnih prebivalcev (brez kmetov) v teritorialni enoti prebivališča pomnoženo s 100.<br></br><b>Koeficient starostne odvisnosti:</b> je razmerje med številom starejših (65 let ali več) in številom delovno sposobnih prebivalcev, torej prebivalcev, starih 15 do 64 let, pomnoženo s 100.</> }
     ];
 
     return (
@@ -81,7 +81,7 @@ function NavigationPanel({ onSelectItem }) {
                                 {expandedRegions[data.region] && (
                                     <ul className="sub-list">
                                         {data.obcine.map((obcina, idx) => (
-                                            <li key={idx} onClick={() => handleObcinaClick(obcina["id"])}>{obcina["ime"]}</li>
+                                            <li className='obcine-list' key={idx} onClick={() => handleObcinaClick(obcina["id"])}>{obcina["ime"]}</li>
                                         ))}
                                     </ul>
                                 )}
