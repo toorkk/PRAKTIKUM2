@@ -11,12 +11,24 @@ function MapInfo({hoveredLayer, leto, afterSliderChanged}) {
   const map = useMap()
 
   function mouseEnter() {
-    map.dragging.disable()
+    map.dragging.disable();
+    map.touchZoom.disable();
+    map.doubleClickZoom.disable();
+    map.scrollWheelZoom.disable();
+    map.boxZoom.disable();
+    map.keyboard.disable();
+    if (map.tap) map.tap.disable();  
   }
 
   function mouseLeave() {
-    map.dragging.enable()
-  }
+    map.dragging.enable();
+    map.touchZoom.enable();
+    map.doubleClickZoom.enable();
+    map.scrollWheelZoom.enable();
+    map.boxZoom.enable();
+    map.keyboard.enable();
+    if (map.tap) map.tap.enable();
+    }
 
   //
   const mapEvents = useMapEvents({
