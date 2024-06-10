@@ -17,7 +17,6 @@ function MapInfo({hoveredLayer, leto, afterSliderChanged}) {
     map.scrollWheelZoom.disable();
     map.boxZoom.disable();
     map.keyboard.disable();
-    if (map.tap) map.tap.disable();  
   }
 
   function mouseLeave() {
@@ -27,7 +26,6 @@ function MapInfo({hoveredLayer, leto, afterSliderChanged}) {
     map.scrollWheelZoom.enable();
     map.boxZoom.enable();
     map.keyboard.enable();
-    if (map.tap) map.tap.enable();
     }
 
   //
