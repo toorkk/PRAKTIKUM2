@@ -108,7 +108,7 @@ const GeoJsonController = forwardRef(
         let popupContent = `<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1.5; color: #333; width: 100%;"><pre>Statistična regija\n<b style="font-weight: bold; color: #2c3e50;">${regijaName}</b>\n`;
         popupContent += `Površina: ${feature.properties.POV_KM2} km²\n</pre></div>`;
         popupContent += `<div id="region-chart-${regijaName}" style="margin-top: 10px;">
-        <canvas id="region-chart-canvas-${regijaName}" width="400" height="300"></canvas>
+        <canvas id="region-chart-canvas-${regijaName}" width="400" height="400"></canvas>
       </div>`;
         layer.bindPopup(popupContent);
         layer.on('popupopen', () => {
