@@ -27,7 +27,7 @@
   font-weight: bold;
 }
 .leaflet-popup-content-wrapper {
-  background: rgb(241, 252, 252);
+  background: white;
   overflow: hidden;
   overflow-y: auto;
   height: 550px;
