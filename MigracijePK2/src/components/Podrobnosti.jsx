@@ -6,6 +6,8 @@ import {
   faMale,
   faFemale,
 } from '@fortawesome/free-solid-svg-icons';
+import './Podrobnosti.css';
+
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -17,10 +19,7 @@ import {
   Legend,
 } from 'chart.js';
 import data from '../../data/Podatki_vredi.json';
-
-import Podatki from '../../data/Podatki.json';
-import AllData from '../../data/AllData2023.json';
-
+import MergedData from '../../data/Merged18_23.json';
 import '../Podrobnosti.css';
 import { useParams } from 'react-router-dom';
 
@@ -42,7 +41,6 @@ const Podrobnosti = () => {
   );
   const [selectedYear, setSelectedYear] = useState(leto || '');
   const [selectedData, setSelectedData] = useState(null);
-  const [selectedPayData, setSelectedPayData] = useState(null);
   const [grafIndeks, setGrafIndeks] = useState({ labels: [], datasets: [] });
   const [grafNotriVuni, setGrafNotriVuni] = useState({
     labels: [],
@@ -52,22 +50,27 @@ const Podrobnosti = () => {
     labels: [],
     datasets: [],
   });
+  const [chartOneData, setChartOneData] = useState({
+    labels: [],
+    datasets: [],
+  });
+  const [chartTwoData, setChartTwoData] = useState({
+    labels: [],
+    datasets: [],
+  });
+  const [chartThreeData, setChartThreeData] = useState({
+    labels: [],
+    datasets: [],
+  });
 
   useEffect(() => {
     const dataItem = data.find((item) => item.Občine === selectedObcina);
-    const salaryMap = AllData.reduce((acc, item) => {
-      const obcinaID = item.Občine;
-      const year = item.LETO;
-      if (!acc[obcinaID]) acc[obcinaID] = {};
-      acc[obcinaID][year] = item.ind_ernet;
-      return acc;
-    }, {});
     setSelectedData(dataItem);
-    setSelectedPayData(salaryMap);
     if (dataItem) {
-      updateNewChartData(dataItem, salaryMap);
+      updateNewChartData(selectedObcina);
       updateGrafIndeks(dataItem, selectedYear);
       updateGrafNotriVuni(dataItem, selectedYear);
+      updateAdditionalCharts(selectedObcina);
     }
   }, [selectedObcina, selectedYear]);
 
@@ -145,33 +148,113 @@ const Podrobnosti = () => {
     });
   };
 
-  const updateNewChartData = (data, salaryMap) => {
-    if (!data) return;
-    const years = Object.keys(data).filter(
-      (key) => key !== 'Občine' && !key.includes('.')
-    );
-    const labels = years;
-    const migrationData = years.map((year) => data[year + '.1']);
-    const payDataForObcina = salaryMap[selectedObcina] || {};
+  const updateNewChartData = (obcinaName) => {
+    const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
 
-    console.log('Selected Pay Data:', selectedPayData);
-    console.log('Pay Data for Obcina:', payDataForObcina);
+    if (!obcinaData) return;
+
+    const years = [2018, 2019, 2020, 2021, 2022, 2023];
+    const migrationData = years.map((year) =>
+      parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
+    );
+    const payData = years.map((year) =>
+      parseFloat(obcinaData[`ind_ernet_${year}`] || 0)
+    );
 
     setNewChartData({
-      labels,
+      labels: years,
       datasets: [
         {
           label: 'Indeks delovne migracije',
           data: migrationData,
           borderColor: 'rgb(0, 0, 255)',
-          backgroundColor: 'rgba(75, 192, 192, 0.2)',
+          backgroundColor: 'rgba(0, 0, 255, 0.2)',
           fill: false,
         },
         {
           label: 'Indeks plače',
-          data: years.map((year) => payDataForObcina[year] || 0),
+          data: payData,
           borderColor: 'rgba(255, 99, 132, 1)',
           backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          fill: false,
+        },
+      ],
+    });
+  };
+
+  const updateAdditionalCharts = (obcinaName) => {
+    const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
+    if (!obcinaData) return;
+
+    const years = [2018, 2019, 2020, 2021, 2022, 2023];
+
+    setChartOneData({
+      labels: years,
+      datasets: [
+        {
+          label: 'Indeks delovne migracije',
+          data: years.map((year) =>
+            parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
+          ),
+          borderColor: 'rgb(0, 128, 0)',
+          backgroundColor: 'rgba(0, 128, 0, 0.2)',
+          fill: false,
+        },
+        {
+          label: 'Povprečna starost',
+          data: years.map((year) =>
+            parseFloat(obcinaData[`age_p_${year}`] || 0)
+          ),
+          borderColor: 'rgb(255, 165, 0)',
+          backgroundColor: 'rgba(255, 165, 0, 0.2)',
+          fill: false,
+        },
+      ],
+    });
+
+    setChartTwoData({
+      labels: years,
+      datasets: [
+        {
+          label: 'Indeks delovne migracije',
+          data: years.map((year) =>
+            parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
+          ),
+          borderColor: 'rgb(0, 128, 0)',
+          backgroundColor: 'rgba(0, 128, 0, 0.2)',
+          fill: false,
+        },
+        {
+          label: 'Indeks povprečne starosti migracije',
+          data: years.map((year) =>
+            parseFloat(obcinaData[`nmig_a_${year}`] || 0)
+          ),
+          borderColor: 'rgb(255, 165, 0)',
+          backgroundColor: 'rgba(255, 165, 0, 0.2)',
+          fill: false,
+        },
+      ],
+    });
+
+    setChartThreeData({
+      labels: years,
+      datasets: [
+        {
+          label: 'Indeks delovne migracije',
+          data: years.map((year) =>
+            parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
+          ),
+          borderColor: 'rgb(0, 128, 0)',
+          backgroundColor: 'rgba(0, 128, 0, 0.2)',
+          fill: false,
+        },
+        {
+          label: 'Starostna odvisnost',
+          data: years.map((year) =>
+            parseFloat(obcinaData[`age_dpnd_${year}`] || 0)
+          ),
+          borderColor: 'rgb(255, 165, 0)',
+          backgroundColor: 'rgba(255, 165, 0, 0.2)',
           fill: false,
         },
       ],
@@ -194,7 +277,9 @@ const Podrobnosti = () => {
         className="obcina-selector"
         style={{ width: '50%', display: 'inline-block' }}
       >
-        <label htmlFor="obcina">Izberi občino: </label>
+        <label htmlFor="obcina">
+          <em>Izberi občino: </em>
+        </label>
         <select
           id="obcina"
           value={selectedObcina}
@@ -212,25 +297,41 @@ const Podrobnosti = () => {
             ))}
         </select>
       </div>
-      <div style={{ width: '49%', display: 'inline-block', textAlign: 'end' }}>
-      <button onClick={() => {window.location.href='../../'}}>NAZAJ NA MAPO</button>
+      <div
+        style={{
+          width: '49%',
+          display: 'inline-block',
+          textAlign: 'end',
+        }}
+      >
+        <button
+          onClick={() => {
+            window.location.href = '../../';
+          }}
+        >
+          NAZAJ NA MAPO
+        </button>
       </div>
       {selectedData && (
         <div className="obcina-box">
           <div className="left-box">
-            <h2>{selectedObcina}</h2>
-            <select
-              value={selectedYear}
-              onChange={handleYearChange}
-              style={{ marginBottom: '10px' }}
-            >
-              <option value="">Izberi Leto</option>
-              {years.map((year) => (
-                <option key={year} value={year}>
-                  {year}
-                </option>
-              ))}
-            </select>
+            <div className="obcina_name">
+              <h2>{selectedObcina}</h2>
+            </div>
+            <div className="select_button">
+              <select
+                value={selectedYear}
+                onChange={handleYearChange}
+                style={{ marginBottom: '10px' }}
+              >
+                <option value="">Izberi Leto</option>
+                {years.map((year) => (
+                  <option key={year} value={year}>
+                    {year}
+                  </option>
+                ))}
+              </select>
+            </div>
             <div className="info-boxes">
               <div className="info-box">
                 <div className="info-icon green-icon">
@@ -335,16 +436,90 @@ const Podrobnosti = () => {
                   <FontAwesomeIcon icon={faInfoCircle} />
                 </div>
                 <div>
-                  {selectedYear && selectedPayData && (
+                  {selectedYear && (
                     <div>
                       <b style={{ fontSize: '25px' }}>
-                        {selectedPayData[selectedObcina]?.[selectedYear] ||
-                          'N/A'}{' '}
+                        {MergedData.find(
+                          (item) => item.ob_ime === selectedObcina
+                        )?.[`ind_ernet_${selectedYear}`] || 'N/A'}
                       </b>
                     </div>
                   )}
                 </div>
                 <div className="info-text">Indeks plače</div>
+              </div>
+            </div>
+          </div>
+          <div className="right-box">
+            <h4>
+              {selectedObcina} - Korelacija povprečne starosti z mig. indeksom
+            </h4>
+            <Line data={chartOneData} />
+            <div className="additional-info-boxes">
+              <div className="info-box">
+                <div className="info-icon blue-icon">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                </div>
+                {selectedYear && (
+                  <div>
+                    <b style={{ fontSize: '25px' }}>
+                      {MergedData.find(
+                        (item) => item.ob_ime === selectedObcina
+                      )?.[`age_p_${selectedYear}`] || 'N/A'}
+                    </b>
+                  </div>
+                )}
+                <div className="info-text">Povprečna starost</div>
+              </div>
+            </div>
+          </div>
+          <div className="left-box">
+            <h4>
+              {selectedObcina} - Korelacija indeksa povprečne starosti z mig.
+              indeksom
+            </h4>
+            <Line data={chartTwoData} />
+            <div className="additional-info-boxes">
+              <div className="info-box">
+                <div className="info-icon blue-icon">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                </div>
+                {selectedYear && (
+                  <div>
+                    <b style={{ fontSize: '25px' }}>
+                      {MergedData.find(
+                        (item) => item.ob_ime === selectedObcina
+                      )?.[`nmig_a_${selectedYear}`] || 'N/A'}
+                    </b>
+                  </div>
+                )}
+                <div className="info-text">
+                  Indeks povprečne starosti migracije
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="right-box">
+            <h4>
+              {selectedObcina} - Korelacija indeksa starostne odvisnosti z mig.
+              indeksom
+            </h4>
+            <Line data={chartThreeData} />
+            <div className="additional-info-boxes">
+              <div className="info-box">
+                <div className="info-icon blue-icon">
+                  <FontAwesomeIcon icon={faInfoCircle} />
+                </div>
+                {selectedYear && (
+                  <div>
+                    <b style={{ fontSize: '25px' }}>
+                      {MergedData.find(
+                        (item) => item.ob_ime === selectedObcina
+                      )?.[`age_dpnd_${selectedYear}`] || 'N/A'}
+                    </b>
+                  </div>
+                )}
+                <div className="info-text">Indeks starostne odvisnosti</div>
               </div>
             </div>
           </div>

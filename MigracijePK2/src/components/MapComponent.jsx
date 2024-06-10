@@ -51,32 +51,12 @@ function MapComponent() {
 
         <ZoomControl position="bottomright" />
 
-        <MapInfo hoveredLayer={hoveredLayer} leto={leto}>
+        <MapInfo hoveredLayer={hoveredLayer} leto={leto} afterSliderChanged={afterSliderChanged}>
         </MapInfo>
 
         <Legend />
 
       </MapContainer>
-
-      <div className="slider">
-        <Slider
-          defaultValue={2023}
-          min={2009}
-          max={2023}
-          marks={{ 2009: 2009, 2023: 2023 }}
-          dots
-          trackStyle={{ backgroundColor: '#FFFFFF', height: 12, marginTop: '-5px', borderColor: 'gray' }}
-          handleStyle={{ borderColor: "gray", backgroundColor: "#FFFFFF" }}
-          onChange={afterSliderChanged}
-          dotStyle={{
-            border: 'none',
-            borderRadius: 0,
-            height: 10,
-            width: 1,
-            backgroundColor: '#666',
-          }}
-        />
-      </div>
 
       <NavigationPanel onSelectItem={handleSelectObcina} />
     </>

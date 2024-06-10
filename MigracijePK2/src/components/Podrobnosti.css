@@ -1,0 +1,162 @@
+.podrobnosti-container {
+  padding: 30px;
+  background-color: #f4f4f4;
+  font-family: 'Roboto', sans-serif;
+  color: #333;
+  max-width: 1200px;
+  margin: 0 auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+.obcina-selector {
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+select {
+  padding: 5px;
+  font-size: 16px;
+  border: 1px solid #ced4da;
+  border-radius: 4px;
+  width: 100%;
+  max-width: 300px;
+  margin: 10px 0;
+}
+
+button {
+  background-color: #007bff;
+  color: rgb(0, 0, 0);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+  margin: 10px 0;
+}
+
+button:hover {
+  background-color: whitesmoke;
+  transition: 0.3s;
+}
+
+.obcina-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+.obcina_name {
+  text-align: center;
+}
+.select_button {
+  text-align: center;
+}
+.left-box,
+.right-box {
+  padding: 5px;
+  flex: 1;
+  min-width: 45%;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+h2,
+h4 {
+  color: #343a40;
+  margin-bottom: 15px;
+}
+
+.info-boxes {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: nowrap;
+}
+
+.info-box {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  background-color: #e9ecef;
+  border: 1px solid #dee2e6;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+  flex: 1 1 auto;
+  margin-bottom: 0;
+}
+
+.info-box:hover {
+  background-color: #dde2e6;
+  transform: translateY(-2px);
+}
+
+.info-icon {
+  margin-right: 15px;
+  font-size: 24px;
+}
+
+.green-icon {
+  color: #28a745;
+}
+
+.blue-icon {
+  color: #007bff;
+}
+
+.pink-icon {
+  color: #e83e8c;
+}
+
+.yellow-icon {
+  color: #ffc107;
+}
+
+.orange-icon {
+  color: #fd7e14;
+}
+
+.info-text {
+  font-size: 16px;
+  color: #495057;
+}
+
+b {
+  font-size: 24px;
+  color: #212529;
+}
+
+.chart-container {
+  margin-top: 20px;
+}
+
+.additional-info-boxes {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: nowrap;
+}
+
+.additional-info-boxes .info-box {
+  flex: 1 1 auto;
+  margin-bottom: 0;
+}
+
+@media (max-width: 768px) {
+  .left-box,
+  .right-box {
+    min-width: 100%;
+  }
+  .info-box,
+  .additional-info-boxes .info-box {
+    flex: 1 1 100%;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 576px) {
+  select {
+    max-width: 100%;
+  }
+}
