@@ -356,6 +356,8 @@ const GeoJsonController = forwardRef(
                 renderSelectedChart(canvas, dropdown.value);
               } else {
                 container.style.height = '0px';
+                container.style.paddingBottom = '0px';
+
               }
             });
           }
