@@ -350,6 +350,7 @@ const GeoJsonController = forwardRef(
                 container.style.height === ''
               ) {
                 container.style.height = '350px';
+                container.style.paddingBottom = '30px';
                 renderSelectedChart(canvas, dropdown.value);
               } else {
                 container.style.height = '0px';
