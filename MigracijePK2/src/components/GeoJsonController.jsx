@@ -110,7 +110,13 @@ const GeoJsonController = forwardRef(
         popupContent += `<div id="region-chart-${regijaName}" style="margin-top: 10px;">
         <canvas id="region-chart-canvas-${regijaName}" width="400" height="300"></canvas>
       </div>`;
-        layer.bindPopup(popupContent);
+
+        var popup = L.popup({
+          closeOnClick: false
+        })
+        .setContent(popupContent);
+        
+        layer.bindPopup(popup);
         layer.on('popupopen', () => {
           setTimeout(() => {
             const canvas = document.getElementById(
@@ -196,7 +202,13 @@ const GeoJsonController = forwardRef(
         popupContent += `<div id="info-detail-4" style="display: none; margin-top: 10px;"><h3>Korelacija Koeficienta starostne odvisnosti</h3>Koeficient starostne odvisnosti starih je razmerje med številom starejših (65 let ali več) in številom delovno sposobnih prebivalcev, torej prebivalcev, starih 15 do 64 let, pomnoženo s 100.</div>`;
 
         popupContent += `</div>`;
-        layer.bindPopup(popupContent);
+        
+        var popup = L.popup({
+          closeOnClick: false
+        })
+        .setContent(popupContent);
+        
+        layer.bindPopup(popup);
 
         let chartInstance;
         let additionalChartInstance;
