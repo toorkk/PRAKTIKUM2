@@ -6,6 +6,7 @@ import {
   faMale,
   faFemale,
 } from '@fortawesome/free-solid-svg-icons';
+import stringSimilarity from 'string-similarity';
 import './Podrobnosti.css';
 
 import {
@@ -35,10 +36,7 @@ ChartJS.register(
 
 const Podrobnosti = () => {
   let { obcina, leto } = useParams();
-
-  const [selectedObcina, setSelectedObcina] = useState(
-    obcina || (data.length > 1 ? data[1].Občine : '')
-  );
+  const [selectedObcina, setSelectedObcina] = useState(obcina);
   const [selectedYear, setSelectedYear] = useState(leto || '');
   const [selectedData, setSelectedData] = useState(null);
   const [grafIndeks, setGrafIndeks] = useState({ labels: [], datasets: [] });
@@ -64,13 +62,15 @@ const Podrobnosti = () => {
   });
 
   useEffect(() => {
-    const dataItem = data.find((item) => item.Občine === selectedObcina);
+    let closestMatch = findClosestMatch(selectedObcina).name
+    const dataItem = data.find((item) => item.Občine === closestMatch);
+    setSelectedObcina(closestMatch);
     setSelectedData(dataItem);
     if (dataItem) {
-      updateNewChartData(selectedObcina);
+      updateNewChartData(closestMatch);
       updateGrafIndeks(dataItem, selectedYear);
       updateGrafNotriVuni(dataItem, selectedYear);
-      updateAdditionalCharts(selectedObcina);
+      updateAdditionalCharts(closestMatch);
     }
   }, [selectedObcina, selectedYear]);
 
@@ -82,6 +82,23 @@ const Podrobnosti = () => {
   const handleYearChange = (event) => {
     setSelectedYear(event.target.value);
   };
+
+  function findClosestMatch(name) {
+    let closestMatch = null;
+    let maxMatch = -1;
+
+    data.forEach((obcina) => {
+      const similarity = stringSimilarity.compareTwoStrings(
+        name,
+        obcina.Občine
+      );
+      if (similarity > maxMatch) {
+        maxMatch = similarity;
+        closestMatch = { name: obcina.Občine };
+      }
+    });
+    return closestMatch;
+  }
 
   const updateGrafIndeks = (data, year) => {
     if (!data) return;

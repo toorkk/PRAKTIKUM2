@@ -156,7 +156,7 @@ const GeoJsonController = forwardRef(
         </div>`;
 
         popupContent +=
-          '<a href="http://migracije.eu/podrobnosti/' +
+          '<a href="./podrobnosti/' +
           feature.properties.OB_UIME +
           '/2023' +
           '" class="btn btn-outline-success custom-btn" style="text-decoration: none; color: "white";">' +
@@ -202,7 +202,7 @@ const GeoJsonController = forwardRef(
         popupContent += `<div id="info-detail-4" style="display: none; margin-top: 10px;"><h3>Korelacija Koeficienta starostne odvisnosti</h3>Koeficient starostne odvisnosti starih je razmerje med številom starejših (65 let ali več) in številom delovno sposobnih prebivalcev, torej prebivalcev, starih 15 do 64 let, pomnoženo s 100.</div>`;
 
         popupContent += `</div>`;
-        
+
         var popup = L.popup({
           closeOnClick: false
         })
