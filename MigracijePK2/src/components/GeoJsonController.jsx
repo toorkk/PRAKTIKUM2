@@ -133,11 +133,20 @@ const GeoJsonController = forwardRef(
           }
           return yearlyData;
         };
-        let popupContent = `<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1; color: #333; width: 100%;">
-          <h3>Občina</h3>
-          <b style="font-weight: bold; color: #808080;"><h6>${
-            closestMatch.name
-          }</h6></b>
+        let popupContent = `
+<div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1; color: #333; display: flex; justify-content: space-between; align-items: center; width: 100%;">
+  <div>
+    <h3>Občina</h3>
+    <b style="font-weight: bold; color: #808080;">
+      <h6>${closestMatch.name}</h6>
+    </b>
+  </div>
+  <div>
+    <a href="./podrobnosti/${feature.properties.OB_UIME}/2023" class="btn btn-outline-success custom-btn">
+      PODROBNOSTI
+    </a>
+  </div>
+</div>` + `</b>
           <div id="additional-chart-${obcinaName}" style="margin-top: 10px;">
             <canvas id="additional-chart-canvas-${obcinaName}" width="300" height="200"></canvas>
           </div>
@@ -149,14 +158,7 @@ const GeoJsonController = forwardRef(
           </div>
         </div>`;
 
-        popupContent +=
-          '<a href="./podrobnosti/' +
-          feature.properties.OB_UIME +
-          '/2023' +
-          '" class="btn btn-outline-success custom-btn" style="text-decoration: none; color: "white";">' +
-          'PODROBNOSTI' +
-          '</a>';
-
+        
         const chartId = `chart-${feature.properties.OB_UIME}`;
         const dropdownId = `dropdown-${feature.properties.OB_UIME}`;
         popupContent += `<div class="graph-icon" style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 10px;">
