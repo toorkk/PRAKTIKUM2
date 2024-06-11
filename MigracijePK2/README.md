@@ -12,9 +12,10 @@ Projekt je v splošnem dostopen na: https://migracije.eu/
 
 ## Instalacija
 
-Projekt je napisan v react + vite programski kodi, uporaba projekta je dostopna s klonirajem git repositorija komanda: git clone (https://github.com/toorkk/PRAKTIKUM2/edit/main/MigracijePK2), potem je potrebo migrirati v datoteko MigracijePK2 in uporabiti komando npm install za korektno instalacijo "Depenedencies". Projekt se lahko zažene s uporabo komande npm run dev.
+Projekt je napisan v react + vite programski kodi, uporaba projekta je dostopna s klonirajem git repositorija komanda: git clone (https://github.com/toorkk/PRAKTIKUM2), potem je potrebo migrirati v datoteko MigracijePK2 in uporabiti komando npm install za korektno instalacijo. Projekt se lahko zažene s uporabo komande npm run dev.
 
 ```
+git clone https://github.com/toorkk/PRAKTIKUM2
 cd .\MigracijePK2\
 npm install
 npm run dev
