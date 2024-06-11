@@ -8,6 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import stringSimilarity from 'string-similarity';
 import './Podrobnosti.css';
+import { faCoins } from '@fortawesome/free-solid-svg-icons';
 
 import {
   Chart as ChartJS,
@@ -450,7 +451,7 @@ const Podrobnosti = () => {
               </div>
               <div className="info-box">
                 <div className="info-icon pink-icon">
-                  <FontAwesomeIcon icon={faInfoCircle} />
+                  <FontAwesomeIcon icon={faCoins} />
                 </div>
                 <div>
                   {selectedYear && (
