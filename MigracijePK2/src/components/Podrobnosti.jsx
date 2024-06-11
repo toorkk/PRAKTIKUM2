@@ -8,7 +8,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import stringSimilarity from 'string-similarity';
 import './Podrobnosti.css';
-import { faCoins } from '@fortawesome/free-solid-svg-icons';
+import { faCoins, faIndustry, faPersonCane } from '@fortawesome/free-solid-svg-icons';
 
 import {
   Chart as ChartJS,
@@ -499,8 +499,8 @@ const Podrobnosti = () => {
             <Line data={chartOneData} />
             <div className="additional-info-boxes">
               <div className="info-box">
-                <div className="info-icon blue-icon">
-                  <FontAwesomeIcon icon={faInfoCircle} />
+                <div className="info-icon orange-icon">
+                  <FontAwesomeIcon icon={faPersonCane} />
                 </div>
                 {selectedYear && (
                   <div>
@@ -522,8 +522,8 @@ const Podrobnosti = () => {
             <Line data={chartTwoData} />
             <div className="additional-info-boxes">
               <div className="info-box">
-                <div className="info-icon blue-icon">
-                  <FontAwesomeIcon icon={faInfoCircle} />
+                <div className="info-icon red-icon">
+                  <FontAwesomeIcon icon={faIndustry} />
                 </div>
                 {selectedYear && (
                   <div>
