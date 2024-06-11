@@ -19,7 +19,6 @@ git clone https://github.com/toorkk/PRAKTIKUM2
 cd .\MigracijePK2\
 npm install
 npm run dev
-
 ```
 Na računalniku je potrebna namestitev Node.js za zaganjanje projekta!
 
