@@ -37,7 +37,7 @@ Na računalniku je potrebna namestitev Node.js za zaganjanje projekta!
 
 ## Zaslonske slike
 
-![Screenshot 1](https://cdn.discordapp.com/attachments/931469726591385651/1250019682539409511/image.png?ex=66696b0c&is=6668198c&hm=a451dd6b91269b256ca87d8a7db7a7d7c40755ae092faefd6e0323a4dce605ee&)
+![Screenshot 1](https://cdn.discordapp.com/attachments/931469726591385651/1250033253944131714/image.png?ex=666977b0&is=66682630&hm=69395db7ab1f6599fc881a00e37360346d5968ddfb0269d8e0310658b2addd61&)
 Zaslonska slika naslovne strani projekta Migracije.eu.
 
 ![Screenshot 2](https://cdn.discordapp.com/attachments/931469726591385651/1250019757604737074/image.png?ex=66696b1e&is=6668199e&hm=b3f1418e9313a074349fee3391b757139b3982ad5788b8c56a649c9feeab2a1f&)
