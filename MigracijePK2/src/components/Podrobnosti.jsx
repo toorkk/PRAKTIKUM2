@@ -166,7 +166,8 @@ const Podrobnosti = () => {
   };
 
   const updateNewChartData = (obcinaName) => {
-    const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
+
+    const obcinaData = MergedData.find((item) => item.ob_ime == obcinaName.toLowerCase());
 
     if (!obcinaData) return;
 
@@ -200,7 +201,7 @@ const Podrobnosti = () => {
   };
 
   const updateAdditionalCharts = (obcinaName) => {
-    const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
+    const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName.toLowerCase());
     if (!obcinaData) return;
 
     const years = [2010,2011,2012,2013,2014,2015,2016,2017,2018, 2019, 2020, 2021, 2022, 2023];
@@ -481,7 +482,7 @@ const Podrobnosti = () => {
                     <div>
                       <b style={{ fontSize: '25px' }}>
                         {MergedData.find(
-                          (item) => item.ob_ime === selectedObcina
+                          (item) => item.ob_ime === selectedObcina.toLowerCase()
                         )?.[`ind_ernet_${selectedYear}`] || 'N/A'}
                       </b>
                     </div>
@@ -505,7 +506,7 @@ const Podrobnosti = () => {
                   <div>
                     <b style={{ fontSize: '25px' }}>
                       {MergedData.find(
-                        (item) => item.ob_ime === selectedObcina
+                        (item) => item.ob_ime === selectedObcina.toLowerCase()
                       )?.[`age_p_${selectedYear}`] || 'N/A'}
                     </b>
                   </div>
@@ -528,7 +529,7 @@ const Podrobnosti = () => {
                   <div>
                     <b style={{ fontSize: '25px' }}>
                       {MergedData.find(
-                        (item) => item.ob_ime === selectedObcina
+                        (item) => item.ob_ime === selectedObcina.toLowerCase()
                       )?.[`tot_entrp_${selectedYear}`] || 'N/A'}
                     </b>
                   </div>
@@ -554,7 +555,7 @@ const Podrobnosti = () => {
                   <div>
                     <b style={{ fontSize: '25px' }}>
                       {MergedData.find(
-                        (item) => item.ob_ime === selectedObcina
+                        (item) => item.ob_ime === selectedObcina.toLowerCase()
                       )?.[`age_dpnd_${selectedYear}`] || 'N/A'}
                     </b>
                   </div>
