@@ -4,6 +4,8 @@
 
 Migracije.eu je projekt napravljen za PRAKTIKUM II, njegov namen je vizualizacija slovenskih delovnih migracij za lažjo predstavo in enostavno navigiranje in ogledovanje le teh podatkov. Projekt je namenjen tako navadnim uporabnikom kot tudi morebitnim strokovnjakom, katerih želja je izvedeti nekaj več o slovenskih delovnih migracijah na bolj preprost oz. bolj interaktiven način. 
 
+Leto izdelave: 2024
+
 ## Dostopnost 
 
 Projekt je v splošnem dostopen na: https://migracije.eu/
@@ -32,11 +34,17 @@ Stran implementira drsnik, ki omogoča manipuliranje zemljevida tako, da se na z
 
 Grafične reprezentacije za presek delovnih migracij s drugimi podatki kot so plače, starost itd.
 
+## Zaslonske slike
+
 ![Screenshot 1](https://cdn.discordapp.com/attachments/931469726591385651/1250019682539409511/image.png?ex=66696b0c&is=6668198c&hm=a451dd6b91269b256ca87d8a7db7a7d7c40755ae092faefd6e0323a4dce605ee&)
 Zaslonska slika naslovne strani projekta Migracije.eu.
 
 ![Screenshot 2](https://cdn.discordapp.com/attachments/931469726591385651/1250019757604737074/image.png?ex=66696b1e&is=6668199e&hm=b3f1418e9313a074349fee3391b757139b3982ad5788b8c56a649c9feeab2a1f&)
 Zaslonska slika strani Podrobnosti projekta Migracije.eu.
+
+## Vir podatkov
+
+Vsi podatki so bili pridobljeni iz spletne strani OPSI (https://podatki.gov.si/)
 
 ## Avtorji
 
