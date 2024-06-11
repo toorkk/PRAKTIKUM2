@@ -25,15 +25,15 @@ Na računalniku je potrebna namestitev Node.js za zaganjanje projekta!
 
 ## Funkcionalnosti
 
-Zemljevid Slovenije, ki prikazuje slovenske občine in regije, klik na katere omogoča ogled podatkov in grafov za vsako občino/regijo posebej.
+- Zemljevid Slovenije, ki prikazuje slovenske občine in regije, klik na katere omogoča ogled podatkov in grafov za vsako občino/regijo posebej.
 
-Navigacijski menu, kateri omogoča navigiranje na občine s pomočjo klika na izbrano občino.
+- Navigacijski menu, kateri omogoča navigiranje na občine s pomočjo klika na izbrano občino.
 
-Stran s podrobnostmi na katerih so prikazane bolj specifične informacije in grafične reprezentacije podatkov občin. Navigiranje na podrobne informacije je mogoče s klikom na link pop-upa vsake občine.
+- Stran s podrobnostmi na katerih so prikazane bolj specifične informacije in grafične reprezentacije podatkov občin. Navigiranje na podrobne informacije je mogoče s klikom na link pop-upa vsake občine.
 
-Stran implementira drsnik, ki omogoča manipuliranje zemljevida tako, da se na zemljevidu vizualizira indeks delovnih migracij za specifično leto.
+- Stran implementira drsnik, ki omogoča manipuliranje zemljevida tako, da se na zemljevidu vizualizira indeks delovnih migracij za specifično leto.
 
-Grafične reprezentacije za presek delovnih migracij s drugimi podatki kot so plače, starost itd.
+- Grafične reprezentacije za presek delovnih migracij s drugimi podatki kot so plače, starost itd.
 
 ## Zaslonske slike
 
@@ -46,6 +46,8 @@ Zaslonska slika strani Podrobnosti projekta Migracije.eu.
 ## Vir podatkov
 
 Vsi podatki so bili pridobljeni iz spletne strani OPSI (https://podatki.gov.si/)
+Za zdruzevanje in manipulacijo teh podatkov smo uporabljali Python Pandas skripte.
+Vsi podatki uporabljeni v projektu so dostopni v datoteki data, vsi podatki so v tej datoteki priloženi v obliki .json.
 
 ## Avtorji
 
