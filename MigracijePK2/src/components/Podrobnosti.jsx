@@ -423,6 +423,7 @@ const Podrobnosti = () => {
             </div>
           </div>
           <div className="right-box">
+            <h4>{selectedObcina} - Delavci znotraj in zunaj občine</h4>
           <Line style={{ marginTop: '40px' }} data={grafNotriVuni} />
             <div className="additional-info-boxes">
               <div className="info-box">
@@ -461,19 +462,7 @@ const Podrobnosti = () => {
             <h4>{selectedObcina} - Indeks delovne migracije in  indeksa plače</h4>
             <Line data={newChartData} />
             <div className="additional-info-boxes">
-              <div className="info-box">
-                <div className="info-icon blue-icon">
-                  <FontAwesomeIcon icon={faInfoCircle} />
-                </div>
-                {selectedYear && (
-                  <div>
-                    <b style={{ fontSize: '25px' }}>
-                      {selectedData[selectedYear]}
-                    </b>
-                  </div>
-                )}
-                <div className="info-text">Indeks delovne migracije</div>
-              </div>
+              
               <div className="info-box">
                 <div className="info-icon pink-icon">
                   <FontAwesomeIcon icon={faCoins} />
@@ -549,8 +538,8 @@ const Podrobnosti = () => {
             <Line data={chartThreeData} />
             <div className="additional-info-boxes">
               <div className="info-box">
-                <div className="info-icon blue-icon">
-                  <FontAwesomeIcon icon={faInfoCircle} />
+                <div className="info-icon orange-icon">
+                  <FontAwesomeIcon icon={faPersonCane} />
                 </div>
                 {selectedYear && (
                   <div>
