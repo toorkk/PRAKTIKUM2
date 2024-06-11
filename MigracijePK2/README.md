@@ -12,31 +12,32 @@ Projekt je v splošnem dostopen na: https://migracije.eu/
 
 ## Instalacija
 
-Projekt je napisan v react + vite programski kodi, uporaba projekta je dostopna s klonirajem git repositorija, potem je potrebo migrirati v datoteko MigracijePK2 in uporabiti komando npm install za korektno instalacijo "Depenedencies". Projekt se lahko zažene s uporabo komande npm run dev.
-Na računalniku je potrebna instalacija Node.js za zaganjanje projekta!
+Projekt je napisan v react + vite programski kodi, uporaba projekta je dostopna s klonirajem git repositorija komanda: git clone (https://github.com/toorkk/PRAKTIKUM2), potem je potrebo migrirati v datoteko MigracijePK2 in uporabiti komando npm install za korektno instalacijo. Projekt se lahko zažene s uporabo komande npm run dev.
 
 ```
+git clone https://github.com/toorkk/PRAKTIKUM2
 cd .\MigracijePK2\
 npm install
 npm run dev
-
 ```
+Na računalniku je potrebna namestitev Node.js za zaganjanje projekta!
+
 
 ## Funkcionalnosti
 
-Zemljevid Slovenije, ki prikazuje slovenske občine in regije, klik na katere omogoča ogled podatkov in grafov za vsako občino/regijo posebej.
+- Zemljevid Slovenije, ki prikazuje slovenske občine in regije, klik na katere omogoča ogled podatkov in grafov za vsako občino/regijo posebej.
 
-Navigacijski menu, kateri omogoča navigiranje na občine s pomočjo klika na izbrano občino.
+- Navigacijski menu, kateri omogoča navigiranje na občine s pomočjo klika na izbrano občino.
 
-Stran s podrobnostmi na katerih so prikazane bolj specifične informacije in grafične reprezentacije podatkov občin. Navigiranje na podrobne informacije je mogoče s klikom na link pop-upa vsake občine.
+- Stran s podrobnostmi na katerih so prikazane bolj specifične informacije in grafične reprezentacije podatkov občin. Navigiranje na podrobne informacije je mogoče s klikom na link pop-upa vsake občine.
 
-Stran implementira drsnik, ki omogoča manipuliranje zemljevida tako, da se na zemljevidu vizualizira indeks delovnih migracij za specifično leto.
+- Stran implementira drsnik, ki omogoča manipuliranje zemljevida tako, da se na zemljevidu vizualizira indeks delovnih migracij za specifično leto.
 
-Grafične reprezentacije za presek delovnih migracij s drugimi podatki kot so plače, starost itd.
+- Grafične reprezentacije za presek delovnih migracij s drugimi podatki kot so plače, starost itd.
 
 ## Zaslonske slike
 
-![Screenshot 1](https://cdn.discordapp.com/attachments/931469726591385651/1250019682539409511/image.png?ex=66696b0c&is=6668198c&hm=a451dd6b91269b256ca87d8a7db7a7d7c40755ae092faefd6e0323a4dce605ee&)
+![Screenshot 1](https://cdn.discordapp.com/attachments/931469726591385651/1250033253944131714/image.png?ex=666977b0&is=66682630&hm=69395db7ab1f6599fc881a00e37360346d5968ddfb0269d8e0310658b2addd61&)
 Zaslonska slika naslovne strani projekta Migracije.eu.
 
 ![Screenshot 2](https://cdn.discordapp.com/attachments/931469726591385651/1250019757604737074/image.png?ex=66696b1e&is=6668199e&hm=b3f1418e9313a074349fee3391b757139b3982ad5788b8c56a649c9feeab2a1f&)
@@ -45,6 +46,8 @@ Zaslonska slika strani Podrobnosti projekta Migracije.eu.
 ## Vir podatkov
 
 Vsi podatki so bili pridobljeni iz spletne strani OPSI (https://podatki.gov.si/)
+Za zdruzevanje in manipulacijo teh podatkov smo uporabljali Python Pandas skripte.
+Vsi podatki uporabljeni v projektu so dostopni v datoteki data, vsi podatki so v tej datoteki priloženi v obliki .json.
 
 ## Avtorji
 
