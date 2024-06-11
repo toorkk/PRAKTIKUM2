@@ -1,0 +1,36 @@
+Migracije.eu
+
+namen je vizualizacija slovenskih delovnih migracij za lažjo predstavo in enostavno navigiranje in ogledovanje le teh podatkov.
+
+Leto izdelave: 2024
+
+Anže Hameršak
+Vasja Rimele 
+Alen Peklar
+
+Domača stran: https://migracije.eu/
+Vir podatkov: https://podatki.gov.si/
+Koda: https://github.com/toorkk/PRAKTIKUM2
+
+Kategorizacija: celovita informacijska rešitev, spletna aplikacija, grafična spletna stran
+
+Oznake: OdprtiPodatki, React, Vite, Python, Leaflet, Scrum, Agilen razvoj, GitHub, 
+
+Projekt je namenjen tako navadnim uporabnikom kot tudi morebitnim strokovnjakom, 
+katerih želja je izvedeti nekaj več o slovenskih delovnih migracijah na bolj preprost oz. bolj interaktiven način.
+
+Funkcionalnosti projekta so naslednje:
+
+- Zemljevid Slovenije, ki prikazuje slovenske občine in regije,
+klik na katere omogoča ogled podatkov in grafov za vsako občino/regijo posebej.
+
+- Navigacijski menu, kateri omogoča navigiranje na občine s pomočjo klika na izbrano občino.
+
+- Stran s podrobnostmi na katerih so prikazane bolj specifične informacije in grafične reprezentacije podatkov občin.
+Navigiranje na podrobne informacije je mogoče s klikom na link pop-upa vsake občine.
+
+- Stran implementira drsnik, ki omogoča manipuliranje zemljevida tako, da se na zemljevidu vizualizira indeks delovnih migracij za specifično leto.
+
+- Grafične reprezentacije za presek delovnih migracij s drugimi podatki kot so plače, starost itd.
+
+

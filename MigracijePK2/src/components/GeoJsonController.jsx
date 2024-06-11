@@ -4,7 +4,7 @@ import stringSimilarity from 'string-similarity';
 import ChartJS from 'chart.js/auto';
 import ObcineGeo from '../../data/OBCINE.json';
 import RegijeGeo from '../../data/SR.json';
-import MergedData from '../../data/Merged18_23.json';
+import MergedData from '../../data/Merged10_23.json';
 import PodatkiObcine from '../../data/Podatki_vredi.json';
 import PodatkiRegije from '../../data/Regije_vredi.json';
 import './GeoJsonControllerStyle.css';
