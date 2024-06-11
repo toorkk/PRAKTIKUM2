@@ -20,9 +20,9 @@ npm run dev
 
 ## Funkcionalnosti
 
-Zmeljevid Slovenije, ki prikazuje slovenske občine in regije, klik na katere omogoča ogled podatkov in grafov za vsako občino/regijo posebej.
+Zemljevid Slovenije, ki prikazuje slovenske občine in regije, klik na katere omogoča ogled podatkov in grafov za vsako občino/regijo posebej.
 
-Navigacijski del, kateri omogoča navigiranje na občine s pomočjo klika na izbrano občino.
+Navigacijski menu, kateri omogoča navigiranje na občine s pomočjo klika na izbrano občino.
 
 Stran s podrobnostmi na katerih so prikazane bolj specifične informacije in grafične reprezentacije podatkov občin. Navigiranje na podrobne informacije je mogoče s klikom na link pop-upa vsake občine.
 
