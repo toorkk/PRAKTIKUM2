@@ -20,7 +20,7 @@ import {
   Legend,
 } from 'chart.js';
 import data from '../../data/Podatki_vredi.json';
-import MergedData from '../../data/Merged18_23.json';
+import MergedData from '../../data/Merged10_23.json';
 import '../Podrobnosti.css';
 import { useParams } from 'react-router-dom';
 
@@ -115,21 +115,21 @@ const Podrobnosti = () => {
           label: 'Indeks delovne migracije',
           data: years.map((year) => data[year]),
           fill: false,
-          backgroundColor: 'rgb(60, 179, 113)',
+          backgroundColor: 'rgb(60, 179, 113, 0.2)',
           borderColor: 'rgb(60, 179, 113)',
         },
         {
           label: 'Indeks delovne migracije (moški)',
           data: moskiLeta.map((year) => data[year]),
           fill: false,
-          backgroundColor: 'rgb(0, 0, 255)',
+          backgroundColor: 'rgb(0, 0, 255, 0.2)',
           borderColor: 'rgb(0, 0, 255)',
         },
         {
           label: 'Indeks delovne migracije (ženske)',
           data: zenskeLeta.map((year) => data[year]),
           fill: false,
-          backgroundColor: 'rgb(238, 130, 238)',
+          backgroundColor: 'rgb(238, 130, 238, 0.2)',
           borderColor: 'rgb(238, 130, 238)',
         },
       ],
@@ -151,14 +151,14 @@ const Podrobnosti = () => {
           label: 'Delavci, znotraj občine',
           data: notri.map((year) => data[year]),
           fill: false,
-          backgroundColor: 'rgb(234, 236, 14)',
+          backgroundColor: 'rgb(234, 236, 14, 0.2)',
           borderColor: 'rgb(234, 236, 14)',
         },
         {
           label: 'Delavci zunaj občine',
           data: zunaj.map((year) => data[year]),
           fill: false,
-          backgroundColor: 'rgb(254, 171, 14)',
+          backgroundColor: 'rgb(254, 171, 14, 0.2)',
           borderColor: 'rgb(254, 171, 14)',
         },
       ],
@@ -170,7 +170,7 @@ const Podrobnosti = () => {
 
     if (!obcinaData) return;
 
-    const years = [2018, 2019, 2020, 2021, 2022, 2023];
+    const years = [2010,2011,2012,2013,2014,2015,2016,2017,2018, 2019, 2020, 2021, 2022, 2023];
     const migrationData = years.map((year) =>
       parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
     );
@@ -203,7 +203,8 @@ const Podrobnosti = () => {
     const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
     if (!obcinaData) return;
 
-    const years = [2018, 2019, 2020, 2021, 2022, 2023];
+    const years = [2010,2011,2012,2013,2014,2015,2016,2017,2018, 2019, 2020, 2021, 2022, 2023];
+    const years2 = [2010,2011,2012,2013,2014,2015,2016,2017,2018, 2019, 2020, 2021, 2022];
 
     setChartOneData({
       labels: years,
@@ -234,24 +235,47 @@ const Podrobnosti = () => {
       datasets: [
         {
           label: 'Indeks delovne migracije',
-          data: years.map((year) =>
-            parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
-          ),
+          data: years.map((year) => parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)),
           borderColor: 'rgb(0, 128, 0)',
           backgroundColor: 'rgba(0, 128, 0, 0.2)',
+          yAxisID: 'first',
           fill: false,
         },
         {
-          label: 'Indeks povprečne starosti migracije',
-          data: years.map((year) =>
-            parseFloat(obcinaData[`nmig_a_${year}`] || 0)
-          ),
-          borderColor: 'rgb(255, 165, 0)',
-          backgroundColor: 'rgba(255, 165, 0, 0.2)',
+          label: 'Število podjetij v občini',
+          data: years2.map((year) => parseFloat(obcinaData[`tot_entrp_${year}`] || 0)),
+          borderColor: 'rgba(228, 70, 70)',
+          backgroundColor: 'rgba(228, 70, 70, 0.2)',
+          yAxisID: 'second',
           fill: false,
         },
       ],
+      options: {
+        scales: {
+          first: {
+              id: 'y-axis-1',
+              type: 'linear',
+              position: 'left',
+              ticks: {
+                beginAtZero: true,
+              },
+            },
+          second:{
+              id: 'y-axis-2',
+              type: 'linear',
+              position: 'right',
+              ticks: {
+                beginAtZero: true,
+              },
+              gridLines: {
+                drawOnChartArea: false,
+              },
+            },
+          
+        },
+      },
     });
+    
 
     setChartThreeData({
       labels: years,
@@ -397,7 +421,7 @@ const Podrobnosti = () => {
             </div>
           </div>
           <div className="right-box">
-            <Line style={{ marginTop: '40px' }} data={grafNotriVuni} />
+          <Line style={{ marginTop: '40px' }} data={grafNotriVuni} />
             <div className="additional-info-boxes">
               <div className="info-box">
                 <div className="info-icon yellow-icon">
@@ -432,7 +456,7 @@ const Podrobnosti = () => {
             </div>
           </div>
           <div className="left-box">
-            <h4>{selectedObcina} - Indeks delovne migracije in plače</h4>
+            <h4>{selectedObcina} - Indeks delovne migracije in  indeksa plače</h4>
             <Line data={newChartData} />
             <div className="additional-info-boxes">
               <div className="info-box">
@@ -492,8 +516,7 @@ const Podrobnosti = () => {
           </div>
           <div className="left-box">
             <h4>
-              {selectedObcina} - Korelacija indeksa povprečne starosti z mig.
-              indeksom
+              {selectedObcina} - Korelacija indeksa delovnih migracij z število podjetij v občini
             </h4>
             <Line data={chartTwoData} />
             <div className="additional-info-boxes">
@@ -506,12 +529,12 @@ const Podrobnosti = () => {
                     <b style={{ fontSize: '25px' }}>
                       {MergedData.find(
                         (item) => item.ob_ime === selectedObcina
-                      )?.[`nmig_a_${selectedYear}`] || 'N/A'}
+                      )?.[`tot_entrp_${selectedYear}`] || 'N/A'}
                     </b>
                   </div>
                 )}
                 <div className="info-text">
-                  Indeks povprečne starosti migracije
+                  Število podjetij v občini
                 </div>
               </div>
             </div>
