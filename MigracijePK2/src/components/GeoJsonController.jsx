@@ -135,7 +135,8 @@ const GeoJsonController = forwardRef(
           }
           return yearlyData;
         };
-        let popupContent = `
+        let popupContent =
+          `
 <div style="font-family: Arial, sans-serif; font-size: 12px; line-height: 1; color: #333; display: flex; justify-content: space-between; align-items: center; width: 100%;">
   <div>
     <h3>Občina</h3>
@@ -148,7 +149,8 @@ const GeoJsonController = forwardRef(
       PODROBNOSTI
     </a>
   </div>
-</div>` + `</b>
+</div>` +
+          `</b>
           <div id="additional-chart-${obcinaName}" style="margin-top: 10px;">
             <canvas id="additional-chart-canvas-${obcinaName}" width="300" height="200"></canvas>
           </div>
@@ -160,7 +162,6 @@ const GeoJsonController = forwardRef(
           </div>
         </div>`;
 
-        
         const chartId = `chart-${feature.properties.OB_UIME}`;
         const dropdownId = `dropdown-${feature.properties.OB_UIME}`;
         popupContent += `<div class="graph-icon" style="position: relative; display: flex; justify-content: center; align-items: center; margin-top: 10px;">
@@ -174,14 +175,14 @@ const GeoJsonController = forwardRef(
         <select id="${dropdownId}" class="custom-dropdown" style="padding: 5px; font-size: 12px;">
           <option value="main" class="main-option">Korelacija plače z mig. indeksom</option>
           <option value="chart1"class="chart1-option">Korelacija povprečne starosti z mig. indeksom</option>
-          <option value="chart2"class="chart2-option">Korelacija indeksa povprečne starosti migracije</option>
+          <option value="chart2"class="chart2-option">Število podjetij v občini in delovne migracije</option>
           <option value="chart3"class="chart3-option">Korelacija Koeficienta starostne odvisnosti</option>
         </select>
       </div><canvas id="${chartId}"></canvas>                           <label for="${dropdownId}"></label>
         <select id="${dropdownId}" class="custom-dropdown" style="padding: 5px; font-size: 12px;">
           <option value="main" class="main-option">Korelacija plače z mig. indeksom</option>
           <option value="chart1"class="chart1-option">Korelacija povprečne starosti z mig. indeksom</option>
-          <option value="chart2"class="chart2-option">Korelacija indeksa povprečne starosti migracije</option>
+          <option value="chart2"class="chart2-option">Število podjetij v občini in delovne migracije</option>
           <option value="chart3"class="chart3-option">Korelacija Koeficienta starostne odvisnosti</option>
         </select></div></div>`;
 
@@ -202,16 +203,15 @@ const GeoJsonController = forwardRef(
 
         popupContent += `<div id="info-detail-1" style="display: none; margin-top: 10px;"><h3>Korelacija plače z mig. indeksom</h3>Graf korelacije indeksa plače z migracijskim indeksom prikazuje povezavo med povprečno višino plače v določeni občini in stopnjo migracije delovne sile v to občino ali iz nje.</div>`;
         popupContent += `<div id="info-detail-2" style="display: none; margin-top: 10px;"><h3>Korelacija povprečne starosti z mig. indeksom</h3>Graf korelacije povprečne starosti z migracijskim indeksom prikazuje povezavo med povprečno starostjo prebivalcev določene občine in stopnjo migracije delovne sile v to občino ali iz nje.</div>`;
-        popupContent += `<div id="info-detail-3" style="display: none; margin-top: 10px;"><h3>Korelacija indeksa povprečne starosti migracije</h3>Graf korelacije med indeksom povprečne migracijske starosti in indeksom delovne migracije prikazuje povezavo med povprečno starostjo ljudi, ki se selijo v določeno občino ali iz nje, in stopnjo delovne migracije v tej občini.</div>`;
+        popupContent += `<div id="info-detail-3" style="display: none; margin-top: 10px;"><h3>Število podjetij in indeks delovnih migracij</h3>Graf prikazuje korelacijo med številom podjetij in indeksom delovnih migracij po občinah</div>`;
         popupContent += `<div id="info-detail-4" style="display: none; margin-top: 10px;"><h3>Korelacija Koeficienta starostne odvisnosti</h3>Koeficient starostne odvisnosti starih je razmerje med številom starejših (65 let ali več) in številom delovno sposobnih prebivalcev, torej prebivalcev, starih 15 do 64 let, pomnoženo s 100.</div>`;
 
         popupContent += `</div>`;
 
         var popup = L.popup({
-          closeOnClick: false
-        })
-        .setContent(popupContent);
-        
+          closeOnClick: false,
+        }).setContent(popupContent);
+
         layer.bindPopup(popup);
 
         let chartInstance;
@@ -247,7 +247,7 @@ const GeoJsonController = forwardRef(
                 },
                 y: {
                   title: {
-                    display: true,
+                    display: false,
                     text: 'Indeks',
                   },
                 },
@@ -335,12 +335,7 @@ const GeoJsonController = forwardRef(
           const dropdown = document.getElementById(dropdownId);
           const toggleIcon = document.getElementById(`toggle-icon-${chartId}`);
           const container = document.getElementById(`container-${chartId}`);
-          const showMoreBtn = document.getElementById(
-            `show-more-btn-${obcinaName}`
-          );
-          const moreInfoDiv = document.getElementById(
-            `more-info-${obcinaName}`
-          );
+
           if (dropdown) {
             dropdown.addEventListener('change', (event) => {
               renderSelectedChart(canvas, event.target.value);
@@ -359,7 +354,6 @@ const GeoJsonController = forwardRef(
               } else {
                 container.style.height = '0px';
                 container.style.paddingBottom = '0px';
-
               }
             });
           }
@@ -411,11 +405,13 @@ const GeoJsonController = forwardRef(
     };
 
     const getChartData = (obcinaName) => {
-      const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
+      const obcinaData = MergedData.find(
+        (item) => item.ob_ime === obcinaName.toLowerCase()
+      );
 
       if (!obcinaData) return null;
 
-      const years = [2018, 2019, 2020, 2021, 2022, 2023];
+      const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
 
       const indLmgrData = years.map((year) =>
         parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
@@ -476,11 +472,13 @@ const GeoJsonController = forwardRef(
       };
     };
     const getNewChartDataOne = (obcinaName) => {
-      const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
+      const obcinaData = MergedData.find(
+        (item) => item.ob_ime === obcinaName.toLowerCase()
+      );
 
       if (!obcinaData) return null;
 
-      const years = [2018, 2019, 2020, 2021, 2022, 2023];
+      const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
 
       const indLmgrData = years.map((year) =>
         parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
@@ -511,34 +509,35 @@ const GeoJsonController = forwardRef(
     };
 
     const getNewChartDataTwo = (obcinaName) => {
-      const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
+      const obcinaData = MergedData.find(
+        (item) => item.ob_ime === obcinaName.toLowerCase()
+      );
 
       if (!obcinaData) return null;
 
-      const years = [2018, 2019, 2020, 2021, 2022, 2023];
-
-      const indLmgrData = years.map((year) =>
-        parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
-      );
-      const nmigAData = years.map((year) =>
-        parseFloat(obcinaData[`nmig_a_${year}`] || 0)
-      );
+      const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
+      const years2 = [2017, 2018, 2019, 2020, 2021, 2022, 2022];
 
       return {
         labels: years,
         datasets: [
           {
             label: 'Indeks delovne migracije',
-            data: indLmgrData,
+            data: years.map((year) =>
+              parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
+            ),
             borderColor: 'rgb(0, 128, 0)',
             backgroundColor: 'rgba(0, 128, 0, 0.2)',
+            yAxisID: 'first',
             fill: false,
           },
           {
-            label: 'Indeks povprečne starosti migracije',
-            data: nmigAData,
-            borderColor: 'rgb(255, 165, 0)',
-            backgroundColor: 'rgba(255, 165, 0, 0.2)',
+            label: 'Število podjetij v občini',
+            data: years2.map((year) =>
+              parseFloat(obcinaData[`tot_entrp_${year}`] || 0)
+            ),
+            borderColor: 'rgba(228, 70, 70)',
+            backgroundColor: 'rgba(228, 70, 70, 0.2)',
             fill: false,
           },
         ],
@@ -546,11 +545,13 @@ const GeoJsonController = forwardRef(
     };
 
     const getNewChartDataThree = (obcinaName) => {
-      const obcinaData = MergedData.find((item) => item.ob_ime === obcinaName);
+      const obcinaData = MergedData.find(
+        (item) => item.ob_ime === obcinaName.toLowerCase()
+      );
 
       if (!obcinaData) return null;
 
-      const years = [2018, 2019, 2020, 2021, 2022, 2023];
+      const years = [2017, 2018, 2019, 2020, 2021, 2022, 2023];
 
       const indLmgrData = years.map((year) =>
         parseFloat(obcinaData[`ind_lmgr_${year}`] || 0)
