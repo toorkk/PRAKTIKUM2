@@ -1,10 +1,10 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useEffect } from 'react';
 import { GeoJSON } from 'react-leaflet';
 import stringSimilarity from 'string-similarity';
 import ChartJS from 'chart.js/auto';
 import ObcineGeo from '../../data/OBCINE.json';
 import RegijeGeo from '../../data/SR.json';
-import MergedData from '../../data/Merged18_23.json';
+import MergedData from '../../data/Merged10_23.json';
 import PodatkiObcine from '../../data/Podatki_vredi.json';
 import PodatkiRegije from '../../data/Regije_vredi.json';
 import './GeoJsonControllerStyle.css';
@@ -14,6 +14,8 @@ const GeoJsonController = forwardRef(
     let data;
     if (type === 'RG') data = RegijeGeo;
     else if (type === 'OB') data = ObcineGeo;
+    else if (type === 'PL') data = ObcineGeo;
+
 
     let currentOpenInfoBox = null;
     const getRegionChartData = (regijaName) => {
@@ -48,7 +50,7 @@ const GeoJsonController = forwardRef(
         dashArray: '',
       });
       layer.bringToFront();
-      if (layer.feature.properties.ENOTA === 'OB') {
+      if (layer.feature.properties.ENOTA === 'OB' || type == 'PL') {
         let closestMatch = findClosestMatch(layer.feature.properties.OB_UIME);
         handleHoveredLayerChange(closestMatch);
       } else if (layer.feature.properties.ENOTA === 'SR') {
@@ -122,7 +124,7 @@ const GeoJsonController = forwardRef(
             }
           }, 0);
         });
-      } else if (feature.properties.ENOTA === 'OB') {
+      } else if (layer.feature.properties.ENOTA === 'OB' || type == 'PL') {
         const obcinaName = feature.properties.OB_UIME;
         const closestMatch = findClosestMatch(obcinaName);
         const getYearlyData = (data) => {
@@ -626,18 +628,28 @@ const GeoJsonController = forwardRef(
     function findClosestMatch(name) {
       let closestMatch = null;
       let maxMatch = -1;
-
-      PodatkiObcine.forEach((obcina) => {
-        const similarity = stringSimilarity.compareTwoStrings(
-          name,
-          obcina.Občine
-        );
+      
+      PodatkiObcine.some((obcina) => {
+        const similarity = stringSimilarity.compareTwoStrings(name, obcina.Občine);
         if (similarity > maxMatch) {
           maxMatch = similarity;
           closestMatch = { name: obcina.Občine, data: obcina };
         }
+        return similarity === 1;
       });
 
+      maxMatch = -1;
+
+      name = name.toLowerCase()
+      MergedData.some((obcina) => {
+        const similarity = stringSimilarity.compareTwoStrings(name, obcina.ob_ime);
+        if (similarity > maxMatch) {
+          maxMatch = similarity;
+          closestMatch.data2 = obcina[`ind_ernet_${leto}`];
+        }
+        return similarity === 1;
+      });
+    
       return closestMatch;
     }
 
@@ -649,14 +661,20 @@ const GeoJsonController = forwardRef(
       let value;
 
       if (properties.properties.ENOTA === 'OB') {
-        let closestMatch = findClosestMatch(properties.properties.OB_UIME);
+        var closestMatch = findClosestMatch(properties.properties.OB_UIME);
+
+        if(type == 'OB'){
         value = closestMatch.data[leto];
+        }
+        else if (type == 'PL') {
+          value = closestMatch.data2;
+        }
+  
       } else if (properties.properties.ENOTA === 'SR') {
         value = findRegijaData(properties.properties.SR_UIME);
         value = value[leto];
       }
-
-      let colors = [
+      let colorsMigracija = [
         '#006400',
         '#1C7204',
         '#388108',
@@ -669,12 +687,20 @@ const GeoJsonController = forwardRef(
         '#FAE526',
       ];
 
+      let colorsPlace = ["#C21616","#C21616","#C21616","#D05D35","#D57540","#DFA455","#EDEB74","#EDEB74","#EDEB74","#EDEB74"]
+
+
+      let colors;
+
+      if(type == 'PL') colors = colorsPlace;
+      else colors = colorsMigracija;
+
       function getColor(d) {
         return d > 165
           ? colors[0]
           : d > 135
           ? colors[1]
-          : d > 115
+          : d > 113
           ? colors[2]
           : d > 100
           ? colors[3]

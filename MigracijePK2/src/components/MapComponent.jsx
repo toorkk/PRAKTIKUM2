@@ -14,6 +14,8 @@ function MapComponent() {
 
   var obcineGeoRef = useRef();
   var regijeGeoRef = useRef();
+  var placeGeoRef = useRef();
+
 
   const handleHoveredLayerChange = useCallback((newHoveredLayer) => {
     setHoveredLayer(newHoveredLayer);
@@ -46,6 +48,9 @@ function MapComponent() {
           </LayersControl.Overlay>
           <LayersControl.Overlay checked name="Občine">
             <GeoJsonController type={'OB'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange} ref={obcineGeoRef} />
+          </LayersControl.Overlay>
+          <LayersControl.Overlay name="Plače">
+            <GeoJsonController type={'PL'} leto={leto} handleHoveredLayerChange={handleHoveredLayerChange} ref={placeGeoRef} />
           </LayersControl.Overlay>
         </LayersControl>
 
